@@ -1,0 +1,8 @@
+{
+  "name": "HTC Africa Support Portal",
+  "description": "A high-fidelity replica of the High Tech Center support page, featuring support links and contact forms.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
