@@ -105,7 +105,7 @@ const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
                   >
                     <div className="grid grid-cols-2 gap-x-12 gap-y-8">
                        <AboutMenuItem 
-                         title="About Atlantic Technology Services" 
+                         title="About HTC Africa" 
                          desc="Learn more about who we are and what we stand for."
                          onClick={() => {
                             onNavigate('about-us');
@@ -371,32 +371,32 @@ const ServicesSection = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
     <div className="max-w-7xl mx-auto">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         <ServiceCard 
+          icon={<Zap size={56} strokeWidth={1} />}
+          title="Fleet & Fuel Management"
+          description="Real-time monitoring of location, speed, and fuel usage. Reduce costs, prevent fraud, and improve driver responsibility across your entire fleet."
+          delay={0.1}
+          onClick={() => onNavigate('fleet-fuel')}
+        />
+        <ServiceCard 
           icon={<Cloud size={56} strokeWidth={1} />}
           title="Cloud Solutions"
-          description="Technology is ever-changing so, investing in new on-premise solutions can be costly and time-consuming. Cloud Services give organizations the flexibility to have the latest in business technologies for their business."
-          delay={0.1}
+          description="Scalable and secure cloud computing for your business. Technology is ever-changing, so investing in new on-premise solutions can be costly. Cloud Services give organizations the flexibility they need."
+          delay={0.2}
           onClick={() => onNavigate('cloud-solutions')}
         />
         <ServiceCard 
-          icon={<Phone size={56} strokeWidth={1} />}
-          title="Business Voice Solutions"
-          description="Atlantic Technology Services offers a range of voice communication plans designed to meet various business needs. We aim to empower businesses with reliable and flexible communication solutions."
-          delay={0.2}
-          onClick={() => onNavigate('voice-solutions')}
-        />
-        <ServiceCard 
-          icon={<Network size={56} strokeWidth={1} />}
-          title="Networking & IT Environment"
-          description="Your network is the core technology your company relies on for productivity and efficiency. Atlantic Technology Services specializes in network design, support and maintenance."
+          icon={<Shield size={56} strokeWidth={1} />}
+          title="Digital Security"
+          description="Comprehensive video surveillance, access control, and gate barriers. Protect your assets, and ensure your business compliance with our end-to-end security solutions."
           delay={0.3}
           onClick={() => onNavigate('networking')}
         />
         <ServiceCard 
-          icon={<Cable size={56} strokeWidth={1} />}
-          title="Cabling & Infrastructure"
-          description="Infrastructure is as important as the technology backbone of your company. We have installed miles of copper CAT5e and CAT6 as well as Fiber Optic cable, making us a trusted, experienced provider."
+          icon={<Network size={56} strokeWidth={1} />}
+          title="ICT Services"
+          description="From structured cabling to server installation and support. We provide the ability to design and deliver a full tailor-made turn-key solution for most complex projects."
           delay={0.4}
-          onClick={() => onNavigate('cabling')}
+          onClick={() => onNavigate('networking')}
         />
       </div>
     </div>
@@ -712,8 +712,8 @@ const ContactSection = () => {
                 <span className="text-white uppercase tracking-[0.3em] font-bold text-[10px] mb-12 inline-block">Location</span>
                 <h3 className="text-5xl font-bold mb-12 leading-tight tracking-tighter">Our Location</h3>
                 <div className="flex flex-col gap-2 mb-16 opacity-90 text-2xl font-bold">
-                   <div>1809 Northwood Dr., Suite E</div>
-                   <div>Salisbury, MD 21801</div>
+                   <div>1st Floor, Shamo Tower</div>
+                   <div>Mbezi Beach, Dar es Salaam, Tanzania</div>
                 </div>
                 
                 <div className="mt-auto aspect-square w-full rounded-xl overflow-hidden border-4 border-white/10 relative group cursor-pointer">
@@ -780,10 +780,10 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Get Connected</h4>
             <ul className="space-y-5 text-white/80 text-sm font-bold">
               <li className="flex items-center gap-3">
-                 <Phone size={18} className="text-[#00a9e0]" /> 410.820.9340
+                 <Phone size={18} className="text-[#00a9e0]" /> +255 22 261 8302
               </li>
               <li className="flex items-center gap-3">
-                 <MapPin size={18} className="text-[#00a9e0]" /> 101 Bay St, Easton, MD 21601
+                 <MapPin size={18} className="text-[#00a9e0]" /> 1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam
               </li>
               <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => scrollTo('contact')}>
                  Terms of Service
@@ -837,14 +837,14 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row gap-16 items-center">
         <div className="lg:w-1/2">
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-10 leading-[1.1] tracking-tight">
-            Empowering Your Business Through Reliable IT Solutions
+            Leading ICT, Digital Security, and Fleet & Fuel Solutions
           </h1>
           <div className="space-y-8 text-white/80 text-lg leading-relaxed max-w-xl">
             <p>
-              Every business is different — there isn't one that is just like the other. Your IT solution should be unique as well. It should empower your business — not slow it down.
+              We are one of the leading companies in Tanzania since 2013, dealing with supply, installation, and commissioning of ICT, Digital Security, and Fleet and fuel Monitoring.
             </p>
             <p>
-              Our team provides proactive IT management, cloud solutions, networking and IT environment development and strategic technology guidance so you can focus on running your business at full-speed.
+              Our team has the ability to design and deliver full tailor-made turn-key solutions for most complex projects, ensuring your business stays ahead of the curve.
             </p>
           </div>
         </div>
@@ -854,7 +854,7 @@ const Hero = () => {
              <span className="text-[#0056b3] font-bold text-[13px] uppercase tracking-[0.2em] mb-6 inline-block">Ready For Change?</span>
              <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tighter">Get Better IT.</h2>
              <p className="text-slate-600 text-[17px] leading-relaxed mb-10">
-               With over 50 years of combined experience, you can trust HTC Africa High Tech Center to develop a customized IT solution for your one-of-a-kind business.
+               With over 10 years of experience since 2013, you can trust HTC Africa High Tech Center to develop a customized IT solution for your one-of-a-kind business.
              </p>
              <div className="flex flex-col sm:flex-row items-center gap-8">
                 <button 
@@ -877,11 +877,109 @@ const Hero = () => {
   );
 };
 
-const ManagedITDetailPage = ({ onContact }: { onContact: () => void }) => (
+const DigitalSecurityDetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <ServiceHero 
+      title="Digital Security Solutions"
+      description="Advanced video surveillance and access control systems designed to protect your assets and people."
+      image="https://images.unsplash.com/photo-1557597774-9d2739f85a9a?q=80&w=2070&auto=format&fit=crop"
+      onContact={() => {}}
+    />
+    <div className="bg-white py-24 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
+          <div>
+            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Peace of Mind</h2>
+            <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
+              <p>
+                Our video surveillance solutions improve overall safety, deter theft, and prevent fraud. We help protect against burglary and lower the risk of vandalism, providing business compliance and evidence for law enforcement.
+              </p>
+              <p>
+                Additionally, our access control and gate barriers allow you to deny access to restricted areas, protect secure data, and enjoy the flexibility of cloud-based management.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 p-12 md:p-16 rounded-2xl">
+             <h3 className="text-[#0056b3] font-bold uppercase tracking-widest text-[11px] mb-12">Benefits include:</h3>
+             <ul className="grid gap-5">
+                {[
+                  "Improved overall safety",
+                  "Theft & Fraud prevention",
+                  "Burglary & Vandalism deterrent",
+                  "Increased employee productivity",
+                  "Business compliance & legal evidence",
+                  "Restricted area management",
+                  "Cloud-based Access Control",
+                  "Gate Barriers & Physical Security"
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-4 text-slate-800 font-medium">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0056b3]"></div>
+                    {item}
+                  </li>
+                ))}
+             </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ICTDetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <ServiceHero 
+      title="ICT & Integrated Systems"
+      description="Comprehensive ICT solutions from structured cabling to advanced multimedia control systems."
+      image="https://images.unsplash.com/photo-1551703599-6b3e8379aa8b?q=80&w=2071&auto=format&fit=crop"
+      onContact={() => {}}
+    />
+    <div className="bg-white py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
+          <div>
+            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Connected Future</h2>
+            <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
+              <p>
+                HTC Africa provides a full range of ICT services including data & voice networking, VoIP, and structured cabling. We specialize in enterprise, small office, and residential Wi-Fi solutions.
+              </p>
+              <p>
+                We also offer advanced integrated systems such as digital conference systems, paperless meeting rooms, simultaneous interpretation systems, and centralized control systems for lighting and multimedia.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 p-12 md:p-16 rounded-2xl">
+             <h3 className="text-[#0056b3] font-bold uppercase tracking-widest text-[11px] mb-12">Our ICT Portfolio:</h3>
+             <ul className="grid gap-5">
+                {[
+                  "Structured Cabling",
+                  "Data & Voice Networking (VoIP)",
+                  "Enterprise & Small Office Wi-Fi",
+                  "Digital/Paperless Conference Systems",
+                  "LED Video Wall & Digital Signage",
+                  "Simultaneous Interpretation Systems",
+                  "Central Control & Multimedia Systems",
+                  "Tower Space Lease & Technical Support"
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-4 text-slate-800 font-medium">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0056b3]"></div>
+                    {item}
+                  </li>
+                ))}
+             </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ManagedITDetailPage = ({ onContact, onNavigate }: { onContact: () => void; onNavigate: (v: View) => void }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Managed IT Services"
-      description="No matter the size of your business, technology and communications represent an important part of it. There are a number of moving parts required to keep IT running smoothly. From creating a strategic infrastructure plan, to ensuring that your data is backed up, to staying on top of warranties and service agreements - there is a lot to consider."
+      description="No matter the size of your business, technology and communications represent an important part of it. At HTC Africa, we follow a proven, structured method to align technology with your business goals."
       image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
       onContact={onContact}
     />
@@ -892,8 +990,14 @@ const ManagedITDetailPage = ({ onContact }: { onContact: () => void }) => (
             <div>
               <h4 className="text-[#0056b3] font-bold uppercase tracking-widest text-[11px] mb-6">How Does Managed Services Work?</h4>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Atlantic Technology Services will be your single contact for all IT-related services. You'll pay a fixed, monthly, cost-effective rate, no matter how much help you need. 
+                HTC Africa will be your single contact for all IT-related services. You'll pay a fixed, monthly, cost-effective rate, no matter how much help you need. 
               </p>
+              <button 
+                onClick={() => onNavigate('process')}
+                className="mt-8 flex items-center gap-3 text-[#0056b3] font-bold uppercase tracking-widest text-xs hover:gap-5 transition-all"
+              >
+                View Our Process Method <ArrowRight size={16} />
+              </button>
             </div>
             
             <div className="pt-8 border-t border-slate-100">
@@ -948,7 +1052,7 @@ const CloudSolutionsDetailPage = () => (
                 Unified Communications as a Service (UCaaS) delivers communications and collaboration tools — think phone, voice mail, messaging, chat, video collaboration, contact centers, and more — across the Cloud.
               </p>
               <p>
-                With minimal-to-no hardware costs, Cloud Services have lower upfront costs, making the move economical for business owners. Maintenance, compliance, and logistics are all taken care of by Atlantic Technology Services (ATS) as your Managed Service Provider.
+                With minimal-to-no hardware costs, Cloud Services have lower upfront costs, making the move economical for business owners. Maintenance, compliance, and logistics are all taken care of by HTC Africa as your Managed Service Provider.
               </p>
             </div>
           </div>
@@ -984,7 +1088,7 @@ const NetworkingDetailPage = () => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Networking & IT Environment"
-      description="Your network is the core technology your company relies on for productivity and efficiency. Atlantic Technology Services specializes in network design, support and maintenance — no matter how big or small."
+      description="Your network is the core technology your company relies on for productivity and efficiency. HTC Africa specializes in network design, support and maintenance — no matter how big or small."
       image="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop"
       onContact={() => {}}
     />
@@ -1033,7 +1137,7 @@ const VoiceSolutionsDetailPage = () => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Business Voice Solutions"
-      description="Atlantic Technology Services offers a range of voice communication plans designed to meet various business needs. We aim to empower businesses with reliable and flexible communication solutions."
+      description="HTC Africa offers a range of voice communication plans designed to meet various business needs. We aim to empower businesses with reliable and flexible communication solutions."
       image="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2069&auto=format&fit=crop"
       onContact={() => {}}
     />
@@ -1074,6 +1178,55 @@ const PricingColumn = ({ title, price, features, isHighlighted = false }: any) =
     </div>
     <div className="text-slate-500 font-medium text-sm border-t border-slate-100 pt-10">
       {features}
+    </div>
+  </div>
+);
+
+const FleetFuelDetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <ServiceHero 
+      title="Fleet & Fuel Management"
+      description="Real-time location monitoring and fuel usage tracking to save time, money, and increase driver responsibility."
+      image="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=2075&auto=format&fit=crop"
+      onContact={() => {}}
+    />
+    <div className="bg-white py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
+          <div>
+            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Efficiency in Motion</h2>
+            <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
+              <p>
+                Our Fleet and Fuel Management solutions provide real-time location monitoring that saves time and money while increasing driver responsibility by monitoring speed, idling, and engine start/stop times.
+              </p>
+              <p>
+                With our system, you can reduce vehicle downtime, save on insurance costs (up to 15%), and gain analytical data for better business decisions.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 p-12 md:p-16 rounded-2xl">
+             <h3 className="text-[#0056b3] font-bold uppercase tracking-widest text-[11px] mb-12">Core Capabilities:</h3>
+             <ul className="grid gap-5">
+                {[
+                  "Real-time location monitoring",
+                  "Two-way Communication",
+                  "Remote cut-off petrol or power",
+                  "Driver identification & tracking",
+                  "Fuel Vehicle Monitoring (Fraud reduction)",
+                  "Fuel Tank / storage Monitoring",
+                  "Generator Fuel Monitoring",
+                  "Detailed Analytics & Reporting"
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-4 text-slate-800 font-medium">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0056b3]"></div>
+                    {item}
+                  </li>
+                ))}
+             </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -1145,35 +1298,34 @@ const AboutUsDetailPage = () => (
     <PageHeader 
       title="WHO WE ARE"
       mainTitle="About Us"
-      subtitle="Founded with a mission to deliver dependable technology solutions and personal service that builds long-term trust."
+      subtitle="One of the leading ICT and digital system integrators in Africa, dedicated to excellence since 2013."
     />
-    <div className="bg-white py-24 px-4">
+    <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-20 items-center">
-           <div className="lg:w-1/2">
-              <h2 className="text-4xl font-bold text-[#0056b3] mb-8">Our Story</h2>
-              <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-                 <p>
-                    Atlantic Technology Services was founded in 2006 by Todd Justice with one simple mission: <span className="font-bold text-slate-900">to provide businesses with dependable, high-quality technology solutions and the kind of personal service that builds long-term trust.</span>
-                 </p>
-                 <p>
-                    What began as a response to a single customer's need quickly grew into a thriving technology company, built on responsiveness, expertise and a commitment to doing what's right for the client.
-                 </p>
-                 <p>
-                    From its inception, Atlantic Technology Services has been driven by the belief that <span className="italic">technology should empower businesses, not frustrate them.</span>
-                 </p>
-              </div>
-           </div>
-           <div className="lg:w-1/2">
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group">
-                 <img 
-                   src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" 
-                   alt="Our Team" 
-                   className="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105" 
-                 />
-                 <div className="absolute inset-0 bg-[#0056b3]/10"></div>
-              </div>
-           </div>
+          <div className="lg:w-1/2">
+             <h3 className="text-4xl font-bold text-[#0056b3] mb-8 tracking-tighter">Our Story</h3>
+             <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+                <p>
+                  Established in 2013, HTC Africa has grown to become one of the leading companies in Tanzania dealing with supply, installation, and commissioning of ICT, Digital Security, and Fleet and Fuel Monitoring.
+                </p>
+                <p>
+                  We have the unique ability to design and deliver full tailor-made turn-key solutions for even the most complex projects. Over the years, we have reached significant milestones, including expanding into internet services and forming strategic partnerships with global tech leaders.
+                </p>
+                <p>
+                  Our vision is to become the most successful and respected Digital System integrator company in Africa, while our mission is to be the most innovative and cost-efficient provider of Digital System Solutions.
+                </p>
+             </div>
+          </div>
+          <div className="lg:w-1/2 relative">
+             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Our Team" className="w-full h-full object-cover" />
+             </div>
+             <div className="absolute -bottom-10 -left-10 bg-[#0056b3] text-white p-12 rounded-xl hidden md:block">
+                <div className="text-6xl font-bold mb-2">13+</div>
+                <div className="font-bold text-xs uppercase tracking-[0.2em] opacity-60">Years of Excellence</div>
+             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1185,26 +1337,25 @@ const CoreValuesDetailPage = () => (
     <PageHeader 
       title="WHAT GUIDES US"
       mainTitle="Core Values"
-      subtitle="The fundamental principles that define our culture and drive our commitment to excellence in everything we do."
+      subtitle="The REDMAT principles that guide everything we do at HTC Africa."
     />
-    <div className="bg-white py-24 px-4 font-sans uppercase tracking-tight">
+    <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-12">
-           {[
-             { title: "Integrity", desc: "Honesty and ethical behavior are the foundation of our business relations." },
-             { title: "Excellence", desc: "We strive for superior quality in every IT solution we deliver." },
-             { title: "Customer Focus", desc: "Your business goals are the primary driver of our technology strategies." },
-             { title: "Innovation", desc: "We stay ahead of the curve with modern technology solutions." },
-             { title: "Reliability", desc: "You can count on us to be there when technology needs attention." },
-             { title: "Accountability", desc: "We take ownership of the results we produce for our clients." }
-           ].map((v, i) => (
-             <div key={i} className="p-12 bg-slate-50 rounded-2xl hover:bg-[#0056b3] hover:text-white transition-all group">
-                <h3 className="text-3xl font-black mb-6 group-hover:text-white transition-colors">{v.title}</h3>
-                <p className="text-slate-500 group-hover:text-white/70 transition-colors leading-relaxed tracking-normal lowercase first-letter:uppercase">
-                  {v.desc}
-                </p>
-             </div>
-           ))}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {[
+            { tag: "R", title: "Responsibility", desc: "Taking ownership of our actions and ensuring we deliver on our promises to clients and partners." },
+            { tag: "E", title: "Excellence", desc: "Striving for the highest quality in every solution we design and every service we provide." },
+            { tag: "D", title: "Dedicated", desc: "Wholly committed to our mission and to the success of our clients' business operations." },
+            { tag: "M", title: "Motivated", desc: "Driven by innovation and a constant desire to excel and be dynamic in a changing industry." },
+            { tag: "A", title: "And", desc: "We believe in the power of collaboration and synergy between our teams and our clients." },
+            { tag: "T", title: "Time-Oriented", desc: "Understanding the critical importance of efficiency and timely delivery in the digital age." }
+          ].map((v) => (
+            <div key={v.tag} className="p-12 bg-slate-50 rounded-2xl hover:bg-[#0056b3] group transition-all duration-500">
+              <div className="text-6xl font-black text-[#0056b3]/10 group-hover:text-white/20 mb-8 transition-colors">{v.tag}</div>
+              <h4 className="text-2xl font-bold text-slate-900 group-hover:text-white mb-4 transition-colors">{v.title}</h4>
+              <p className="text-slate-500 group-hover:text-white/70 leading-relaxed transition-colors">{v.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -1277,7 +1428,7 @@ const ProcessDetailPage = () => {
       <PageHeader 
         title="HOW WE WORK"
         mainTitle="Our Proven Managed IT Method"
-        subtitle="Atlantic Technology Services follows a proven, structured process designed to align technology with your business goals and deliver reliable IT results."
+        subtitle="HTC Africa follows a proven, structured process designed to align technology with your business goals and deliver reliable IT results."
       />
       
       <div className="bg-white py-24 px-4 font-sans">
@@ -1334,15 +1485,21 @@ const IndustriesDetailPage = () => (
     <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-12">
          {[
-           "Healthcare",
-           "Professional Services",
-           "Manufacturing",
+           "Government",
            "Education",
-           "Non-Profit",
-           "Financial Services",
-           "Hospitality",
-           "Construction",
-           "Government"
+           "Real Estate",
+           "Logistics & Courier",
+           "Manufacturing",
+           "Healthcare & Hospitals",
+           "Banks & Financial",
+           "Hotels & Hospitality",
+           "Construction & Mining",
+           "Public Transport",
+           "Retail & Shopping Centers",
+           "Restaurants & Catering",
+           "Fisheries & Agriculture",
+           "NGOs & Diplomat Missions",
+           "Security Companies"
          ].map((industry, i) => (
            <div key={i} className="p-12 border border-slate-100 rounded-2xl hover:shadow-xl transition-all group relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -1494,7 +1651,7 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
         </div>
 
         <div className="lg:w-[58%] lg:pt-14 w-full">
-           <div className="bg-white border border-slate-100 p-10 md:p-14 rounded-xl shadow-sm relative group cursor-pointer hover:shadow-xl transition-all duration-500" onClick={() => onNavigate('managed-it')}>
+           <div className="bg-white border border-slate-100 p-10 md:p-14 rounded-xl shadow-sm relative group cursor-pointer hover:shadow-xl transition-all duration-500" onClick={() => onNavigate('process')}>
               <div className="mb-14 text-[#00a9e0] opacity-80 group-hover:opacity-100 transition-opacity">
                  <svg viewBox="0 0 100 100" className="w-24 h-24 stroke-current fill-none" strokeWidth="1">
                     <rect x="10" y="15" width="80" height="55" rx="3" />
@@ -1519,7 +1676,7 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 // --- Main App ---
 
-type View = 'home' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'blog' | 'support' | 'about-us' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview';
+type View = 'home' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'blog' | 'support' | 'about-us' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'fleet-fuel' | 'digital-security' | 'ict-services';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -1541,7 +1698,10 @@ export default function App() {
             <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
           </button>
 
-          {currentView === 'managed-it' && <ManagedITDetailPage onContact={() => {}} />}
+          {currentView === 'managed-it' && <ManagedITDetailPage onContact={() => setCurrentView('contact')} onNavigate={(v) => setCurrentView(v)} />}
+          {currentView === 'digital-security' && <DigitalSecurityDetailPage />}
+          {currentView === 'ict-services' && <ICTDetailPage />}
+          {currentView === 'fleet-fuel' && <FleetFuelDetailPage />}
           {currentView === 'cloud-solutions' && <CloudSolutionsDetailPage />}
           {currentView === 'networking' && <NetworkingDetailPage />}
           {currentView === 'voice-solutions' && <VoiceSolutionsDetailPage />}
