@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import htcLogo from './assets/images/htc_logo_generated_1779356040161.png';
 import { 
   ChevronDown, 
   Menu, 
@@ -25,11 +26,9 @@ import {
 
 // --- Components ---
 
-const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
+const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, currentView: View }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showAboutMenu, setShowAboutMenu] = useState(false);
-  const [showServicesMenu, setShowServicesMenu] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,38 +38,31 @@ const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleLinkClick = (e: React.MouseEvent, view: View) => {
     e.preventDefault();
-    onNavigate('home');
-    setTimeout(() => {
-      const element = document.getElementById(id);
-      if (element) {
-        window.scrollTo({
-          top: element.offsetTop - 80,
-          behavior: 'smooth'
-        });
-      }
-    }, 100);
+    onNavigate(view);
     setIsOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSupportClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    onNavigate('support');
-    setIsOpen(false);
-  };
-
-  const handleBlogClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    onNavigate('blog');
-    setIsOpen(false);
-  };
+  const navItems: { label: string; view: View }[] = [
+    { label: 'ABOUT US', view: 'about-us' },
+    { label: 'PRODUCTS', view: 'products' },
+    { label: 'SOLUTIONS', view: 'solutions' },
+    { label: 'SERVICES', view: 'services' },
+  ];
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-4' : 'bg-white py-6'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => onNavigate('home')}>
+          <div className="flex-shrink-0 flex items-center gap-4 cursor-pointer" onClick={(e) => handleLinkClick(e as any, 'home')}>
+             <img 
+               src={htcLogo} 
+               alt="HTC Africa Logo" 
+               className="h-12 w-auto" 
+               referrerPolicy="no-referrer"
+             />
              <div className="flex flex-col">
                 <div className="text-2xl md:text-3xl font-bold tracking-tight text-[#0056b3]">
                    HTC AFRICA
@@ -82,165 +74,18 @@ const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
           </div>
           
           <div className="hidden lg:flex space-x-10 items-center list-none">
-            <div 
-              className="relative"
-              onMouseEnter={() => setShowAboutMenu(true)}
-              onMouseLeave={() => setShowAboutMenu(false)}
-            >
+            {navItems.map((item) => (
               <NavItem 
-                label="ABOUT US" 
-                href="#about" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate('about-us');
-                }} 
+                key={item.view}
+                label={item.label} 
+                isActive={currentView === item.view}
+                onClick={(e) => handleLinkClick(e, item.view)} 
               />
-              <AnimatePresence>
-                {showAboutMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 mt-4 bg-white shadow-2xl rounded-xl border border-slate-100 p-8 w-[600px] z-50 overflow-hidden"
-                  >
-                    <div className="grid grid-cols-2 gap-x-12 gap-y-8">
-                       <AboutMenuItem 
-                         title="About HTC Africa" 
-                         desc="Learn more about who we are and what we stand for."
-                         onClick={() => {
-                            onNavigate('about-us');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Core Values" 
-                         desc="The principles that guide everything we do."
-                         onClick={() => {
-                            onNavigate('core-values');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Meet Our Team" 
-                         desc="Get to know the experts behind HTC Africa."
-                         onClick={() => {
-                            onNavigate('team');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Our Process" 
-                         desc="How we deliver consistently high-quality IT results."
-                         onClick={() => {
-                            onNavigate('process');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Our Industries" 
-                         desc="Verticals where we have deep domain expertise."
-                         onClick={() => {
-                            onNavigate('industries');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Partnerships" 
-                         desc="Our strategic ecosystem of technology vendors."
-                         onClick={() => {
-                            onNavigate('partnerships');
-                            setShowAboutMenu(false);
-                         }}
-                       />
-                       <div className="col-span-2 pt-4 border-t border-slate-50">
-                          <AboutMenuItem 
-                            title="Careers" 
-                            desc="Join our team of dedicated IT professionals."
-                            onClick={() => {
-                               onNavigate('careers');
-                               setShowAboutMenu(false);
-                            }}
-                          />
-                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <div 
-              className="relative"
-              onMouseEnter={() => setShowServicesMenu(true)}
-              onMouseLeave={() => setShowServicesMenu(false)}
-            >
-              <NavItem 
-                label="SERVICES" 
-                href="#services" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate('services-overview');
-                }} 
-              />
-              <AnimatePresence>
-                {showServicesMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 mt-4 bg-white shadow-2xl rounded-xl border border-slate-100 p-8 w-[600px] z-50 overflow-hidden"
-                  >
-                    <div className="grid grid-cols-2 gap-x-12 gap-y-8">
-                       <AboutMenuItem 
-                         title="Managed IT Services" 
-                         desc="Comprehensive management of your technology environment."
-                         onClick={() => {
-                            onNavigate('managed-it');
-                            setShowServicesMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Cloud Solutions" 
-                         desc="Scalable and secure cloud computing for your business."
-                         onClick={() => {
-                            onNavigate('cloud-solutions');
-                            setShowServicesMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Networking & IT Environment" 
-                         desc="Network design, support, and maintenance."
-                         onClick={() => {
-                            onNavigate('networking');
-                            setShowServicesMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Business Voice Solutions" 
-                         desc="Reliable and flexible communication plans."
-                         onClick={() => {
-                            onNavigate('voice-solutions');
-                            setShowServicesMenu(false);
-                         }}
-                       />
-                       <AboutMenuItem 
-                         title="Cabling & Infrastructure" 
-                         desc="High-quality copper and fiber optic cabling."
-                         onClick={() => {
-                            onNavigate('cabling');
-                            setShowServicesMenu(false);
-                         }}
-                       />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <NavItem label="CONTACT US" href="#contact" onClick={(e) => scrollToSection(e, 'contact')} />
-            <NavItem label="BLOG" href="#blog" onClick={handleBlogClick} />
-            <NavItem label="Schedule A Consultation" href="#contact" onClick={(e) => scrollToSection(e, 'contact')} />
+            ))}
             <a 
               href="#support"
-              onClick={handleSupportClick}
-              className="px-6 py-3 rounded-md font-bold bg-[#0056b3] text-white hover:bg-[#00438b] transition-all text-sm uppercase tracking-wider"
+              onClick={(e) => handleLinkClick(e, 'support')}
+              className={`px-6 py-3 rounded-md font-bold transition-all text-sm uppercase tracking-wider ${currentView === 'support' ? 'bg-[#00438b] text-white' : 'bg-[#0056b3] text-white hover:bg-[#00438b]'}`}
             >
               Get Support
             </a>
@@ -260,39 +105,19 @@ const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-slate-100 overflow-y-auto max-h-[80vh]"
+            className="lg:hidden bg-white border-b border-slate-100 overflow-hidden"
           >
             <div className="px-4 pt-2 pb-6 space-y-2">
-              <div className="py-4 border-b border-slate-50 flex flex-col gap-4">
-                 <div className="font-bold text-sm text-slate-800">ABOUT US</div>
-                 <div className="pl-4 space-y-4">
-                    <button onClick={() => { onNavigate('about-us'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">About HTC Africa</button>
-                    <button onClick={() => { onNavigate('core-values'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Core Values</button>
-                    <button onClick={() => { onNavigate('team'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Meet Our Team</button>
-                    <button onClick={() => { onNavigate('process'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Our Process</button>
-                    <button onClick={() => { onNavigate('industries'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Our Industries</button>
-                    <button onClick={() => { onNavigate('partnerships'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Partnerships</button>
-                    <button onClick={() => { onNavigate('careers'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Careers</button>
-                 </div>
-              </div>
-
-              <div className="py-4 border-b border-slate-50 flex flex-col gap-4">
-                 <div className="font-bold text-sm text-slate-800">SERVICES</div>
-                 <div className="pl-4 space-y-4">
-                    <button onClick={() => { onNavigate('managed-it'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Managed IT Services</button>
-                    <button onClick={() => { onNavigate('cloud-solutions'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Cloud Solutions</button>
-                    <button onClick={() => { onNavigate('networking'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Networking</button>
-                    <button onClick={() => { onNavigate('voice-solutions'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Voice Solutions</button>
-                    <button onClick={() => { onNavigate('cabling'); setIsOpen(false); }} className="block text-slate-500 font-bold text-xs uppercase tracking-wider text-left">Cabling</button>
-                 </div>
-              </div>
-              
-              <MobileNavItem label="CONTACT US" onClick={(e: any) => scrollToSection(e, 'contact')} />
-              <MobileNavItem label="BLOG" onClick={(e: any) => handleBlogClick(e)} />
-              <MobileNavItem label="Schedule A Consultation" onClick={(e: any) => scrollToSection(e, 'contact')} />
+              {navItems.map((item) => (
+                <MobileNavItem 
+                  key={item.view}
+                  label={item.label} 
+                  onClick={(e) => handleLinkClick(e, item.view)} 
+                />
+              ))}
               <div className="pt-4">
                 <button 
-                  onClick={(e: any) => handleSupportClick(e)}
+                  onClick={(e) => handleLinkClick(e as any, 'support')}
                   className="w-full bg-[#0056b3] text-white py-4 rounded-md font-bold uppercase tracking-wider"
                 >
                   Get Support
@@ -306,14 +131,15 @@ const Navbar = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   );
 };
 
-const NavItem = ({ label, href = "#", onClick }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void }) => (
+const NavItem = ({ label, href = "#", onClick, isActive }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, isActive?: boolean }) => (
   <li className="relative group flex items-center cursor-pointer">
     <a 
       href={href}
       onClick={onClick}
-      className="font-bold text-sm text-slate-800 hover:text-[#0056b3] transition-colors tracking-tight text-nowrap"
+      className={`font-bold text-sm tracking-tight text-nowrap transition-colors ${isActive ? 'text-[#0056b3]' : 'text-slate-800 hover:text-[#0056b3]'}`}
     >
       {label}
+      {isActive && <motion.div layoutId="navline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#0056b3]" />}
     </a>
   </li>
 );
@@ -594,7 +420,7 @@ const SupportSection = () => (
     />
     <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-24">
           <SupportCard 
             icon={<div className="relative w-16 h-12 border-2 border-slate-900 rounded-sm mb-1"><div className="absolute top-1 left-1 right-1 bottom-1 border border-slate-900/10"></div><div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-6 h-2 border-2 border-slate-900 border-t-0 rounded-b-sm"></div></div>}
             title="Let's Connect"
@@ -617,6 +443,8 @@ const SupportSection = () => (
             link="mailto:support@htcafrica.com"
           />
         </div>
+
+        <ContactSection />
       </div>
     </div>
   </section>
@@ -755,8 +583,16 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
           <div>
-            <div className="text-2xl font-bold tracking-tight mb-8 cursor-pointer" onClick={() => onNavigate('home')}>
-              HTC AFRICA
+            <div className="flex items-center gap-4 mb-8 cursor-pointer" onClick={() => onNavigate('home')}>
+              <img 
+                src={htcLogo} 
+                alt="HTC Africa Logo" 
+                className="h-10 w-auto bg-white p-0.5 rounded" 
+                referrerPolicy="no-referrer"
+              />
+              <div className="text-2xl font-bold tracking-tight">
+                HTC AFRICA
+              </div>
             </div>
             <p className="text-white/50 leading-relaxed mb-8">
               HTC Africa High Tech Center provides customized IT solutions that empower small to medium-sized businesses with enterprise-grade reliability and strategic guidance.
@@ -764,18 +600,16 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
           </div>
           
           <div>
-            <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">About HTC Africa</h4>
+            <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Navigation</h4>
             <ul className="space-y-4 text-white/80 text-sm font-bold">
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('about-us')}>Who We Are</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('core-values')}>Core Values</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('team')}>Meet Our Team</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('process')}>Our Process</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('industries')}>Our Industries</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('partnerships')}>Partnerships</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('careers')}>Careers</li>
+              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('home')}>Home</li>
+              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('about-us')}>About Us</li>
+              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('products')}>Products</li>
+              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('solutions')}>Solutions</li>
+              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('services')}>Services</li>
             </ul>
           </div>
-
+          
           <div>
             <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Get Connected</h4>
             <ul className="space-y-5 text-white/80 text-sm font-bold">
@@ -785,24 +619,19 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               <li className="flex items-center gap-3">
                  <MapPin size={18} className="text-[#00a9e0]" /> 1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam
               </li>
-              <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => scrollTo('contact')}>
-                 Terms of Service
-              </li>
-              <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => scrollTo('contact')}>
-                 Privacy Policy
+              <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => onNavigate('support')}>
+                 Get Support
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Our Services</h4>
-            <ul className="space-y-4 text-white/80 text-sm font-bold">
-              <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('managed-it')}>Managed IT Services</li>
-              <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('cloud-solutions')}>Cloud Solutions</li>
-              <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('networking')}>Networking & IT Environment</li>
-              <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('voice-solutions')}>Business Voice Solutions</li>
-              <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => scrollTo('services')}>Cabling & Infrastructure</li>
-            </ul>
+             <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Solutions</h4>
+             <ul className="space-y-4 text-white/80 text-sm font-bold">
+               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('fleet-fuel')}>Fleet & Fuel</li>
+               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('digital-security')}>Digital Security</li>
+               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('ict-services')}>ICT & Integrated</li>
+             </ul>
           </div>
         </div>
 
@@ -815,17 +644,7 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   );
 };
 
-const Hero = () => {
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop - 80,
-        behavior: 'smooth'
-      });
-    }
-  };
-
+const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   return (
     <section id="home" className="bg-[#002d5f] pt-40 pb-24 px-4 relative overflow-hidden">
       {/* Abstract background pattern placeholder */}
@@ -854,20 +673,20 @@ const Hero = () => {
              <span className="text-[#0056b3] font-bold text-[13px] uppercase tracking-[0.2em] mb-6 inline-block">Ready For Change?</span>
              <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tighter">Get Better IT.</h2>
              <p className="text-slate-600 text-[17px] leading-relaxed mb-10">
-               With over 10 years of experience since 2013, you can trust HTC Africa High Tech Center to develop a customized IT solution for your one-of-a-kind business.
+                With over 10 years of experience since 2013, you can trust HTC Africa High Tech Center to develop a customized IT solution for your one-of-a-kind business.
              </p>
              <div className="flex flex-col sm:flex-row items-center gap-8">
                 <button 
-                  onClick={scrollToContact}
+                  onClick={() => onNavigate('support')}
                   className="w-full sm:w-auto px-10 py-5 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-[0.1em] hover:bg-[#00438b] transition-all shadow-lg text-sm"
                 >
                   Get Started
                 </button>
                 <button 
-                  onClick={scrollToContact}
+                  onClick={() => onNavigate('solutions')}
                   className="flex items-center font-bold text-slate-900 group whitespace-nowrap text-[13px] uppercase tracking-[0.2em]"
                 >
-                  Call Us Now <ArrowRight size={20} className="ml-4 group-hover:translate-x-2 transition-transform text-[#0056b3]" />
+                  View Solutions <ArrowRight size={20} className="ml-4 group-hover:translate-x-2 transition-transform text-[#0056b3]" />
                 </button>
              </div>
           </div>
@@ -969,6 +788,100 @@ const ICTDetailPage = () => (
                 ))}
              </ul>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ProductsDetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <PageHeader 
+      title="OUR HARDWARE"
+      mainTitle="IT Products"
+      subtitle="Supplying enterprise-grade hardware and equipment from industry-leading technology partners."
+    />
+    <div className="bg-white py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-24 items-center mb-24">
+          <div>
+            <h2 className="text-4xl font-bold text-slate-900 mb-8 tracking-tight">Standard & Customized Hardware</h2>
+            <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+              <p>
+                HTC Africa provides a comprehensive range of IT products including desktop computers, laptops, servers, and tablets. We are authorized partners for major brands, ensuring you receive genuine hardware with full warranty support.
+              </p>
+              <p>
+                Our networking equipment includes Cisco routers, switches, and firewalls, providing the robust infrastructure needed for modern business operations.
+              </p>
+              <p>
+                We also offer Tower Space Leasing at Mbezi Beach, providing 2 Mt or more space with power standby generators and full technical support.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+             {[
+               { icon: <Zap />, label: "Desktops & Laptops" },
+               { icon: <Globe />, label: "Networking Gear" },
+               { icon: <Settings />, label: "Servers & Storage" },
+               { icon: <Cable />, label: "Technical Support" }
+             ].map((item, i) => (
+               <div key={i} className="bg-slate-50 p-10 rounded-xl flex flex-col items-center text-center group hover:bg-[#0056b3] transition-all duration-500 text-slate-900">
+                  <div className="text-[#0056b3] group-hover:text-white mb-6 scale-150 transition-colors">
+                    {item.icon}
+                  </div>
+                  <div className="font-bold group-hover:text-white transition-colors">{item.label}</div>
+               </div>
+             ))}
+          </div>
+        </div>
+
+        <div className="bg-slate-900 rounded-2xl p-12 md:p-20 text-white overflow-hidden relative">
+           <div className="relative z-10">
+              <h3 className="text-3xl font-bold mb-8">Looking for specific equipment?</h3>
+              <p className="text-white/60 mb-12 max-w-xl text-lg">
+                Our procurement team can source specific hardware tailored to your project requirements. From specialized servers to high-performance workstations.
+              </p>
+              <button className="px-10 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs">Request a Quote</button>
+           </div>
+           <div className="absolute top-0 right-0 opacity-10 scale-150 pointer-events-none">
+              <Settings size={400} strokeWidth={0.5} />
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
+  <div className="animate-in fade-in duration-700">
+    <PageHeader 
+      title="INTEGRATED SOLUTIONS"
+      mainTitle="Tailor-Made Technology"
+      subtitle="Designing and delivering full turn-key solutions for the most complex digital projects across Africa."
+    />
+    <div className="bg-white py-24 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+           {[
+             { title: "Digital Security", desc: "Advanced video surveillance, access control, and gate barriers.", icon: <Shield size={40} />, view: 'digital-security' },
+             { title: "Fleet Management", icon: <Zap size={40} />, desc: "Real-time location and fuel monitoring solutions.", view: 'fleet-fuel' },
+             { title: "Conference Systems", icon: <Mic2 size={40} />, desc: "Digital, wireless, and paperless meeting systems.", view: 'ict-services' },
+             { title: "Public Address", icon: <Globe size={40} />, desc: "IP-based PA and Intercom systems for facilities.", view: 'ict-services' },
+             { title: "Multimedia Control", icon: <Settings size={40} />, desc: "Centralized control for education and venues.", view: 'ict-services' },
+             { title: "Signage & Walls", icon: <Globe size={40} />, desc: "LED video walls and digital signage systems.", view: 'ict-services' }
+           ].map((sol, i) => (
+             <div 
+               key={i} 
+               onClick={() => onNavigate(sol.view as View)}
+               className="p-12 border border-slate-100 rounded-xl hover:shadow-2xl transition-all group cursor-pointer"
+             >
+                <div className="text-[#0056b3] mb-8 opacity-40 group-hover:opacity-100 transition-opacity">
+                  {sol.icon}
+                </div>
+                <h4 className="text-2xl font-bold text-slate-900 mb-4">{sol.title}</h4>
+                <p className="text-slate-500 leading-relaxed group-hover:text-slate-900 transition-colors">{sol.desc}</p>
+             </div>
+           ))}
         </div>
       </div>
     </div>
@@ -1645,7 +1558,7 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
                 From managed IT services and cloud solutions to networking, voice systems and infrastructure, our team delivers technology strategies built around your organization’s specific needs.
              </p>
              <p>
-                Our <a href="#services" className="text-[#0056b3] font-black underline decoration-2 underline-offset-4 hover:text-[#00438b]">proven approach to IT</a> ensures your systems remain reliable, efficient and aligned with your business goals so you can focus on growth with confidence.
+                Our <button onClick={() => onNavigate('process')} className="text-[#0056b3] font-black underline decoration-2 underline-offset-4 hover:text-[#00438b] cursor-pointer bg-transparent border-none p-0">proven approach to IT</button> ensures your systems remain reliable, efficient and aligned with your business goals so you can focus on growth with confidence.
              </p>
           </div>
         </div>
@@ -1676,73 +1589,67 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 // --- Main App ---
 
-type View = 'home' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'blog' | 'support' | 'about-us' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'fleet-fuel' | 'digital-security' | 'ict-services';
+type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView]);
-
-  if (currentView !== 'home') {
-    return (
-      <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#0056b3]/20">
-        <Navbar onNavigate={(v) => setCurrentView(v)} />
-        <main className="pt-20">
-          <button 
-            onClick={() => setCurrentView('home')}
-            className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform hidden md:flex items-center gap-2 group"
-          >
-            <ArrowRight className="rotate-180" size={20} />
-            <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
-          </button>
-
-          {currentView === 'managed-it' && <ManagedITDetailPage onContact={() => setCurrentView('contact')} onNavigate={(v) => setCurrentView(v)} />}
-          {currentView === 'digital-security' && <DigitalSecurityDetailPage />}
-          {currentView === 'ict-services' && <ICTDetailPage />}
-          {currentView === 'fleet-fuel' && <FleetFuelDetailPage />}
-          {currentView === 'cloud-solutions' && <CloudSolutionsDetailPage />}
-          {currentView === 'networking' && <NetworkingDetailPage />}
-          {currentView === 'voice-solutions' && <VoiceSolutionsDetailPage />}
-          {currentView === 'cabling' && <CablingDetailPage />}
-          {currentView === 'services-overview' && <ServicesOverviewPage onNavigate={(v) => setCurrentView(v)} />}
-          {currentView === 'blog' && <BlogSection />}
-          {currentView === 'support' && <SupportSection />}
-          {currentView === 'about-us' && <AboutUsDetailPage />}
-          {currentView === 'core-values' && <CoreValuesDetailPage />}
-          {currentView === 'team' && <TeamDetailPage />}
-          {currentView === 'process' && <ProcessDetailPage />}
-          {currentView === 'industries' && <IndustriesDetailPage />}
-          {currentView === 'partnerships' && <PartnershipsDetailPage />}
-          {currentView === 'careers' && <CareersDetailPage />}
-        </main>
-        <Footer onNavigate={(v) => setCurrentView(v)} />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#0056b3]/20">
-      <Navbar onNavigate={(v) => setCurrentView(v)} />
+      <Navbar onNavigate={(v) => setCurrentView(v)} currentView={currentView} />
       
-      <main>
-        <Hero />
+      <main className={currentView !== 'home' ? 'pt-20' : ''}>
+        <AnimatePresence mode="wait">
+          {currentView !== 'home' && (
+            <button 
+              onClick={() => setCurrentView('home')}
+              className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform hidden md:flex items-center gap-2 group"
+            >
+              <ArrowRight className="rotate-180" size={20} />
+              <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
+            </button>
+          )}
 
-        <OurServicesHeader onNavigate={(v) => setCurrentView(v)} />
+          {currentView === 'home' && (
+            <div key="home" className="animate-in fade-in duration-700">
+              <Hero onNavigate={setCurrentView} />
+              <OurServicesHeader onNavigate={setCurrentView} />
+              <ServicesSection onNavigate={setCurrentView} />
+              <SupportSection />
+              <TestimonialsSection />
+            </div>
+          )}
 
-        <ServicesSection onNavigate={(v) => setCurrentView(v)} />
+          {currentView === 'about-us' && <AboutUsDetailPage key="about" />}
+          {currentView === 'products' && <ProductsDetailPage key="products" />}
+          {currentView === 'solutions' && <SolutionsDetailPage key="solutions" onNavigate={setCurrentView} />}
+          {currentView === 'services' && <ServicesOverviewPage key="services" onNavigate={setCurrentView} />}
+          {currentView === 'support' && <SupportSection key="support" />}
 
-        <SupportSection />
-
-        <BlogSection />
-
-        <TestimonialsSection />
-
-        <ContactSection />
+          {currentView === 'managed-it' && <ManagedITDetailPage key="managed" onContact={() => setCurrentView('support')} onNavigate={(v) => setCurrentView(v)} />}
+          {currentView === 'digital-security' && <DigitalSecurityDetailPage key="security" />}
+          {currentView === 'ict-services' && <ICTDetailPage key="ict" />}
+          {currentView === 'fleet-fuel' && <FleetFuelDetailPage key="fleet" />}
+          {currentView === 'cloud-solutions' && <CloudSolutionsDetailPage key="cloud" />}
+          {currentView === 'networking' && <NetworkingDetailPage key="net" />}
+          {currentView === 'voice-solutions' && <VoiceSolutionsDetailPage key="voice" />}
+          {currentView === 'cabling' && <CablingDetailPage key="cabling" />}
+          
+          {currentView === 'core-values' && <CoreValuesDetailPage key="values" />}
+          {currentView === 'team' && <TeamDetailPage key="team" />}
+          {currentView === 'process' && <ProcessDetailPage key="process" />}
+          {currentView === 'industries' && <IndustriesDetailPage key="industries" />}
+          {currentView === 'partnerships' && <PartnershipsDetailPage key="partnerships" />}
+          {currentView === 'careers' && <CareersDetailPage key="careers" />}
+          {currentView === 'services-overview' && <ServicesOverviewPage key="overview" onNavigate={setCurrentView} />}
+        </AnimatePresence>
       </main>
 
-      <Footer onNavigate={(v) => setCurrentView(v)} />
+      <Footer onNavigate={setCurrentView} />
     </div>
   );
 }
