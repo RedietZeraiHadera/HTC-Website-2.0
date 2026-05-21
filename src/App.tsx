@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+// @ts-ignore
 import htcLogo from './assets/images/htc_logo_generated_1779356040161.png';
 import { 
   ChevronDown, 
@@ -131,7 +132,7 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
   );
 };
 
-const NavItem = ({ label, href = "#", onClick, isActive }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, isActive?: boolean }) => (
+const NavItem = ({ label, href = "#", onClick, isActive }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, isActive?: boolean, key?: any }) => (
   <li className="relative group flex items-center cursor-pointer">
     <a 
       href={href}
@@ -154,7 +155,7 @@ const AboutMenuItem = ({ title, desc, onClick }: { title: string; desc: string; 
   </div>
 );
 
-const MobileNavItem = ({ label, href = "#", onClick }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void }) => (
+const MobileNavItem = ({ label, href = "#", onClick }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, key?: any }) => (
   <div className="py-4 border-b border-slate-50 flex justify-between items-center">
     <a 
       href={href}
@@ -412,42 +413,7 @@ const BlogSection = () => (
 );
 
 const SupportSection = () => (
-  <section id="support" className="min-h-screen">
-    <PageHeader 
-      title="Get IT Support"
-      mainTitle="How Can We Help?"
-      subtitle="There are numerous ways to contact us for IT support as a customer. Below you'll find our preferred methods."
-    />
-    <div className="bg-white py-24 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8 mb-24">
-          <SupportCard 
-            icon={<div className="relative w-16 h-12 border-2 border-slate-900 rounded-sm mb-1"><div className="absolute top-1 left-1 right-1 bottom-1 border border-slate-900/10"></div><div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-6 h-2 border-2 border-slate-900 border-t-0 rounded-b-sm"></div></div>}
-            title="Let's Connect"
-            description="Need to get connected quickly? Click here and we'll get you taken care of."
-            buttonText="Screen Connect"
-            link="#"
-          />
-          <SupportCard 
-            icon={<div className="w-16 h-12 bg-slate-900 rounded-sm relative overflow-hidden"><div className="absolute top-1 left-1 right-1 bottom-4 bg-white"></div><div className="absolute bottom-1 right-1 w-2 h-2 bg-white"></div></div>}
-            title="Customer Portal"
-            description="Connect to all your data and information here via our easy to use portal."
-            buttonText="Customer Portal"
-            link="#"
-          />
-          <SupportCard 
-            icon={<Mail size={48} strokeWidth={1.5} className="text-slate-900" />}
-            title="Get In Touch"
-            description="Have a question? Email our helpdesk to get a support ticket started."
-            buttonText="Email Us"
-            link="mailto:support@htcafrica.com"
-          />
-        </div>
-
-        <ContactSection />
-      </div>
-    </div>
-  </section>
+  <ContactSection />
 );
 
 const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
@@ -852,7 +818,7 @@ const ProductsDetailPage = () => (
   </div>
 );
 
-const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
+const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void, key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="INTEGRATED SOLUTIONS"
@@ -888,7 +854,7 @@ const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void }) 
   </div>
 );
 
-const ManagedITDetailPage = ({ onContact, onNavigate }: { onContact: () => void; onNavigate: (v: View) => void }) => (
+const ManagedITDetailPage = ({ onContact, onNavigate }: { onContact: () => void; onNavigate: (v: View) => void, key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Managed IT Services"
@@ -1193,7 +1159,7 @@ const CablingDetailPage = () => (
   </div>
 );
 
-const ServicesOverviewPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
+const ServicesOverviewPage = ({ onNavigate }: { onNavigate: (v: View) => void, key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="WHAT WE DO"
