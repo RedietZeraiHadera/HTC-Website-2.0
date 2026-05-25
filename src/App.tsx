@@ -22,7 +22,17 @@ import {
   Mail,
   MapPin,
   Clock,
-  ArrowDown
+  ArrowDown,
+  Briefcase,
+  Users,
+  Trash2,
+  Download,
+  Search,
+  Lock,
+  Unlock,
+  FileText,
+  Database,
+  Inbox
 } from 'lucide-react';
 
 // --- Components ---
@@ -72,21 +82,21 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
       view: 'solutions',
       submenu: [
         { label: 'Solutions Overview', view: 'solutions', desc: 'Tailor-made integration solutions' },
-        { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'Real-time monitoring and analytics' },
+        { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'LED video walls, digital signage, and specialized integration' },
         { label: 'Digital Security', view: 'digital-security', desc: 'CCTV, Gate Barriers and Access Control' },
-        { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'Structured cabling and paperless conferences' }
+        { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'Real-time monitoring and analytics' },
+        { label: 'Conference Systems', view: 'ict-services', desc: 'Digital, wireless, and paperless meeting systems' },
+        { label: 'Public Address', view: 'ict-services', desc: 'IP-based PA and Intercom systems for facilities' },
+        { label: 'Multimedia Control', view: 'ict-services', desc: 'Centralized control for education and venues' }
       ]
     },
     { 
       label: 'SERVICES', 
       view: 'services',
       submenu: [
-        { label: 'Services Overview', view: 'services-overview', desc: 'What we can do for your organization' },
-        { label: 'Managed IT Services', view: 'managed-it', desc: 'Complete IT support and server management' },
-        { label: 'Cloud Solutions', view: 'cloud-solutions', desc: 'Scalable cloud computing flexibility' },
-        { label: 'Data & Voice Networking', view: 'networking', desc: 'Enterprise and small-office Wi-Fi networks' },
-        { label: 'Voice Solutions (VoIP)', view: 'voice-solutions', desc: 'Professional unified communications' },
-        { label: 'Structured Cabling', view: 'cabling', desc: 'Robust infrastructure design & cabling' }
+        { label: 'Services Overview', view: 'services-overview', desc: 'Overview of our professional technology consulting' },
+        { label: 'IT Strategy Consultation', view: 'it-strategy', desc: 'Digital transformation, risk, compliance & business continuity' },
+        { label: 'Service Level Agreement', view: 'sla', desc: 'Standard SLA and Premium SLA commitments' }
       ]
     },
   ];
@@ -320,34 +330,20 @@ const ServiceCard = ({ icon, title, description, delay, onClick }: any) => {
 const ServicesSection = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
   <section className="py-24 px-4 bg-white">
     <div className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
         <ServiceCard 
-          icon={<Zap size={56} strokeWidth={1} />}
-          title="Fleet & Fuel Management"
-          description="Real-time monitoring of location, speed, and fuel usage. Reduce costs, prevent fraud, and improve driver responsibility across your entire fleet."
+          icon={<Settings size={56} strokeWidth={1} />}
+          title="IT Strategy Consultation"
+          description="Align technology with your target business achievements. Includes Digital Transformation, comprehensive Risk Assessment, rigorous Compliance Audit, and strategic Business Continuity plans."
           delay={0.1}
-          onClick={() => onNavigate('fleet-fuel')}
+          onClick={() => onNavigate('it-strategy')}
         />
         <ServiceCard 
-          icon={<Cloud size={56} strokeWidth={1} />}
-          title="Cloud Solutions"
-          description="Scalable and secure cloud computing for your business. Technology is ever-changing, so investing in new on-premise solutions can be costly. Cloud Services give organizations the flexibility they need."
+          icon={<CheckCircle2 size={56} strokeWidth={1} />}
+          title="Service Level Agreement"
+          description="High-availability professional support configurations tailored for your specific system requirements. Choose between our robust Standard SLA and Premium 24/7/365 support tiers."
           delay={0.2}
-          onClick={() => onNavigate('cloud-solutions')}
-        />
-        <ServiceCard 
-          icon={<Shield size={56} strokeWidth={1} />}
-          title="Digital Security"
-          description="Comprehensive video surveillance, access control, and gate barriers. Protect your assets, and ensure your business compliance with our end-to-end security solutions."
-          delay={0.3}
-          onClick={() => onNavigate('networking')}
-        />
-        <ServiceCard 
-          icon={<Network size={56} strokeWidth={1} />}
-          title="ICT Services"
-          description="From structured cabling to server installation and support. We provide the ability to design and deliver a full tailor-made turn-key solution for most complex projects."
-          delay={0.4}
-          onClick={() => onNavigate('networking')}
+          onClick={() => onNavigate('sla')}
         />
       </div>
     </div>
@@ -432,14 +428,16 @@ const TestimonialsSection = () => (
   </section>
 );
 
-const FormInput = ({ label, required = false, type = "text", placeholder = "" }: any) => (
+const FormInput = ({ label, required = false, type = "text", placeholder = "", name }: any) => (
   <div className="mb-6">
     <label className="block text-sm font-bold text-slate-900 mb-2">
       {label}{required && <span className="text-red-500 ml-1">*</span>}
     </label>
     <div className="relative">
       <input 
+        name={name || label.toLowerCase().replace(/\s+/g, '_')}
         type={type} 
+        required={required}
         placeholder={placeholder}
         className="w-full bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none" 
       />
@@ -559,10 +557,46 @@ const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
 );
 
 const ContactSection = () => {
-  const scrollToContact = (e: React.FormEvent) => {
+  const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate form submission
-    alert('Thank you for your interest! This is a demo portal.');
+    const data = new FormData(e.currentTarget);
+    const firstName = data.get('first_name')?.toString() || '';
+    const lastName = data.get('last_name')?.toString() || '';
+    const company = data.get('company_name')?.toString() || '';
+    const email = data.get('email')?.toString() || '';
+    const phone = data.get('phone')?.toString() || '';
+    const concern = data.get('concern')?.toString() || '';
+    
+    const newSubmission = {
+      id: Date.now().toString(),
+      firstName,
+      lastName,
+      fullName: `${firstName} ${lastName}`.trim() || 'Anonymous Client',
+      company,
+      email,
+      phone,
+      concern,
+      dateSubmitted: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    try {
+      const existing = localStorage.getItem('htc_contact_submissions');
+      const submissions = existing ? JSON.parse(existing) : [];
+      submissions.unshift(newSubmission);
+      localStorage.setItem('htc_contact_submissions', JSON.stringify(submissions));
+    } catch (err) {
+      console.error('Failed to save contact submission to localStorage:', err);
+    }
+    
+    setIsContactSubmitted(true);
   };
 
   return (
@@ -581,47 +615,71 @@ const ContactSection = () => {
              </p>
 
              <div className="bg-white rounded-md p-0 md:p-0 shadow-none border-t border-slate-100 pt-12">
-                <form onSubmit={scrollToContact} className="grid md:grid-cols-2 gap-x-8">
-                 <FormInput label="First Name" required={true} />
-                 <FormInput label="Last Name" />
-                 <div className="md:col-span-2">
-                    <FormInput label="Company Name" />
-                 </div>
-                 <FormInput label="Email" required={true} type="email" />
-                 
-                 <div className="mb-6">
-                    <label className="block text-sm font-bold text-slate-900 mb-2">
-                      Phone Number<span className="text-red-500 ml-1">*</span>
-                    </label>
-                    <div className="flex gap-4">
-                       <div className="flex items-center gap-2 bg-[#f1f5f9] rounded-md px-4 py-4 w-32 cursor-pointer hover:bg-[#e2e8f0] transition-colors">
-                          <div className="flex items-center gap-2">
-                             <div className="w-5 h-3 bg-green-600 rounded-[2px] shadow-sm"></div>
-                             <ChevronDown size={14} className="text-slate-400" />
-                          </div>
-                       </div>
-                       <input 
-                          type="tel" 
-                          placeholder="+251"
-                          required
-                          className="flex-grow bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium" 
-                       />
-                    </div>
-                 </div>
+               {isContactSubmitted ? (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   className="bg-slate-50 border border-slate-200/60 p-8 md:p-12 text-center rounded-2xl shadow-md space-y-6"
+                 >
+                   <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500 shadow-sm">
+                      <CheckCircle2 size={36} />
+                   </div>
+                   <h3 className="text-2xl font-bold text-slate-900">Message Received!</h3>
+                   <p className="text-slate-600 text-sm leading-relaxed max-w-sm mx-auto">
+                     Thank you for reaching out to HTC Africa. Our professional team will review your Inquiry details and contact you shortly.
+                   </p>
+                   <button 
+                     type="button"
+                     onClick={() => setIsContactSubmitted(false)}
+                     className="px-6 py-2.5 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-lg text-xs uppercase tracking-wider transition-all"
+                   >
+                     Submit another inquiry
+                   </button>
+                 </motion.div>
+               ) : (
+                 <form onSubmit={handleContactSubmit} className="grid md:grid-cols-2 gap-x-8">
+                  <FormInput label="First Name" required={true} name="first_name" />
+                  <FormInput label="Last Name" name="last_name" />
+                  <div className="md:col-span-2">
+                     <FormInput label="Company Name" name="company_name" />
+                  </div>
+                  <FormInput label="Email" required={true} type="email" name="email" />
+                  
+                  <div className="mb-6">
+                     <label className="block text-sm font-bold text-slate-900 mb-2">
+                       Phone Number<span className="text-red-500 ml-1">*</span>
+                     </label>
+                     <div className="flex gap-4">
+                        <div className="flex items-center gap-2 bg-[#f1f5f9] rounded-md px-4 py-4 w-32 cursor-pointer hover:bg-[#e2e8f0] transition-colors">
+                           <div className="flex items-center gap-2">
+                              <div className="w-5 h-3 bg-green-600 rounded-[2px] shadow-sm"></div>
+                              <ChevronDown size={14} className="text-slate-400" />
+                           </div>
+                        </div>
+                        <input 
+                           type="tel" 
+                           name="phone"
+                           placeholder="+255 000 000 000"
+                           required
+                           className="flex-grow bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium" 
+                        />
+                     </div>
+                  </div>
 
-                 <div className="md:col-span-2">
-                    <label className="block text-sm font-bold text-slate-900 mb-2">
-                      What's your biggest IT concern right now?
-                    </label>
-                    <textarea rows={4} className="w-full bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none mb-12 resize-none"></textarea>
-                 </div>
+                  <div className="md:col-span-2">
+                     <label className="block text-sm font-bold text-slate-900 mb-2">
+                       What's your biggest IT concern right now?
+                     </label>
+                     <textarea name="concern" rows={4} className="w-full bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none mb-12 resize-none"></textarea>
+                  </div>
 
-                 <div className="md:col-span-2 flex flex-col items-end">
-                    <button type="submit" className="px-16 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-[0.2em] text-xs hover:bg-[#00438b] transition-all shadow-lg">
-                      Submit
-                    </button>
-                 </div>
-              </form>
+                  <div className="md:col-span-2 flex flex-col items-end">
+                     <button type="submit" className="px-16 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-[0.2em] text-xs hover:bg-[#00438b] transition-all shadow-lg">
+                       Submit
+                     </button>
+                  </div>
+                 </form>
+               )}
            </div>
           </div>
 
@@ -697,6 +755,7 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('products')}>Products</li>
               <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('solutions')}>Solutions</li>
               <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('services')}>Services</li>
+              <li className="hover:text-[#00a9e0] transition-colors cursor-pointer uppercase text-xs text-white/30 pt-2" onClick={() => onNavigate('admin-portal')}>Admin Portal →</li>
             </ul>
           </div>
           
@@ -891,7 +950,7 @@ const ProductsDetailPage = () => (
       mainTitle="IT Products"
       subtitle="Supplying enterprise-grade hardware and equipment from industry-leading technology partners."
     />
-    <div className="bg-white py-24 px-4">
+    <div className="bg-white py-24 px-4 font-sans">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-center mb-24">
           <div>
@@ -910,16 +969,35 @@ const ProductsDetailPage = () => (
           </div>
           <div className="grid grid-cols-2 gap-6">
              {[
-               { icon: <Zap />, label: "Desktops & Laptops" },
-               { icon: <Globe />, label: "Networking Gear" },
-               { icon: <Settings />, label: "Servers & Storage" },
-               { icon: <Cable />, label: "Technical Support" }
+               { 
+                 image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600&auto=format&fit=crop&q=60", 
+                 title: "Desktops & Laptops",
+                 desc: "Authorized partner support for HP, Dell, and Lenovo business hardware."
+               },
+               { 
+                 image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format&fit=crop&q=60", 
+                 title: "Networking Gear",
+                 desc: "Cisco, Sophos, and Ubiquiti routers, enterprise switches & firewalls."
+               },
+               { 
+                 image: "https://images.unsplash.com/photo-1551808525-51a94da548ce?w=600&auto=format&fit=crop&q=60", 
+                 title: "Servers & Storage",
+                 desc: "Scale-out Dell PowerEdge servers, NAS, and redundant backup drives."
+               },
+               { 
+                 image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&auto=format&fit=crop&q=60", 
+                 title: "Technical Support",
+                 desc: "Procurement, deployment, lifecycle support and 24/7 technical monitoring."
+               }
              ].map((item, i) => (
-               <div key={i} className="bg-slate-50 p-10 rounded-xl flex flex-col items-center text-center group hover:bg-[#0056b3] transition-all duration-500 text-slate-900">
-                  <div className="text-[#0056b3] group-hover:text-white mb-6 scale-150 transition-colors">
-                    {item.icon}
+               <div key={i} className="bg-slate-50 border border-slate-100/50 rounded-xl overflow-hidden group hover:shadow-xl transition-all duration-500">
+                  <div className="h-40 overflow-hidden relative">
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
                   </div>
-                  <div className="font-bold group-hover:text-white transition-colors">{item.label}</div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-slate-800 text-sm mb-1">{item.title}</h3>
+                    <p className="text-slate-400 text-[10px] leading-relaxed font-bold uppercase tracking-wider">{item.desc}</p>
+                  </div>
                </div>
              ))}
           </div>
@@ -953,12 +1031,12 @@ const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void, ke
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
            {[
+             { title: "ICT & Integrated Systems", icon: <Globe size={40} />, desc: "LED video walls, digital signage, and customized technical integrations.", view: 'ict-services' },
              { title: "Digital Security", desc: "Advanced video surveillance, access control, and gate barriers.", icon: <Shield size={40} />, view: 'digital-security' },
-             { title: "Fleet Management", icon: <Zap size={40} />, desc: "Real-time location and fuel monitoring solutions.", view: 'fleet-fuel' },
+             { title: "Fleet & Fuel Management", icon: <Zap size={40} />, desc: "Real-time location and fuel monitoring solutions.", view: 'fleet-fuel' },
              { title: "Conference Systems", icon: <Mic2 size={40} />, desc: "Digital, wireless, and paperless meeting systems.", view: 'ict-services' },
              { title: "Public Address", icon: <Globe size={40} />, desc: "IP-based PA and Intercom systems for facilities.", view: 'ict-services' },
-             { title: "Multimedia Control", icon: <Settings size={40} />, desc: "Centralized control for education and venues.", view: 'ict-services' },
-             { title: "Signage & Walls", icon: <Globe size={40} />, desc: "LED video walls and digital signage systems.", view: 'ict-services' }
+             { title: "Multimedia Control", icon: <Settings size={40} />, desc: "Centralized control for education and venues.", view: 'ict-services' }
            ].map((sol, i) => (
              <div 
                key={i} 
@@ -1538,34 +1616,867 @@ const PartnershipsDetailPage = () => (
   </div>
 );
 
-const CareersDetailPage = () => (
+const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) => void, onSelectJob: (title: string) => void }) => (
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="JOIN US"
       mainTitle="Careers"
-      subtitle="Join our team of client-focused professionals that are committed to providing excellent IT support."
+      subtitle="Join our team of client-focused professionals committed to providing excellent IT support."
     />
-    <div className="bg-white py-24 px-4">
+    <div className="bg-white py-24 px-4 font-sans">
       <div className="max-w-4xl mx-auto space-y-12">
-         <h2 className="text-4xl font-bold text-[#0056b3] tracking-tighter">Open Positions</h2>
-         <div className="space-y-6">
-            {[
-              { title: "Senior Network Engineer", type: "Full Time" },
-              { title: "IT Helpdesk Specialist", type: "Full Time" },
-              { title: "Cloud Solutions Architect", type: "Full Time" },
-              { title: "Service Desk Lead", type: "Full Time" }
-            ].map((job, i) => (
-              <div key={i} className="p-10 border border-slate-100 rounded-xl flex flex-col md:flex-row justify-between items-center gap-8 hover:bg-slate-50 transition-colors">
-                 <div>
-                    <h3 className="text-2xl font-bold text-slate-900 mb-2">{job.title}</h3>
-                    <div className="text-[#0056b3] font-bold text-xs uppercase tracking-widest">{job.type}</div>
-                 </div>
-                 <button className="px-8 py-3 border-2 border-[#0056b3] text-[#0056b3] font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#0056b3] hover:text-white transition-all">
-                    Apply Now
-                 </button>
-              </div>
-            ))}
+         {/* Direct Apply Banner */}
+         <div className="bg-slate-50 border border-slate-200/60 p-8 md:p-10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
+           <div className="space-y-3">
+             <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#0056b3] bg-[#0056b3]/5 px-3 py-1 rounded-full">
+               <Mail size={12} /> Direct Applications
+             </div>
+             <h3 className="text-2xl font-bold text-slate-900">How to Apply</h3>
+             <p className="text-slate-600 text-sm font-medium leading-relaxed max-w-xl">
+               Interested candidates should submit their comprehensive CV, application letter, and academic/professional certificates directly to our HR department via email at <a href="mailto:htc@htc.co.tz" className="text-[#0056b3] hover:underline font-bold">htc@htc.co.tz</a>.
+             </p>
+           </div>
+           <a 
+             href="mailto:htc@htc.co.tz?subject=Job Application - HTC Africa"
+             className="px-8 py-4 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap"
+           >
+             <Mail size={14} /> Email Application
+           </a>
          </div>
+
+         <div className="pt-6">
+           <h2 className="text-4xl font-bold text-[#0056b3] tracking-tighter mb-10">Open Positions</h2>
+           <div className="space-y-6">
+              {[
+                { title: "Cisco Network Engineer", type: "Full Time" },
+                { title: "IT Helpdesk Specialist", type: "Full Time" },
+                { title: "Cloud Solutions Architect", type: "Full Time" },
+                { title: "Service Desk Lead", type: "Full Time" }
+              ].map((job, i) => (
+                <div key={i} className="p-10 border border-slate-100 rounded-xl flex flex-col md:flex-row justify-between items-center gap-8 hover:bg-slate-50 transition-colors">
+                   <div>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-2">{job.title}</h3>
+                      <div className="text-[#0056b3] font-bold text-xs uppercase tracking-widest">{job.type}</div>
+                   </div>
+                   <button 
+                     onClick={() => {
+                       onSelectJob(job.title);
+                       onNavigate('job-apply');
+                     }}
+                     className="px-8 py-3 border-2 border-[#0056b3] text-[#0056b3] font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#0056b3] hover:text-white transition-all"
+                   >
+                      Apply Now
+                   </button>
+                </div>
+              ))}
+           </div>
+         </div>
+      </div>
+    </div>
+  </div>
+);
+
+const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavigate: (v: View) => void }) => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    cvFile: null as File | null,
+    linkedin: '',
+    experience: '1-3 years',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFormData({ ...formData, cvFile: e.dataTransfer.files[0] });
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, cvFile: e.target.files[0] });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    const newApplication = {
+      id: Date.now().toString(),
+      jobTitle: selectedJob,
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      experience: formData.experience,
+      linkedin: formData.linkedin,
+      message: formData.message,
+      fileName: formData.cvFile ? formData.cvFile.name : 'No file uploaded',
+      dateApplied: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    try {
+      const existing = localStorage.getItem('htc_job_applications');
+      const apps = existing ? JSON.parse(existing) : [];
+      apps.unshift(newApplication);
+      localStorage.setItem('htc_job_applications', JSON.stringify(apps));
+    } catch (err) {
+      console.error('Failed to save job application to localStorage:', err);
+    }
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }, 1200);
+  };
+
+  return (
+    <div className="animate-in fade-in duration-700">
+      <PageHeader 
+        title="APPLY NOW"
+        mainTitle={`Application: ${selectedJob}`}
+        subtitle="Complete the form below or send your credentials directly via email to htc@htc.co.tz."
+      />
+      <div className="bg-white py-24 px-4 font-sans">
+        <div className="max-w-2xl mx-auto">
+          {/* Direct Email Application Alternate Info */}
+          <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
+            <span className="flex items-center gap-2 text-slate-700">
+               <Mail size={16} className="text-[#0056b3] flex-shrink-0" />
+               <span>Prefer direct email? Send your CV directly to <a href={`mailto:htc@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-[#0056b3] font-bold hover:underline">htc@htc.co.tz</a></span>
+            </span>
+            <a href={`mailto:htc@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-xs uppercase font-bold tracking-wider text-[#0056b3] hover:underline whitespace-nowrap self-end sm:self-auto">
+               Send Email &rarr;
+            </a>
+          </div>
+
+          {isSubmitted ? (
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-slate-50 border border-slate-100 rounded-2xl p-12 text-center shadow-xl space-y-6"
+            >
+              <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500">
+                <CheckCircle2 size={48} />
+              </div>
+              <h3 className="text-3xl font-bold text-slate-900">Application Submitted!</h3>
+              <p className="text-slate-600 leading-relaxed max-w-md mx-auto">
+                Thank you for applying for the <span className="font-bold text-slate-900">{selectedJob}</span> position. Our recruitment team will review your credentials and reach out to you within 3-5 business days.
+              </p>
+              <button 
+                onClick={() => onNavigate('careers')}
+                className="mt-6 px-10 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all"
+              >
+                Back to careers
+              </button>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-8 bg-slate-50 p-10 md:p-14 border border-slate-100 rounded-2xl shadow-xl">
+              <div className="space-y-2">
+                <label className="block text-xs font-bold uppercase tracking-widest text-[#0056b3]">Aspirant Position</label>
+                <input 
+                  type="text" 
+                  value={selectedJob} 
+                  disabled
+                  className="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-lg text-slate-500 font-bold text-sm cursor-not-allowed"
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Full Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="Enter your full name"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Email Address</label>
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="name@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    required
+                    placeholder="+255 000 000 000"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Experience</label>
+                  <select 
+                    value={formData.experience}
+                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                  >
+                    <option>1-3 years</option>
+                    <option>3-5 years</option>
+                    <option>5+ years</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">LinkedIn Profile URL</label>
+                <input 
+                  type="url" 
+                  placeholder="https://linkedin.com/in/username"
+                  value={formData.linkedin}
+                  onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                  className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-800 font-sans">Upload Resume (PDF, DOCX)</label>
+                <div 
+                  onDragEnter={handleDrag}
+                  onDragOver={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDrop={handleDrop}
+                  className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${dragActive ? 'border-[#0056b3] bg-[#0056b3]/5' : 'border-slate-200 bg-white hover:border-[#0056b3]'}`}
+                >
+                  <input 
+                    type="file" 
+                    id="resume-upload" 
+                    className="hidden" 
+                    accept=".pdf,.docx,.doc" 
+                    onChange={handleFileChange}
+                  />
+                  <label htmlFor="resume-upload" className="cursor-pointer">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-400">
+                        <svg className="w-6 h-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2">
+                          <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12V3m0 0L8 7m4-4l4 4" />
+                        </svg>
+                      </div>
+                      <div className="text-sm font-semibold text-slate-700">
+                        {formData.cvFile ? (
+                          <span className="text-[#0056b3] font-bold">Selected: {formData.cvFile.name}</span>
+                        ) : (
+                          <span>Drag & drop your resume here, or <span className="text-[#0056b3] underline">browse</span></span>
+                        )}
+                      </div>
+                      <div className="text-xs text-slate-400">Accepted formats: PDF, DOCX up to 10MB</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Cover Letter / Message</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Introduce yourself and tell us why you are a great fit for HTC Africa..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors resize-none"
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full px-10 py-5 bg-[#0056b3] disabled:bg-slate-400 text-white font-bold rounded-lg uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all flex items-center justify-center gap-3 shadow-lg"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
+  const [password, setPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [activeTab, setActiveTab] = useState<'applicants' | 'inquiries'>('applicants');
+  const [applicants, setApplicants] = useState<any[]>([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const storedApps = localStorage.getItem('htc_job_applications');
+      const storedInquiries = localStorage.getItem('htc_contact_submissions');
+      setApplicants(storedApps ? JSON.parse(storedApps) : []);
+      setInquiries(storedInquiries ? JSON.parse(storedInquiries) : []);
+    }
+  }, [isAuthenticated]);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'admin123' || password === 'admin') {
+      setIsAuthenticated(true);
+      setAuthError('');
+    } else {
+      setAuthError('Incorrect passcode. Hint: Use "admin"');
+    }
+  };
+
+  const handleClearAll = (type: 'applicants' | 'inquiries') => {
+    if (window.confirm(`Are you sure you want to clear all ${type}?`)) {
+      if (type === 'applicants') {
+        localStorage.removeItem('htc_job_applications');
+        setApplicants([]);
+      } else {
+        localStorage.removeItem('htc_contact_submissions');
+        setInquiries([]);
+      }
+      setSelectedItem(null);
+    }
+  };
+
+  const handleExportData = (type: 'applicants' | 'inquiries') => {
+    const dataToExport = type === 'applicants' ? applicants : inquiries;
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToExport, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `htc_${type}_export_${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  const filteredApplicants = applicants.filter(app => 
+    app.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    app.email.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    app.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (app.phone && app.phone.includes(searchQuery))
+  );
+
+  const filteredInquiries = inquiries.filter(inq => 
+    inq.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    inq.email.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    (inq.company && inq.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (inq.concern && inq.concern.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  if (!isAuthenticated) {
+    return (
+      <div className="animate-in fade-in duration-500">
+        <PageHeader 
+          title="SECURE GATEWAY"
+          mainTitle="Administrator Portal"
+          subtitle="Authorized personnel only. Please input your secure access code to view registered job applications & inquiries."
+        />
+        <div className="bg-slate-50 py-24 px-4 font-sans flex items-center justify-center">
+          <div className="bg-white p-8 md:p-12 border border-slate-200/60 rounded-2xl shadow-xl max-w-md w-full space-y-6">
+            <div className="w-16 h-16 bg-[#0056b3]/5 text-[#0056b3] rounded-full flex items-center justify-center mx-auto">
+              <Lock size={28} />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-bold text-slate-900">Enter Access Passcode</h3>
+              <p className="text-slate-400 text-xs">For security and candidate privacy, authorization is required.</p>
+            </div>
+            
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <input 
+                  type="password"
+                  placeholder="Passcode"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200/80 rounded-xl text-center font-mono focus:bg-white focus:ring-2 focus:ring-[#0056b3] transition-all text-lg tracking-widest outline-none"
+                  required
+                  autoFocus
+                />
+                {authError && <p className="text-red-500 text-xs text-center font-bold">{authError}</p>}
+                {!authError && <p className="text-slate-400 text-[10px] text-center font-bold mt-2">Hint: Use password <span className="text-[#0056b3] font-black">admin</span> to preview.</p>}
+              </div>
+              <button 
+                type="submit"
+                className="w-full px-4 py-4 bg-[#0056b3] text-white font-bold rounded-xl uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                <Unlock size={14} /> Unlock Dashboard
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-in fade-in duration-500 min-h-screen bg-slate-50">
+      <div className="bg-[#002d5f] pt-12 pb-12 px-6 text-white text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="space-y-2">
+          <span className="text-[#00a9e0] font-bold uppercase tracking-[0.2em] text-[10px] bg-white/5 px-3 py-1 rounded-full border border-white/10">Secure Live Mode</span>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">HTC Africa Submissions Hub</h1>
+          <p className="text-white/60 text-xs font-semibold leading-relaxed">Centralized repository for prospective employee applications and business customer inquiries.</p>
+        </div>
+        <div className="flex gap-4">
+          <button 
+            type="button"
+            onClick={() => setIsAuthenticated(false)}
+            className="px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg text-xs uppercase tracking-wide transition-all"
+          >
+            Lock Admin
+          </button>
+          <button 
+            type="button"
+            onClick={() => onNavigate('home')}
+            className="px-6 py-2.5 bg-white text-slate-900 font-bold rounded-lg text-xs uppercase tracking-wide hover:bg-slate-100 transition-all flex items-center gap-2"
+          >
+            Live Site &rarr;
+          </button>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-12 font-sans">
+        {/* Analytics Header Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div className="bg-white border border-slate-200/50 rounded-2xl p-6 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0056b3] flex items-center justify-center flex-shrink-0">
+              <Briefcase size={22} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900">{applicants.length}</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">File Applications</div>
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200/50 rounded-2xl p-6 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0">
+              <Users size={22} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900">{inquiries.length}</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Business Inquiries</div>
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200/50 rounded-2xl p-6 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center flex-shrink-0">
+              <CheckCircle2 size={22} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900">4 Active</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Open Positions</div>
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200/50 rounded-2xl p-6 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center flex-shrink-0">
+              <Database size={22} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900">HTML5 Local</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Data Provider</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Workspace Panels */}
+        <div className="bg-white border border-slate-200/60 rounded-3xl overflow-hidden shadow-sm grid lg:grid-cols-12 min-h-[600px]">
+          {/* Left Panel: Search & Listings */}
+          <div className="lg:col-span-5 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
+            {/* Tab selection */}
+            <div className="flex border-b border-slate-100 bg-white">
+              <button 
+                onClick={() => { setActiveTab('applicants'); setSelectedItem(null); setSearchQuery(''); }}
+                className={`flex-1 py-4 text-center text-xs font-bold uppercase tracking-wider border-b-2 transition-all ${activeTab === 'applicants' ? 'border-[#0056b3] text-[#0056b3] bg-[#0056b3]/5' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+              >
+                Applications ({applicants.length})
+              </button>
+              <button 
+                onClick={() => { setActiveTab('inquiries'); setSelectedItem(null); setSearchQuery(''); }}
+                className={`flex-1 py-4 text-center text-xs font-bold uppercase tracking-wider border-b-2 transition-all ${activeTab === 'inquiries' ? 'border-[#0056b3] text-[#0056b3] bg-[#0056b3]/5' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+              >
+                Inquiries ({inquiries.length})
+              </button>
+            </div>
+
+            {/* Quick Actions Search */}
+            <div className="p-4 bg-white border-b border-slate-100 flex gap-2">
+              <div className="relative flex-grow">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                <input 
+                  type="text"
+                  placeholder={`Search ${activeTab}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-100 focus:bg-white border-none focus:ring-2 focus:ring-[#0056b3] rounded-xl text-sm font-medium outline-none transition-all text-slate-900"
+                />
+              </div>
+              <button 
+                onClick={() => handleExportData(activeTab)}
+                disabled={(activeTab === 'applicants' ? filteredApplicants : filteredInquiries).length === 0}
+                className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-50 rounded-xl transition-all"
+                title="Export list as JSON"
+              >
+                <Download size={16} />
+              </button>
+              <button 
+                onClick={() => handleClearAll(activeTab)}
+                disabled={(activeTab === 'applicants' ? applicants : inquiries).length === 0}
+                className="p-2.5 bg-red-100 hover:bg-red-200 text-red-600 disabled:opacity-50 rounded-xl transition-all"
+                title="Clear all records"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+
+            {/* List entries */}
+            <div className="flex-grow overflow-y-auto max-h-[500px] p-4 space-y-3">
+              {activeTab === 'applicants' ? (
+                filteredApplicants.length > 0 ? (
+                  filteredApplicants.map((app) => (
+                    <div 
+                      key={app.id}
+                      onClick={() => setSelectedItem(app)}
+                      className={`p-4 border rounded-xl cursor-pointer transition-all ${selectedItem?.id === app.id ? 'border-[#0056b3] bg-[#0056b3]/5 shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                    >
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <div className="font-bold text-slate-900 text-sm truncate max-w-[185px]">{app.fullName}</div>
+                        <div className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex-shrink-0">{app.experience}</div>
+                      </div>
+                      <div className="text-xs text-[#0056b3] font-bold mb-2 flex items-center gap-1">
+                        <Briefcase size={12} /> {app.jobTitle}
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-bold flex justify-between">
+                        <span className="truncate max-w-[120px]">{app.email}</span>
+                        <span>{app.dateApplied.split(',')[0]}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 text-slate-400 space-y-2">
+                    <Inbox className="mx-auto opacity-40" size={32} />
+                    <p className="text-sm font-bold">No applications found</p>
+                    <p className="text-xs">Submit applications on Careers pages to populate list.</p>
+                  </div>
+                )
+              ) : (
+                filteredInquiries.length > 0 ? (
+                  filteredInquiries.map((inq) => (
+                    <div 
+                      key={inq.id}
+                      onClick={() => setSelectedItem(inq)}
+                      className={`p-4 border rounded-xl cursor-pointer transition-all ${selectedItem?.id === inq.id ? 'border-[#0056b3] bg-[#0056b3]/5 shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                    >
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <div className="font-bold text-slate-900 text-sm truncate max-w-[185px]">{inq.fullName}</div>
+                        <div className="text-[10px] bg-[#0056b3]/10 text-[#0056b3] px-2 py-0.5 rounded font-bold uppercase tracking-wider flex-shrink-0">Inquiry</div>
+                      </div>
+                      {inq.company && (
+                        <div className="text-xs text-slate-600 font-semibold mb-2 truncate max-w-[200px]">
+                          Company: {inq.company}
+                        </div>
+                      )}
+                      <div className="text-[10px] text-slate-400 font-bold flex justify-between">
+                        <span className="truncate max-w-[120px]">{inq.email}</span>
+                        <span>{inq.dateSubmitted?.split(',')[0]}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 text-slate-400 space-y-2">
+                    <Inbox className="mx-auto opacity-40" size={32} />
+                    <p className="text-sm font-bold">No inquiries found</p>
+                    <p className="text-xs">Submit the Contact Us form to generate logs.</p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Right Panel: Detail Inspection View */}
+          <div className="lg:col-span-7 p-6 md:p-8 flex flex-col justify-between h-full bg-white">
+            {selectedItem ? (
+              <div className="space-y-8 animate-in fade-in duration-300">
+                {/* ID Header card */}
+                <div className="border-b border-slate-100 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div className="space-y-1">
+                    <h2 className="text-2xl font-black text-slate-900 leading-tight">{selectedItem.fullName}</h2>
+                    <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                      ID: #{selectedItem.id} | Timestamp: {selectedItem.dateApplied || selectedItem.dateSubmitted}
+                    </p>
+                  </div>
+                  <div>
+                    {activeTab === 'applicants' ? (
+                      <div className="px-4 py-1.5 bg-[#0056b3]/10 text-[#0056b3] text-xs font-black uppercase tracking-wider rounded-full">
+                        Candidate File
+                      </div>
+                    ) : (
+                      <div className="px-4 py-1.5 bg-teal-100 text-teal-800 text-xs font-black uppercase tracking-wider rounded-full">
+                        Business Lead
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Main details list */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</span>
+                    <div className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                      <Mail size={14} className="text-[#0056b3] flex-shrink-0" />
+                      <a href={`mailto:${selectedItem.email}`} className="hover:underline truncate">{selectedItem.email}</a>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phone Number</span>
+                    <div className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                      <Phone size={14} className="text-[#0056b3] flex-shrink-0" />
+                      <span>{selectedItem.phone}</span>
+                    </div>
+                  </div>
+                  
+                  {activeTab === 'applicants' ? (
+                    <>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Applied Position</span>
+                        <div className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                          <Briefcase size={14} className="text-orange-500 flex-shrink-0" />
+                          <span>{selectedItem.jobTitle}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Experience Range</span>
+                        <div className="text-sm font-bold text-slate-800 flex items-center gap-2 font-mono">
+                          <CheckCircle2 size={14} className="text-green-500 flex-shrink-0" />
+                          <span>{selectedItem.experience}</span>
+                        </div>
+                      </div>
+                      {selectedItem.linkedin && (
+                        <div className="space-y-1 md:col-span-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">LinkedIn Profile</span>
+                          <div className="text-sm font-bold text-[#0056b3] flex items-center gap-2">
+                            <span className="truncate max-w-md">
+                              <a href={selectedItem.linkedin} target="_blank" rel="noreferrer" className="hover:underline flex items-center gap-1.5">
+                                {selectedItem.linkedin} <ArrowDown size={12} className="rotate-[-135deg] flex-shrink-0" />
+                              </a>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="space-y-1 md:col-span-2 bg-slate-50 border border-slate-100 p-4 rounded-xl">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Uploaded Resume File</span>
+                        <div className="text-sm font-bold text-slate-800 flex items-center gap-2 mt-1">
+                          <FileText size={18} className="text-[#0056b3] flex-shrink-0" />
+                          <span className="truncate">{selectedItem.fileName}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {selectedItem.company && (
+                        <div className="space-y-1 md:col-span-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Company Organization</span>
+                          <div className="text-sm font-bold text-slate-800">
+                            {selectedItem.company}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {/* Message Box */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
+                    {activeTab === 'applicants' ? 'Cover Letter / Remarks' : 'Biggest IT Concern / Inquiry Details'}
+                  </span>
+                  <div className="bg-slate-50 border border-slate-100/80 rounded-2xl p-6 text-sm text-slate-700 leading-relaxed max-h-[220px] overflow-y-auto whitespace-pre-wrap font-sans">
+                    {selectedItem.message || selectedItem.concern || "No cover letter or message was attached."}
+                  </div>
+                </div>
+
+                {/* Contact CTA */}
+                <div className="pt-6 border-t border-slate-100 flex justify-end gap-3">
+                  <a 
+                    href={`mailto:${selectedItem.email}?subject=Response from HTC Africa - Ref ${selectedItem.id}`}
+                    className="px-6 py-3 bg-[#0056b3] text-white font-bold rounded-xl uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all shadow flex items-center gap-2"
+                  >
+                    Reply via Email
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-20 text-slate-400 space-y-4 max-w-md mx-auto my-auto">
+                <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                  <FileText size={28} />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold text-slate-800">Select a submission</h3>
+                  <p className="text-xs leading-relaxed text-slate-400 font-medium">Click on any candidate or business submission in the left panel to inspect their application documents, upload details, contact info, and custom cover letters.</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ITStrategyDetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <ServiceHero 
+      title="IT Strategy Consultation"
+      description="HTC Africa aligns your digital path with critical business directives. Our custom advisory team prepares and scales your operational technology for maximum output, safety, and modern flexibility."
+      image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
+      onContact={() => {}}
+    />
+    <div className="bg-white py-24 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-5xl font-bold text-slate-900 mb-16 tracking-tight text-center">Consulting Capabilities</h2>
+        
+        <div className="grid md:grid-cols-2 gap-12 mb-24">
+           {[
+             { 
+               title: "Digital Transformation", 
+               desc: "Modernize legacy structures, incorporate scalable cloud technologies, and automate workflows. We prepare a distinct digital blueprint aligned to your business growth.",
+               benefit: "Boost overall team efficiency and reduce system friction."
+             },
+             { 
+               title: "Risk Assessment", 
+               desc: "Undergo diagnostic system scans, penetration checks, network vulnerability detection, and staff training reviews to isolate and remediate security risks.",
+               benefit: "Locate hidden threat surfaces before they can be exploited."
+             },
+             { 
+               title: "Compliance Audit", 
+               desc: "Verify that electronic communications, local firewalls, data servers, and client networks are compliant with both international frameworks and local industry certifications.",
+               benefit: "Avoid costly regulatory penalties and audits."
+             },
+             { 
+               title: "Business Continuity", 
+               desc: "Establish redundant power, redundant network configurations, automatic cloud-backup pathways, and step-by-step crisis playbooks to keep services active.",
+               benefit: "Zero downtime even during infrastructure crises."
+             }
+           ].map((cap, i) => (
+             <div key={i} className="bg-slate-50 p-12 rounded-2xl border border-slate-100 flex flex-col justify-between hover:shadow-xl transition-all">
+                <div className="space-y-6">
+                  <div className="text-4xl font-extrabold text-[#0056b3]/20">0{i+1}</div>
+                  <h3 className="text-2xl font-bold text-slate-900">{cap.title}</h3>
+                  <p className="text-slate-600 leading-relaxed font-sans">{cap.desc}</p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-slate-200/50">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#0056b3]">Core Benefit</span>
+                  <p className="text-slate-900 font-semibold mt-1 text-sm">{cap.benefit}</p>
+                </div>
+             </div>
+           ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SLADetailPage = () => (
+  <div className="animate-in fade-in duration-700">
+    <ServiceHero 
+      title="Service Level Agreements"
+      description="HTC Africa provides transparent, customizable support SLA tiers to keep your business technology resilient, optimized, and safe. Choose the exact tier that fits your SLA targets."
+      image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
+      onContact={() => {}}
+    />
+    <div className="bg-white py-24 px-4 font-sans">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-5xl font-bold text-center text-slate-900 mb-6 tracking-tight">Our Support SLA Tiers</h2>
+        <p className="text-slate-500 text-center max-w-2xl mx-auto text-lg mb-20">We deliver concrete commitments for response times, hardware support cycles, and remote/onsite engineering response.</p>
+        
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+           <div className="border border-slate-200 rounded-3xl p-12 bg-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
+              <div>
+                <span className="text-[#0056b3] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 01</span>
+                <h3 className="text-4xl font-bold text-slate-900 mb-4">Standard SLA</h3>
+                <p className="text-slate-500 mb-8 font-sans">Perfect for standard organizations looking for consistent, guaranteed business-hour helpdesk support and active device monitoring.</p>
+                
+                <div className="border-t border-slate-100 pt-8 mb-10 space-y-4">
+                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                      <span>Official Office Hours Helpdesk (8:00 AM - 5:00 PM)</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                      <span>Next Business Day Onsite Engineering Support</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                      <span>Active Patch & Firmware Updates</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                      <span>4-Hour SLA Response Commitment</span>
+                   </div>
+                </div>
+              </div>
+              <button className="w-full py-4 text-[#0056b3] border-2 border-[#0056b3] hover:bg-[#0056b3] hover:text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs">Choose Standard</button>
+           </div>
+
+           <div className="border border-transparent rounded-3xl p-12 bg-slate-900 text-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
+              <div className="absolute top-0 right-0 bg-[#0056b3] text-white px-6 py-2 rounded-bl-xl text-[10px] font-bold uppercase tracking-widest">Recommended</div>
+              <div>
+                <span className="text-[#00a9e0] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 02</span>
+                <h3 className="text-4xl font-bold text-white mb-4">Premium SLA</h3>
+                <p className="text-slate-400 mb-8 font-sans">Ideal for high-availability enterprise services requiring robust round-the-clock proactive protection and instantaneous response.</p>
+                
+                <div className="border-t border-slate-800 pt-8 mb-10 space-y-4">
+                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                      <span>24/7/365 Around-The-Clock Full IT Helpdesk</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                      <span>Under 1-Hour Guaranteed Onsite Response</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                      <span>Proactive Cyber Threat Defenses & Network Audits</span>
+                   </div>
+                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                      <span>Instant phone-line response for Critical Issues</span>
+                   </div>
+                </div>
+              </div>
+              <button className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs">Choose Premium</button>
+           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1679,10 +2590,11 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 // --- Main App ---
 
-type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview';
+type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
+  const [selectedJob, setSelectedJob] = useState('Cisco Network Engineer');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1693,17 +2605,18 @@ export default function App() {
       <Navbar onNavigate={(v) => setCurrentView(v)} currentView={currentView} />
       
       <main className={currentView !== 'home' ? 'pt-20' : ''}>
-        <AnimatePresence mode="wait">
-          {currentView !== 'home' && (
-            <button 
-              onClick={() => setCurrentView('home')}
-              className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform hidden md:flex items-center gap-2 group"
-            >
-              <ArrowRight className="rotate-180" size={20} />
-              <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
-            </button>
-          )}
+        {currentView !== 'home' && currentView !== 'admin-portal' && (
+          <button 
+            type="button"
+            onClick={() => setCurrentView('home')}
+            className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform hidden md:flex items-center gap-2 group"
+          >
+            <ArrowRight className="rotate-180" size={20} />
+            <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
+          </button>
+        )}
 
+        <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <div key="home" className="animate-in fade-in duration-700">
               <Hero onNavigate={setCurrentView} />
@@ -1734,8 +2647,12 @@ export default function App() {
           {currentView === 'process' && <ProcessDetailPage key="process" />}
           {currentView === 'industries' && <IndustriesDetailPage key="industries" />}
           {currentView === 'partnerships' && <PartnershipsDetailPage key="partnerships" />}
-          {currentView === 'careers' && <CareersDetailPage key="careers" />}
+          {currentView === 'careers' && <motion.div key="careers" className="w-full"><CareersDetailPage onNavigate={setCurrentView} onSelectJob={setSelectedJob} /></motion.div>}
           {currentView === 'services-overview' && <ServicesOverviewPage key="overview" onNavigate={setCurrentView} />}
+          {currentView === 'it-strategy' && <ITStrategyDetailPage key="it-strategy" />}
+          {currentView === 'sla' && <SLADetailPage key="sla" />}
+          {currentView === 'job-apply' && <motion.div key="apply" className="w-full"><JobApplyPage selectedJob={selectedJob} onNavigate={setCurrentView} /></motion.div>}
+          {currentView === 'admin-portal' && <motion.div key="admin" className="w-full"><AdminPortalPage onNavigate={setCurrentView} /></motion.div>}
         </AnimatePresence>
       </main>
 
