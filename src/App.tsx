@@ -146,7 +146,11 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
           </div>
 
           <div className="lg:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-[#0056b3]">
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="text-[#0056b3] hover:text-[#00438b] p-2 hover:bg-slate-50 active:bg-slate-100 rounded-lg transition-all duration-200"
+              aria-label="Toggle Menu"
+            >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
@@ -175,10 +179,10 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
                   }}
                 />
               ))}
-              <div className="pt-4">
+              <div className="pt-4 px-2">
                 <button 
                   onClick={(e) => handleLinkClick(e as any, 'support')}
-                  className="w-full bg-[#0056b3] text-white py-4 rounded-md font-bold uppercase tracking-wider"
+                  className="w-full bg-[#0056b3] hover:bg-[#00438b] text-white py-3.5 rounded-lg font-bold uppercase tracking-wider text-sm transition-all duration-200 active:scale-[0.98] shadow-sm hover:shadow-md"
                 >
                   Get Support
                 </button>
@@ -264,12 +268,12 @@ const MobileNavItem = ({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="border-b border-slate-50 py-2">
-      <div className="flex justify-between items-center py-2">
+    <div className="border-b border-slate-100/60 py-1">
+      <div className="flex justify-between items-center rounded-xl hover:bg-slate-50/80 px-3 py-2.5 transition-all duration-200 group">
         <a 
           href={href}
           onClick={onClick}
-          className="text-slate-800 font-bold text-sm block"
+          className="text-slate-800 group-hover:text-[#0056b3] font-bold text-sm block transition-colors flex-grow py-1"
         >
           {label}
         </a>
@@ -277,20 +281,20 @@ const MobileNavItem = ({
           <button 
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="text-slate-400 hover:text-[#0056b3] transition-colors p-2"
+            className="text-slate-400 group-hover:text-[#0056b3] hover:bg-slate-200/40 transition-colors p-2 rounded-lg"
           >
             <ChevronDown size={14} className={`transform transition-transform duration-300 ${expanded ? 'rotate-180 text-[#0056b3]' : ''}`} />
           </button>
         )}
       </div>
       {submenu && expanded && (
-        <div className="pl-4 pb-2 space-y-1 mt-1 border-l-2 border-slate-100 flex flex-col items-start">
+        <div className="pl-4 pr-2 pb-3 space-y-1 mt-1 border-l-2 border-slate-100 flex flex-col items-start w-full">
           {submenu.map((sub, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => onSubClick?.(sub.view)}
-              className="w-full text-left text-xs text-slate-500 hover:text-[#0056b3] py-2 font-semibold transition-colors block"
+              className="w-full text-left text-xs text-slate-500 hover:text-[#0056b3] hover:bg-slate-50 py-2.5 px-3 rounded-lg font-semibold transition-all block"
             >
               {sub.label}
             </button>
