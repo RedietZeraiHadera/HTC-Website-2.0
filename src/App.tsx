@@ -46,11 +46,49 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navItems: { label: string; view: View }[] = [
-    { label: 'ABOUT US', view: 'about-us' },
-    { label: 'PRODUCTS', view: 'products' },
-    { label: 'SOLUTIONS', view: 'solutions' },
-    { label: 'SERVICES', view: 'services' },
+  const navItems: { label: string; view: View; submenu?: { label: string; view: View; desc: string }[] }[] = [
+    { 
+      label: 'ABOUT US', 
+      view: 'about-us',
+      submenu: [
+        { label: 'About Us Overview', view: 'about-us', desc: 'Who we are and our 13+ years story' },
+        { label: 'Our Process', view: 'process', desc: 'Assess, Design, Deploy and Manage' },
+        { label: 'Our Core Values', view: 'core-values', desc: 'The REDMAT principles that guide us' },
+        { label: 'Meet Our Team', view: 'team', desc: 'Professional, client-focused specialists' },
+        { label: 'Industries Served', view: 'industries', desc: 'Government, Education, Banks and more' },
+        { label: 'Our Partnerships', view: 'partnerships', desc: 'Strategic collaboration with tech leaders' },
+        { label: 'Careers', view: 'careers', desc: 'Join the High Tech Center Africa family' }
+      ]
+    },
+    { 
+      label: 'PRODUCTS', 
+      view: 'products',
+      submenu: [
+        { label: 'IT Products & Hardware', view: 'products', desc: 'Desktops, laptops, Cisco networking and storage' }
+      ]
+    },
+    { 
+      label: 'SOLUTIONS', 
+      view: 'solutions',
+      submenu: [
+        { label: 'Solutions Overview', view: 'solutions', desc: 'Tailor-made integration solutions' },
+        { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'Real-time monitoring and analytics' },
+        { label: 'Digital Security', view: 'digital-security', desc: 'CCTV, Gate Barriers and Access Control' },
+        { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'Structured cabling and paperless conferences' }
+      ]
+    },
+    { 
+      label: 'SERVICES', 
+      view: 'services',
+      submenu: [
+        { label: 'Services Overview', view: 'services-overview', desc: 'What we can do for your organization' },
+        { label: 'Managed IT Services', view: 'managed-it', desc: 'Complete IT support and server management' },
+        { label: 'Cloud Solutions', view: 'cloud-solutions', desc: 'Scalable cloud computing flexibility' },
+        { label: 'Data & Voice Networking', view: 'networking', desc: 'Enterprise and small-office Wi-Fi networks' },
+        { label: 'Voice Solutions (VoIP)', view: 'voice-solutions', desc: 'Professional unified communications' },
+        { label: 'Structured Cabling', view: 'cabling', desc: 'Robust infrastructure design & cabling' }
+      ]
+    },
   ];
 
   return (
@@ -79,8 +117,13 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
               <NavItem 
                 key={item.view}
                 label={item.label} 
-                isActive={currentView === item.view}
+                isActive={currentView === item.view || (item.submenu?.some((sub) => sub.view === currentView) ?? false)}
                 onClick={(e) => handleLinkClick(e, item.view)} 
+                submenu={item.submenu}
+                onSubmenuClick={(view) => {
+                  onNavigate(view);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               />
             ))}
             <a 
@@ -114,6 +157,12 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
                   key={item.view}
                   label={item.label} 
                   onClick={(e) => handleLinkClick(e, item.view)} 
+                  submenu={item.submenu}
+                  onSubClick={(view) => {
+                    onNavigate(view);
+                    setIsOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                 />
               ))}
               <div className="pt-4">
@@ -132,16 +181,49 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
   );
 };
 
-const NavItem = ({ label, href = "#", onClick, isActive }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, isActive?: boolean, key?: any }) => (
-  <li className="relative group flex items-center cursor-pointer">
+const NavItem = ({ 
+  label, 
+  href = "#", 
+  onClick, 
+  isActive, 
+  submenu, 
+  onSubmenuClick 
+}: { 
+  label: string; 
+  href?: string; 
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void; 
+  isActive?: boolean; 
+  key?: any; 
+  submenu?: { label: string; view: View; desc: string }[];
+  onSubmenuClick?: (view: View) => void;
+}) => (
+  <li className="relative group flex items-center cursor-pointer py-4">
     <a 
       href={href}
       onClick={onClick}
-      className={`font-bold text-sm tracking-tight text-nowrap transition-colors ${isActive ? 'text-[#0056b3]' : 'text-slate-800 hover:text-[#0056b3]'}`}
+      className={`font-bold text-sm tracking-tight text-nowrap transition-colors flex items-center gap-1 ${isActive ? 'text-[#0056b3]' : 'text-slate-800 hover:text-[#0056b3]'}`}
     >
       {label}
+      {submenu && <ChevronDown size={14} className="opacity-60 group-hover:rotate-180 transition-transform duration-300" />}
       {isActive && <motion.div layoutId="navline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#0056b3]" />}
     </a>
+
+    {submenu && (
+      <div className="absolute top-[100%] left-1/2 -translate-x-1/2 pt-4 w-80 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+        <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-6 grid gap-4">
+          {submenu.map((sub, index) => (
+            <div 
+              key={index}
+              onClick={() => onSubmenuClick?.(sub.view)}
+              className="group/item cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors"
+            >
+              <div className="font-bold text-slate-900 group-hover/item:text-[#0056b3] transition-colors text-sm mb-0.5">{sub.label}</div>
+              <div className="text-slate-400 text-xs leading-relaxed group-hover/item:text-slate-600 transition-colors font-medium">{sub.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
   </li>
 );
 
@@ -155,17 +237,59 @@ const AboutMenuItem = ({ title, desc, onClick }: { title: string; desc: string; 
   </div>
 );
 
-const MobileNavItem = ({ label, href = "#", onClick }: { label: string; href?: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, key?: any }) => (
-  <div className="py-4 border-b border-slate-50 flex justify-between items-center">
-    <a 
-      href={href}
-      onClick={onClick}
-      className="text-slate-800 font-bold text-sm w-full block"
-    >
-      {label}
-    </a>
-  </div>
-);
+const MobileNavItem = ({ 
+  label, 
+  href = "#", 
+  onClick, 
+  submenu, 
+  onSubClick 
+}: { 
+  label: string; 
+  href?: string; 
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void; 
+  key?: any; 
+  submenu?: { label: string; view: View; desc: string }[];
+  onSubClick?: (view: View) => void;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="border-b border-slate-50 py-2">
+      <div className="flex justify-between items-center py-2">
+        <a 
+          href={href}
+          onClick={onClick}
+          className="text-slate-800 font-bold text-sm block"
+        >
+          {label}
+        </a>
+        {submenu && (
+          <button 
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="text-slate-400 hover:text-[#0056b3] transition-colors p-2"
+          >
+            <ChevronDown size={14} className={`transform transition-transform duration-300 ${expanded ? 'rotate-180 text-[#0056b3]' : ''}`} />
+          </button>
+        )}
+      </div>
+      {submenu && expanded && (
+        <div className="pl-4 pb-2 space-y-1 mt-1 border-l-2 border-slate-100 flex flex-col items-start">
+          {submenu.map((sub, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => onSubClick?.(sub.view)}
+              className="w-full text-left text-xs text-slate-500 hover:text-[#0056b3] py-2 font-semibold transition-colors block"
+            >
+              {sub.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ServiceCard = ({ icon, title, description, delay, onClick }: any) => {
   return (
