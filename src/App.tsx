@@ -32,7 +32,17 @@ import {
   Unlock,
   FileText,
   Database,
-  Inbox
+  Inbox,
+  Volume2,
+  Video,
+  Sliders,
+  Radio,
+  Power,
+  Eye,
+  Play,
+  Server,
+  Monitor,
+  Tv
 } from 'lucide-react';
 
 // --- Components ---
@@ -64,7 +74,6 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
         { label: 'About Us Overview', view: 'about-us', desc: 'Who we are and our 13+ years story' },
         { label: 'Our Process', view: 'process', desc: 'Assess, Design, Deploy and Manage' },
         { label: 'Our Core Values', view: 'core-values', desc: 'The REDMAT principles that guide us' },
-        { label: 'Meet Our Team', view: 'team', desc: 'Professional, client-focused specialists' },
         { label: 'Industries Served', view: 'industries', desc: 'Government, Education, Banks and more' },
         { label: 'Our Partnerships', view: 'partnerships', desc: 'Strategic collaboration with tech leaders' },
         { label: 'Careers', view: 'careers', desc: 'Join the High Tech Center Africa family' }
@@ -85,9 +94,9 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
         { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'LED video walls, digital signage, and specialized integration' },
         { label: 'Digital Security', view: 'digital-security', desc: 'CCTV, Gate Barriers and Access Control' },
         { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'Real-time monitoring and analytics' },
-        { label: 'Conference Systems', view: 'ict-services', desc: 'Digital, wireless, and paperless meeting systems' },
-        { label: 'Public Address', view: 'ict-services', desc: 'IP-based PA and Intercom systems for facilities' },
-        { label: 'Multimedia Control', view: 'ict-services', desc: 'Centralized control for education and venues' }
+        { label: 'Conference Systems', view: 'conference-systems', desc: 'Digital, wireless, and paperless meeting systems' },
+        { label: 'Public Address', view: 'public-address', desc: 'IP-based PA and Intercom systems for facilities' },
+        { label: 'Multimedia Control', view: 'multimedia-control', desc: 'Centralized control for education and venues' }
       ]
     },
     { 
@@ -141,7 +150,7 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
               onClick={(e) => handleLinkClick(e, 'support')}
               className={`px-6 py-3 rounded-md font-bold transition-all text-sm uppercase tracking-wider ${currentView === 'support' ? 'bg-[#00438b] text-white' : 'bg-[#0056b3] text-white hover:bg-[#00438b]'}`}
             >
-              Get Support
+              Request & Apply
             </a>
           </div>
 
@@ -184,7 +193,7 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
                   onClick={(e) => handleLinkClick(e as any, 'support')}
                   className="w-full bg-[#0056b3] hover:bg-[#00438b] text-white py-3.5 rounded-lg font-bold uppercase tracking-wider text-sm transition-all duration-200 active:scale-[0.98] shadow-sm hover:shadow-md"
                 >
-                  Get Support
+                  Request & Apply
                 </button>
               </div>
             </div>
@@ -354,83 +363,8 @@ const ServicesSection = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
   </section>
 );
 
-const TestimonialBox = ({ text, author, company }: any) => (
-  <div className="bg-white p-10 rounded-xl border border-slate-100 shadow-sm mb-8">
-    <Quote size={40} className="text-[#0056b3]" fill="currentColor" opacity={0.1} />
-    <p className="text-slate-700 text-lg leading-relaxed mb-6">"{text}"</p>
-    <div className="mt-4">
-      <div className="text-[#0056b3] font-bold text-sm uppercase tracking-wider mb-1">{company}</div>
-      <div className="text-slate-900 font-bold text-xl">{author}</div>
-    </div>
-  </div>
-);
 
-const TestimonialsSection = () => (
-  <section id="testimonials" className="py-24 px-4 bg-slate-50">
-    <div className="max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-20">
-        <div>
-           <span className="text-[#0056b3] font-bold uppercase tracking-widest text-[12px] mb-4 inline-block">Testimonials</span>
-           <h2 className="text-4xl md:text-5xl font-display font-bold text-[#0056b3]/30 mb-16 leading-tight">
-             What our customers are saying...
-           </h2>
-           <TestimonialBox 
-             text="Love working with HTC Africa! Always responsive, reliable and happy to help! They're knowledgeable about what they do and committed to getting you results and resolutions!"
-             company="Junior Achievement of the Eastern Shore"
-             author="Tori Stephens"
-           />
-           <TestimonialBox 
-             text="Thank you for following up to ensure the issue was resolved!"
-             company="Renegade Services"
-             author="Matt Solano"
-           />
-        </div>
 
-        <div>
-           <span className="text-[#0056b3] font-bold uppercase tracking-widest text-[12px] mb-4 inline-block">Testimonials</span>
-           <h2 className="text-4xl md:text-5xl font-display font-bold text-[#0056b3]/30 mb-16 leading-tight">
-             Our CSAT Results
-           </h2>
-
-           <div className="bg-white p-12 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center">
-              <div className="flex flex-col md:flex-row items-center gap-12 mb-12">
-                 <div className="relative w-32 h-32">
-                    <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-                       <circle cx="50" cy="50" r="45" fill="none" stroke="#f1f5f9" strokeWidth="8" />
-                       <circle cx="50" cy="50" r="45" fill="none" stroke="#0056b3" strokeWidth="8" strokeDasharray="283" strokeDashoffset="0" />
-                    </svg>
-                    <div className="absolute inset-x-0 bottom-4 flex justify-center space-x-2">
-                       <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                       <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                       <span className="w-1.5 h-1.5 rounded-full bg-[#0056b3]"></span>
-                    </div>
-                 </div>
-                 <div className="text-center">
-                    <div className="text-7xl font-bold text-slate-900 leading-none">100%</div>
-                    <div className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-2">powered by <span className="text-[#0056b3] font-black">crewhu</span></div>
-                 </div>
-              </div>
-
-              <div className="w-full pt-12 border-t border-slate-100 text-center">
-                  <div className="text-2xl font-bold text-slate-800 mb-1">Keegan H</div>
-                  <div className="text-slate-500 font-medium mb-1">Becker Morgan Group, Inc</div>
-                  <div className="text-slate-400 text-sm">05/13/2026</div>
-
-                  <div className="flex justify-center items-center gap-20 mt-12">
-                     <button className="text-slate-300 hover:text-slate-900 transition-colors">
-                        <ChevronDown size={32} className="rotate-90" />
-                     </button>
-                     <button className="text-slate-300 hover:text-slate-900 transition-colors">
-                        <ChevronDown size={32} className="-rotate-90" />
-                     </button>
-                  </div>
-              </div>
-           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
 
 const FormInput = ({ label, required = false, type = "text", placeholder = "", name }: any) => (
   <div className="mb-6">
@@ -450,19 +384,29 @@ const FormInput = ({ label, required = false, type = "text", placeholder = "", n
 );
 
 const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: string; mainTitle: string }) => (
-  <div className="bg-[#002d5f] pt-40 pb-24 px-4 relative overflow-hidden">
-    <div className="absolute inset-0 opacity-20">
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#0056b3_0%,transparent_70%)] opacity-30"></div>
-       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+  <div className="bg-[#030914] pt-40 pb-28 px-4 relative overflow-hidden border-b border-blue-500/10 font-sans">
+    {/* Tech grid mask */}
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-80" />
+    
+    <div className="absolute inset-0">
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#00a9e0]/10 blur-[120px] rounded-full pointer-events-none" />
        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-[800px] h-[800px] border border-white/5 rounded-full animate-[spin_60s_linear_infinite]"></div>
-          <div className="absolute w-[600px] h-[600px] border border-white/5 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
+          <div className="w-[900px] h-[900px] border border-blue-500/5 rounded-full animate-[spin_100s_linear_infinite]" />
+          <div className="absolute w-[600px] h-[600px] border border-cyan-500/5 rounded-full animate-[spin_6s_linear_infinite_reverse]" />
        </div>
     </div>
+    
     <div className="max-w-7xl mx-auto relative z-10 text-center">
-       {title && <span className="text-[#00a9e0] font-bold uppercase tracking-[0.3em] text-[13px] mb-8 inline-block">{title}</span>}
-       <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight">{mainTitle}</h2>
-       <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed italic">
+       {title && (
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-blue-500/5 border border-blue-500/20 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.25em] mb-8 font-extrabold shadow-[0_0_15px_rgba(0,169,224,0.05)]">
+            <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+            {title}
+          </div>
+       )}
+       <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+         {mainTitle}
+       </h2>
+       <p className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed border-t border-white/5 pt-6 font-medium">
          {subtitle}
        </p>
     </div>
@@ -538,9 +482,104 @@ const BlogSection = () => (
   </section>
 );
 
-const SupportSection = () => (
-  <ContactSection />
-);
+const SupportSection = ({ standalone = false, onSelectJob, onNavigate, key }: { standalone?: boolean; onSelectJob?: (title: string) => void; onNavigate?: (v: View) => void; key?: any }) => {
+  const [activeTab, setActiveTab] = useState<'request' | 'careers'>('request');
+  const [selectedJobLocal, setSelectedJobLocal] = useState('Cisco Network Engineer');
+  const [showApplyForm, setShowApplyForm] = useState(false);
+
+  const jobs = [
+    { title: "Cisco Network Engineer", type: "Full Time", salary: "Competitive", exp: "3+ Years Experience", badge: "NET_INFRASTRUCTURE" },
+    { title: "IT Helpdesk Specialist", type: "Full Time", salary: "Competitive", exp: "2+ Years Experience", badge: "SYS_SUPPORT" },
+    { title: "Cloud Solutions Architect", type: "Full Time", salary: "Competitive", exp: "5+ Years Experience", badge: "CLOUD_OPERATIONS" },
+    { title: "Service Desk Lead", type: "Full Time", salary: "Competitive", exp: "4+ Years Experience", badge: "MANAGED_SERVICES" }
+  ];
+
+  if (!standalone) {
+    return <ContactSection />;
+  }
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
+      <div className="bg-[#030914] text-white py-16 border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <span className="text-xs font-mono font-bold tracking-[0.2em] text-[#00a9e0] uppercase block mb-2">// SECURE INFORMATION PORTAL</span>
+            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase">Inquiries & Applications Hub</h1>
+          </div>
+          <div className="flex gap-4 p-1.5 bg-slate-950 border border-white/10 rounded-xl">
+            <button
+              onClick={() => { setActiveTab('request'); setShowApplyForm(false); }}
+              className={`px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === 'request' ? 'bg-[#0056b3] text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+            >
+              📤 Submit Support Request
+            </button>
+            <button
+              onClick={() => setActiveTab('careers')}
+              className={`px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === 'careers' ? 'bg-[#0056b3] text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+            >
+              💼 Submit Job Application
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white text-slate-900">
+        {activeTab === 'request' ? (
+          <ContactSection />
+        ) : (
+          <div className="max-w-4xl mx-auto py-24 px-4 font-sans text-slate-900">
+            {!showApplyForm ? (
+              <div className="space-y-12">
+                <div className="text-center space-y-4 max-w-xl mx-auto">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 uppercase tracking-tight">Active Team Openings</h2>
+                  <p className="text-slate-500 text-sm leading-relaxed">Select one of our open engineering or administration positions to submit your credentials directly into our database.</p>
+                </div>
+                <div className="space-y-6">
+                  {jobs.map((job, i) => (
+                    <div key={i} className="p-8 border border-slate-100 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:border-[#0056b3]/30 hover:shadow-lg transition-all duration-300">
+                      <div className="space-y-2">
+                        <span className="inline-block px-2 py-0.5 bg-slate-50 border border-slate-100 font-mono text-[8px] font-bold text-slate-400 uppercase rounded">
+                          ROLE // {job.badge}
+                        </span>
+                        <h3 className="text-lg font-black text-slate-800 uppercase leading-none">{job.title}</h3>
+                        <div className="flex flex-wrap items-center gap-3 text-slate-500 font-mono text-[9px] uppercase tracking-wider">
+                          <span className="text-[#0056b3] font-bold">{job.type}</span>
+                          <span>•</span>
+                          <span>{job.exp}</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (onSelectJob) onSelectJob(job.title);
+                          setSelectedJobLocal(job.title);
+                          setShowApplyForm(true);
+                        }}
+                        className="px-6 py-3 bg-[#0056b3] hover:bg-[#00438b] text-white font-mono font-bold rounded text-[9px] uppercase tracking-widest transition-all self-stretch sm:w-auto text-center shadow-md shadow-blue-500/10"
+                      >
+                        EXECUTE APPLICATION
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-8 animate-in fade-in duration-300 bg-white">
+                <button
+                  onClick={() => setShowApplyForm(false)}
+                  className="flex items-center gap-2 text-xs font-bold text-[#0056b3] uppercase tracking-widest hover:underline mb-8"
+                >
+                  ← Back to Openings
+                </button>
+                <JobApplyPage selectedJob={selectedJobLocal} onNavigate={onNavigate || (() => {})} />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
   <div className="bg-white p-12 border border-slate-100 rounded-xl hover:shadow-xl transition-all text-center flex flex-col items-center">
@@ -696,17 +735,15 @@ const ContactSection = () => {
                    <div>Mbezi Beach, Dar es Salaam, Tanzania</div>
                 </div>
                 
-                <div className="mt-auto aspect-square w-full rounded-xl overflow-hidden border-4 border-white/10 relative group cursor-pointer">
-                   <img 
-                     src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2070&auto=format&fit=crop" 
-                     alt="Location Map"
-                     className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
-                   />
-                   <div className="absolute inset-0 bg-[#0056b3]/20 group-hover:bg-transparent transition-colors flex items-center justify-center">
-                      <div className="w-12 h-12 bg-[#0056b3] rounded-full border-4 border-white shadow-2xl flex items-center justify-center">
-                         <MapPin size={24} className="text-white" />
-                      </div>
-                   </div>
+                <div className="mt-auto aspect-square w-full rounded-xl overflow-hidden border-4 border-white/10 relative">
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15849.532729112953!2d39.215286241322254!3d-6.723050965278184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4dddc06fe3bb%3A0x633cd6a5aeaa5722!2sShamo%20Tower!5e0!3m2!1sen!2stz!4v1690000000000!5m2!1sen!2stz"
+                      className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="HTC Africa Office Location - Shamo Tower"
+                    />
                 </div>
              </div>
           </div>
@@ -767,13 +804,10 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Get Connected</h4>
             <ul className="space-y-5 text-white/80 text-sm font-bold">
               <li className="flex items-center gap-3">
-                 <Phone size={18} className="text-[#00a9e0]" /> +255 22 261 8302
-              </li>
-              <li className="flex items-center gap-3">
                  <MapPin size={18} className="text-[#00a9e0]" /> 1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam
               </li>
               <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => onNavigate('support')}>
-                 Get Support
+                 Request & Apply
               </li>
             </ul>
           </div>
@@ -798,64 +832,291 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
 };
 
 const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
+  const [diagnosticState, setDiagnosticState] = useState<'idle' | 'scanning' | 'ready'>('idle');
+  const [progress, setProgress] = useState(0);
+  const [activeNode, setActiveNode] = useState<'dar' | 'arusha' | 'mwanza' | 'dodoma'>('dar');
+  const [logs, setLogs] = useState<string[]>([]);
+
+  const tanzaniaNodes = {
+    dar: { name: "Dar es Salaam HQ", speed: "10 Gbps", ping: "2ms", cpu: "14%" },
+    arusha: { name: "Arusha Branch", speed: "1 Gbps", ping: "14ms", cpu: "8%" },
+    mwanza: { name: "Mwanza Hub", speed: "1 Gbps", ping: "18ms", cpu: "11%" },
+    dodoma: { name: "Dodoma Center", speed: "10 Gbps", ping: "8ms", cpu: "28%" },
+  };
+
+  const runDiagnostics = () => {
+    if (diagnosticState !== 'idle') return;
+    setDiagnosticState('scanning');
+    setProgress(0);
+    setLogs(['⏳ Initializing HTC Security handshake...', '🔒 Analyzing enterprise firewalls...', '🛰️ Pinging satellite vehicle fleets...']);
+    
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+      
+      if (currentProgress === 30) {
+        setLogs(prev => [...prev, '⚡ Optimizing Dante Multicast signals...']);
+      }
+      if (currentProgress === 60) {
+        setLogs(prev => [...prev, '📊 Scanning fuel telemetry probes...']);
+      }
+      if (currentProgress === 90) {
+        setLogs(prev => [...prev, '🛡️ Enforcing AES-128 secure handshake...']);
+      }
+      
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+        setDiagnosticState('ready');
+        setLogs(prev => [...prev, '✨ DIAG_OK: Core systems 100% online & secure.']);
+      }
+    }, 150);
+  };
+
+  const resetDiagnostics = () => {
+    setDiagnosticState('idle');
+    setProgress(0);
+    setLogs([]);
+  };
+
   return (
-    <section id="home" className="bg-[#002d5f] pt-40 pb-24 px-4 relative overflow-hidden">
-      {/* Abstract background pattern placeholder */}
-      <div className="absolute inset-0 opacity-10">
-         <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(circle_at_80%_20%,#00a9e0_0%,transparent_70%)]"></div>
-         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[linear-gradient(to_top,#0056b3_0%,transparent_100%)]"></div>
+    <section id="home" className="bg-[#030914] pt-40 pb-24 px-4 relative overflow-hidden font-sans min-h-[95vh] flex items-center">
+      {/* Absolute cybernetic grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-80" />
+      
+      {/* Complex technical glowing nodes/orbs backgrounds */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#0056b3]/30 to-[#00a9e0]/5 blur-[120px] rounded-full pointer-events-none opacity-40 animate-pulse duration-[6s]" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#0056b3]/15 blur-[140px] rounded-full pointer-events-none opacity-30" />
+
+      {/* Cyber metric lines at top */}
+      <div className="absolute top-24 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent flex items-center justify-around text-[9px] font-mono text-blue-500/40 tracking-[0.3em] font-semibold">
+        <span>SECURITY_LEVEL: GRADE_A</span>
+        <span>HTC_SYS_ONLINE</span>
+        <span>LOCATION: DAR_ES_SALAAM</span>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row gap-16 items-center">
-        <div className="lg:w-1/2">
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-10 leading-[1.1] tracking-tight">
-            Leading ICT, Digital Security, and Fleet & Fuel Solutions
-          </h1>
-          <div className="space-y-8 text-white/80 text-lg leading-relaxed max-w-xl">
+      <div className="max-w-7xl mx-auto relative z-10 w-full flex flex-col lg:flex-row gap-16 items-center">
+        {/* Left column info with glowing widgets */}
+        <div className="lg:w-1/2 text-left">
+          {/* Futuristic technical badge */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.15em] mb-8 font-black shadow-[0_0_15px_rgba(0,169,224,0.1)]"
+          >
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
+            ESTABLISHED 2013 | TZ ENTERPRISE
+          </motion.div>
+
+          {/* Core main title */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold text-white mb-10 leading-[1.05] tracking-tight font-sans"
+          >
+            Digital Infra for <br className="hidden md:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00a9e0] via-blue-400 to-[#0056b3] shadow-sm">Futuristic</span> Enterprises
+          </motion.h1>
+
+          {/* Description text with slow delays */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="space-y-6 text-slate-400 text-lg leading-relaxed max-w-xl font-sans"
+          >
             <p>
-              We are one of the leading companies in Tanzania since 2013, dealing with supply, installation, and commissioning of ICT, Digital Security, and Fleet and fuel Monitoring.
+              HTC Africa is Tanzania's premier high-tech integrator. Since 2013, we design, deploy, and commission complex unified infrastructure networks, biometric defense systems, and highly precise fleet intelligence controllers.
             </p>
             <p>
-              Our team has the ability to design and deliver full tailor-made turn-key solutions for most complex projects, ensuring your business stays ahead of the curve.
+              We craft tailor-made, zero-fail turn-key hardware ecosystem pipelines that ensure your commercial facility operability stays ahead of the digital edge.
             </p>
-          </div>
+          </motion.div>
+
+          {/* Cyber metrics deck */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-slate-900/50 max-w-lg font-mono text-left"
+          >
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-white">10Y+</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500">Service Integrity</div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-[#00a9e0]">99.99%</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500">Network Uptime</div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-white">400+</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500">TZ Nodes Built</div>
+            </div>
+          </motion.div>
         </div>
 
+        {/* Right column: HUD Diagnostic sandbox */}
         <div className="lg:w-1/2 w-full">
-          <div className="bg-white rounded-md p-10 md:p-14 shadow-2xl">
-             <span className="text-[#0056b3] font-bold text-[13px] uppercase tracking-[0.2em] mb-6 inline-block">Ready For Change?</span>
-             <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tighter">Get Better IT.</h2>
-             <p className="text-slate-600 text-[17px] leading-relaxed mb-10">
-                With over 10 years of experience since 2013, you can trust HTC Africa High Tech Center to develop a customized IT solution for your one-of-a-kind business.
-             </p>
-             <div className="flex flex-col sm:flex-row items-center gap-8">
-                <button 
-                  onClick={() => onNavigate('support')}
-                  className="w-full sm:w-auto px-10 py-5 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-[0.1em] hover:bg-[#00438b] transition-all shadow-lg text-sm"
-                >
-                  Get Started
-                </button>
-                <button 
-                  onClick={() => onNavigate('solutions')}
-                  className="flex items-center font-bold text-slate-900 group whitespace-nowrap text-[13px] uppercase tracking-[0.2em]"
-                >
-                  View Solutions <ArrowRight size={20} className="ml-4 group-hover:translate-x-2 transition-transform text-[#0056b3]" />
-                </button>
-             </div>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, duration: 0.8 }}
+            className="bg-slate-900/60 backdrop-blur-xl border border-white/10 ring-1 ring-white/5 rounded-2xl p-6 sm:p-10 text-white shadow-[0_0_80px_rgba(3,111,255,0.15)] flex flex-col justify-between"
+          >
+            {/* Top console bar */}
+            <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(0,169,224,0.8)] animate-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">HTC Security Handshake Sandbox</span>
+              </div>
+              <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">SECURE SHIELD</span>
+            </div>
+
+            {/* Sub content description */}
+            <div className="mb-6">
+              <span className="text-xs font-bold text-[#00a9e0] tracking-widest uppercase block mb-1">Interactive Diagnostic Console</span>
+              <p className="text-xs text-slate-400 leading-relaxed">Launch an automatic network diagnostic audit across our Tanzanian secure gateway modules.</p>
+            </div>
+
+            {/* Run Diagnostic layout */}
+            <div className="bg-slate-950/75 p-5 rounded-xl border border-white/5 mb-6 space-y-4">
+              {diagnosticState === 'idle' ? (
+                <div className="py-6 text-center space-y-4">
+                  <div className="w-12 h-12 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[#00a9e0] mx-auto animate-bounce">
+                    <Settings size={22} className="animate-spin duration-1000" />
+                  </div>
+                  <div className="text-center">
+                    <span className="text-xs font-bold text-slate-300 uppercase block">Engine Core: Standby</span>
+                    <span className="text-[10px] text-slate-500 font-mono mt-1 block">Handshake is ready to initiate scans.</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={runDiagnostics}
+                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 font-bold uppercase tracking-widest text-[10px] text-white rounded-md transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                  >
+                    🚀 RUN DIGITAL AUDIT
+                  </button>
+                </div>
+              ) : diagnosticState === 'scanning' ? (
+                <div className="space-y-4 py-2">
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[10px] font-mono text-slate-400 font-bold">
+                      <span>AUDITING ENTERPRISE PORTS</span>
+                      <span>{progress}%</span>
+                    </div>
+                    {/* Progress slider bar */}
+                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: '0%' }}
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.15 }}
+                        className="h-full bg-[#00a9e0] shadow-[0_0_8px_rgba(0,169,224,1)]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Scrolling terminal logs */}
+                  <div className="bg-[#010912] p-3 rounded border border-white/5 font-mono text-[9px] text-slate-300 max-h-[85px] overflow-y-auto space-y-1.5">
+                    {logs.map((log, i) => (
+                      <div key={i} className="leading-relaxed">
+                        <span className="text-blue-500 pr-1.5">&gt;</span> {log}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="py-5 text-center space-y-4">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto">
+                    <CheckCircle2 size={24} />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">HANDSHAKE COMPLETED SUCCESSFULLY</span>
+                    <span className="text-[10px] text-slate-400 font-mono mt-1 block">ALL CHANNELS, CCTV PROBES & DANTE NODES OPERATING AT 100% QUALITY.</span>
+                  </div>
+
+                  {/* Scrolling successfully logs */}
+                  <div className="bg-[#010912] p-3 rounded border border-white/5 font-mono text-[9px] text-slate-400 max-h-[60px] overflow-y-auto text-left">
+                    <div className="text-emerald-500">&gt; SECURE ENCRYPT: 128-AES COMPLIANT</div>
+                    <div className="text-slate-500">&gt; AUDITED 4 TZ CORE GATEWAYS</div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={resetDiagnostics}
+                    className="px-5 py-2 border border-white/10 text-white/60 hover:text-white font-mono uppercase text-[9px] tracking-widest rounded hover:bg-white/5"
+                  >
+                    🔄 Repeat Diagnostic Scan
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Dynamic Node Mapping section */}
+            <div className="bg-white/5 p-4 rounded-xl border border-white/5 space-y-3 mb-8">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">TZ Core Active Gateways mapping</span>
+              
+              <div className="grid grid-cols-4 gap-2 text-center">
+                {(Object.keys(tanzaniaNodes) as Array<keyof typeof tanzaniaNodes>).map(nodeKey => {
+                  const node = tanzaniaNodes[nodeKey];
+                  const isActive = activeNode === nodeKey;
+                  return (
+                    <button
+                      key={nodeKey}
+                      type="button"
+                      onClick={() => setActiveNode(nodeKey)}
+                      className={`p-2.5 rounded-lg border transition-all duration-300 ${isActive ? 'bg-[#0056b3]/20 border-[#00a9e0] text-white shadow-inner' : 'bg-[#040d1c] border-white/5 text-slate-500 hover:text-slate-300'}`}
+                    >
+                      <div className="text-[10px] font-black uppercase font-mono">{nodeKey}</div>
+                      <div className="text-[8px] font-mono text-slate-400 mt-1">{node.ping}</div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Active node specifications */}
+              <div className="bg-black/40 p-3 rounded border border-white/5 font-mono text-[9px] text-slate-400 flex justify-between items-center">
+                <div>
+                  <span className="text-white font-bold block">{tanzaniaNodes[activeNode].name}</span>
+                  <span className="text-slate-500">BANDWIDTH: {tanzaniaNodes[activeNode].speed}</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-[#00a9e0] font-bold block">CPU: {tanzaniaNodes[activeNode].cpu}</span>
+                  <span className="text-green-400">STATUS: CALIBRATED</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Control call-to-actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 font-sans">
+              <button 
+                onClick={() => onNavigate('support')}
+                className="w-full sm:w-auto px-8 py-4 bg-[#0056b3] text-white font-bold rounded-lg uppercase tracking-widest hover:bg-[#004a9b] transition-all shadow-[0_4px_20px_rgba(0,86,179,0.3)] text-xs font-mono"
+              >
+                Inquire & Setup
+              </button>
+              <button 
+                onClick={() => onNavigate('solutions')}
+                className="flex items-center text-slate-300 font-bold group whitespace-nowrap text-[11px] uppercase tracking-widest hover:text-[#00a9e0] transition-colors"
+              >
+                Launch Solutions <ArrowRight size={16} className="ml-3 group-hover:translate-x-2 transition-transform text-[#00a9e0]" />
+              </button>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 };
 
-const DigitalSecurityDetailPage = () => (
+const DigitalSecurityDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Digital Security Solutions"
       description="Advanced video surveillance and access control systems designed to protect your assets and people."
       image="https://images.unsplash.com/photo-1557597774-9d2739f85a9a?q=80&w=2070&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -898,13 +1159,13 @@ const DigitalSecurityDetailPage = () => (
   </div>
 );
 
-const ICTDetailPage = () => (
+const ICTDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="ICT & Integrated Systems"
       description="Comprehensive ICT solutions from structured cabling to advanced multimedia control systems."
       image="https://images.unsplash.com/photo-1551703599-6b3e8379aa8b?q=80&w=2071&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -947,7 +1208,689 @@ const ICTDetailPage = () => (
   </div>
 );
 
-const ProductsDetailPage = () => (
+const ConferenceSystemsDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => {
+  const [delegates, setDelegates] = useState(12);
+  const [systemType, setSystemType] = useState<'wired' | 'wireless'>('wireless');
+  const [cameraTracking, setCameraTracking] = useState(true);
+  const [interpretation, setInterpretation] = useState(false);
+  const [voting, setVoting] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'planner'>('overview');
+
+  const estimateForm = () => {
+    let unitPower = systemType === 'wired' ? 1.5 : 2.0;
+    let basePrice = delegates * (systemType === 'wired' ? 180 : 310);
+    if (cameraTracking) basePrice += 1200;
+    if (interpretation) basePrice += 2500;
+    if (voting) basePrice += delegates * 45;
+    return {
+      powerWatts: Math.round(delegates * unitPower + (cameraTracking ? 80 : 0) + 120),
+      switchChannels: Math.ceil(delegates / 8) * 8,
+      latencyMs: systemType === 'wired' ? 0.8 : 2.4,
+      estRange: systemType === 'wired' ? 'Unlimited (Daisy chain)' : '100m Line-of-Sight (Infrared/WiFi secured)'
+    };
+  };
+
+  const specs = estimateForm();
+
+  return (
+    <div className="animate-in fade-in duration-700 font-sans">
+      <ServiceHero 
+        title="Digital & Paperless Conference Systems"
+        description="High-fidelity speech intelligibility, lag-free voting platforms, and advanced camera automation integration for modern executive boardrooms."
+        image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop"
+        onContact={onContact}
+      />
+
+      <div className="bg-white py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Navigation Tab */}
+          <div className="flex justify-center mb-16">
+            <div className="bg-slate-100 p-1.5 rounded-xl inline-flex shadow-inner">
+              <button
+                type="button"
+                onClick={() => setActiveTab('overview')}
+                className={`px-8 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === 'overview' ? 'bg-white text-[#0056b3] shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+              >
+                Technology Overview
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('planner')}
+                className={`px-8 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === 'planner' ? 'bg-white text-[#0056b3] shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+              >
+                Interactive Room Planner
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {activeTab === 'overview' ? (
+              <motion.div
+                key="overview"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+                className="grid lg:grid-cols-2 gap-16 items-start"
+              >
+                <div>
+                  <span className="text-[#0056b3] font-bold uppercase tracking-[0.2em] text-[11px] mb-3 inline-block">Smart Audio Engineering</span>
+                  <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-8">
+                    Elevate Boardroom Collaboration
+                  </h2>
+                  <div className="space-y-6 text-slate-600 text-base leading-relaxed">
+                    <p>
+                      HTC Africa installs paperless digital conference systems that completely replace physical booklets with real-time screen displays. Secure encryption (WPA3-enterprise grade or advanced modulated Infrared) guarantees that discussion contents stay inside the room boundaries.
+                    </p>
+                    <p>
+                      With voice-activated camera tracking integrated, when a delegate activates their microphone, high-definition PTZ cameras automatically frame and zoom in on the speaker, delivering pristine video broadcasts to remote participants.
+                    </p>
+                    <p>
+                      For international facilities, our multi-channel simultaneous translation systems distribute lag-free translated speech to up to 32 different channel options simultaneously for hundreds of delegates.
+                    </p>
+                  </div>
+
+                  <div className="mt-12 grid grid-cols-2 gap-6">
+                    <div className="border border-slate-100 p-6 rounded-xl bg-slate-50/50">
+                      <div className="text-2xl font-bold text-[#0056b3] mb-1">Dante Enabled</div>
+                      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Uncompressed Digital Audio Networking</div>
+                    </div>
+                    <div className="border border-slate-100 p-6 rounded-xl bg-slate-50/50">
+                      <div className="text-2xl font-bold text-[#0056b3] mb-1">AES-128 Encryption</div>
+                      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Secure Signal Integrity Protection</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 p-10 md:p-14 rounded-2xl border border-slate-100">
+                  <h3 className="text-[#0056b3] font-bold uppercase tracking-widest text-[11px] mb-8">Integrated Product Specifications</h3>
+                  <div className="space-y-6">
+                    {[
+                      { title: "Wired Delegate Units", desc: "Pluggable robust gooseneck microphone units with voting keys, high-contrast OLED parameter screens, and built-in IC card reader identification." },
+                      { title: "Wireless WiFi/IR Central Controller", desc: "Dual-band 2.4/5GHz system automatically hopping channels to avoid RF interference. Modulated IR prevents signal wall penetration." },
+                      { title: "Flush Mount Discussion Units", desc: "Architectural integration into executive table layouts, containing electronic nameplates, speaker grill, and priority controls." },
+                      { title: "Simultaneous Interpretation Consoles", desc: "Compliant with ISO 20109 standards, featuring professional dynamic hearing protection, fast cough-mutes, and clear relay modes." }
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex gap-4 items-start pb-6 border-b border-slate-200/60 last:border-none last:pb-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#0056b3]/15 flex items-center justify-center text-[#0056b3] flex-shrink-0 mt-0.5 font-bold text-sm">
+                          {idx + 1}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-900 text-sm mb-1">{item.title}</h4>
+                          <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="planner"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+                className="grid lg:grid-cols-12 gap-12 bg-slate-50 p-6 md:p-12 rounded-2xl border border-slate-100"
+              >
+                <div className="lg:col-span-5 space-y-8">
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Configure Boardroom Specs</h3>
+                    <p className="text-slate-500 text-xs">Instantly preview hardware demand, approximate wireless ranges, power budgets, and latencies for custom deployments.</p>
+                  </div>
+
+                  <div className="space-y-6 bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
+                    {/* Delegate Count Slider */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-bold text-slate-800">Delegate Microphones</span>
+                        <span className="text-[#0056b3] font-black text-lg">{delegates} Units</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="4" 
+                        max="48" 
+                        value={delegates}
+                        onChange={(e) => setDelegates(Number(e.target.value))}
+                        className="w-full accent-[#0056b3] h-1.5 bg-slate-200 rounded"
+                      />
+                    </div>
+
+                    {/* Radio Options wired vs wireless */}
+                    <div>
+                      <span className="text-sm font-bold text-slate-800 block mb-3">Transmission Mode</span>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setSystemType('wired')}
+                          className={`py-3 px-4 border rounded-lg text-xs font-bold transition-all uppercase tracking-wider ${systemType === 'wired' ? 'border-[#0056b3] bg-[#0056b3]/5 text-[#0056b3]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+                        >
+                          Wired Cat6
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSystemType('wireless')}
+                          className={`py-3 px-4 border rounded-lg text-xs font-bold transition-all uppercase tracking-wider ${systemType === 'wireless' ? 'border-[#0056b3] bg-[#0056b3]/5 text-[#0056b3]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+                        >
+                          Wireless IR/WiFi
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Multi Feature Toggles */}
+                    <div className="space-y-3 pt-4 border-t border-slate-150">
+                      <span className="text-sm font-bold text-slate-800 block mb-2">Advanced Modules</span>
+                      
+                      <label className="flex items-center justify-between cursor-pointer p-2.5 rounded hover:bg-slate-50 transition-colors">
+                        <span className="text-xs font-semibold text-slate-600">Camera PTZ Auto-Tracking</span>
+                        <input 
+                          type="checkbox" 
+                          checked={cameraTracking} 
+                          onChange={(e) => setCameraTracking(e.target.checked)}
+                          className="w-4 h-4 rounded text-[#0056b3] focus:ring-[#0056b3] outline-none accent-[#0056b3]"
+                        />
+                      </label>
+
+                      <label className="flex items-center justify-between cursor-pointer p-2.5 rounded hover:bg-slate-50 transition-colors">
+                        <span className="text-xs font-semibold text-slate-600">Simultaneous Interpretation (ISO/IR)</span>
+                        <input 
+                          type="checkbox" 
+                          checked={interpretation} 
+                          onChange={(e) => setInterpretation(e.target.checked)}
+                          className="w-4 h-4 rounded text-[#0056b3] focus:ring-[#0056b3] outline-none accent-[#0056b3]"
+                        />
+                      </label>
+
+                      <label className="flex items-center justify-between cursor-pointer p-2.5 rounded hover:bg-slate-50 transition-colors">
+                        <span className="text-xs font-semibold text-slate-600">Secure Numerical Voting Module</span>
+                        <input 
+                          type="checkbox" 
+                          checked={voting} 
+                          onChange={(e) => setVoting(e.target.checked)}
+                          className="w-4 h-4 rounded text-[#0056b3] focus:ring-[#0056b3] outline-none accent-[#0056b3]"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Simulation Outputs */}
+                <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                      <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Active System Latency</span>
+                      <div className="text-3xl font-black text-slate-900 mt-2 mb-1">{specs.latencyMs} <span className="text-sm font-normal text-slate-400">ms</span></div>
+                      <span className="text-[10px] text-green-500 font-bold uppercase tracking-wider font-mono">⚡ Real-time Digital DSP</span>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                      <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Est. Peak Power Draw</span>
+                      <div className="text-3xl font-black text-slate-900 mt-2 mb-1">{specs.powerWatts} <span className="text-sm font-normal text-slate-400">Watts</span></div>
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">Green energy-saving idle modes</span>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between sm:col-span-2">
+                      <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">RF Range & Modulations</span>
+                      <div className="text-lg font-bold text-slate-900 mt-2 mb-1">{specs.estRange}</div>
+                      <span className="text-[10px] text-blue-500 font-bold uppercase tracking-wider font-mono">Anti-eavesdropping barrier protection</span>
+                    </div>
+                  </div>
+
+                  {/* Creative Interactive Room Layout Canvas */}
+                  <div className="bg-slate-900 rounded-xl p-6 text-white min-h-[220px] flex flex-col justify-between relative overflow-hidden shadow-2xl border border-white/5">
+                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                      <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></div>
+                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-green-400">Dynamic Boardroom Sandbox Live</span>
+                    </div>
+
+                    <div className="flex-grow flex items-center justify-center py-6">
+                      <div className="relative w-full max-w-sm aspect-[2.1] bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-center font-sans">
+                        <div className="absolute w-[85%] h-[75%] border border-white/5 bg-[#002d5f]/40 rounded-full flex flex-col items-center justify-center">
+                          <span className="text-xs font-bold tracking-widest uppercase text-white/70">Main Board table</span>
+                          <span className="text-[9px] font-mono text-white/40 mt-1">{delegates} delegate stations active</span>
+                        </div>
+
+                        {/* Interactive dots representing delegates around the table */}
+                        {Array.from({ length: Math.min(delegates, 16) }).map((_, i) => {
+                          const angle = (i * 2 * Math.PI) / Math.min(delegates, 16);
+                          const x = 50 + 44 * Math.cos(angle);
+                          const y = 50 + 40 * Math.sin(angle);
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: i * 0.03 }}
+                              style={{ left: `${x}%`, top: `${y}%` }}
+                              className="absolute w-2 h-2 -ml-1 -mt-1 rounded-full bg-[#00a9e0] shadow-[0_0_8px_rgb(0,169,224)]"
+                            />
+                          );
+                        })}
+
+                        {/* Camera focus visualization overlay if tracking enabled */}
+                        {cameraTracking && (
+                          <motion.div 
+                            animate={{ opacity: [0.2, 0.7, 0.2] }}
+                            transition={{ repeat: Infinity, duration: 3 }}
+                            className="absolute inset-0 border-2 border-dashed border-green-500/20 rounded-full pointer-events-none"
+                          />
+                        )}
+                        {cameraTracking && (
+                          <div className="absolute top-2 right-2 w-4 h-4 bg-green-500/20 border border-green-500/80 rounded-full flex items-center justify-center text-green-400 font-bold text-[8px] font-mono">
+                            PTZ
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[9px] font-mono text-white/50 pt-3 border-t border-white/5">
+                      <div>ENCRYPTION: AES128 ACTIVE</div>
+                      <div>DANTE ROUTING: {specs.switchChannels} CHANNELS ROUTED</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PublicAddressDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => {
+  const [activeZone, setActiveZone] = useState<string>('all');
+  const [isPlayingAlert, setIsPlayingAlert] = useState<boolean>(false);
+  const [alertType, setAlertType] = useState<'emergency' | 'chime' | 'voice'>('chime');
+  const [volumes, setVolumes] = useState<{ [key: string]: number }>({
+    lobby: 75,
+    auditorium: 60,
+    offices: 45,
+    outdoors: 80,
+    vip: 50,
+  });
+  const [logs, setLogs] = useState<Array<{ id: string; time: string; msg: string; type: string }>>([
+    { id: '1', time: '09:12:45 AM', msg: 'System initialized. Checking core IP audio channels...', type: 'sys' },
+    { id: '2', time: '10:05:12 AM', msg: 'Ambient level sensor adaptive gain trigger in outdoor deck (+4dB)', type: 'gain' },
+    { id: '3', time: '11:45:00 AM', msg: 'Pre-scheduled facility lunch bells broadcast successfully completed', type: 'page' },
+  ]);
+
+  const zones = [
+    { id: 'lobby', name: 'Main Lobby & Reception', icon: <Volume2 size={20} /> },
+    { id: 'auditorium', name: 'Grand Auditorium', icon: <Video size={20} /> },
+    { id: 'offices', name: 'Corporate Office Wing', icon: <Sliders size={20} /> },
+    { id: 'outdoors', name: 'Outdoor Deck & Gardens', icon: <Radio size={20} /> },
+    { id: 'vip', name: 'VIP Executive Lounge', icon: <Volume2 size={20} /> },
+  ];
+
+  const handleTriggerAlert = () => {
+    if (isPlayingAlert) {
+      setIsPlayingAlert(false);
+      return;
+    }
+    setIsPlayingAlert(true);
+    const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const text = alertType === 'emergency' 
+      ? `🚨 CRITICAL EVACUATION ALARM triggered to ${activeZone === 'all' ? 'All Facility Zones' : zones.find(z => z.id === activeZone)?.name}`
+      : alertType === 'chime'
+        ? `🔔 Pre-announcement attention Chime broadcasted to ${activeZone === 'all' ? 'All Zones' : zones.find(z => z.id === activeZone)?.name}`
+        : `🎙️ Live voice microphone channel routing active inside ${activeZone === 'all' ? 'All Zones' : zones.find(z => z.id === activeZone)?.name}`;
+    
+    setLogs(prev => [
+      { id: Date.now().toString(), time: timeStr, msg: text, type: alertType },
+      ...prev.slice(0, 5)
+    ]);
+  };
+
+  const handleVolumeChange = (zoneId: string, val: number) => {
+    setVolumes(prev => ({ ...prev, [zoneId]: val }));
+  };
+
+  return (
+    <div className="animate-in fade-in duration-700 font-sans">
+      <ServiceHero 
+        title="IP-Based Public Address & Intercom"
+        description="Facility-wide unified network paging, intelligent ambient-acoustic noise compensation, and pre-scheduled automated bells for complex commercial campus layouts."
+        image="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070&auto=format&fit=crop"
+        onContact={onContact}
+      />
+
+      <div className="bg-white py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
+            <div>
+              <span className="text-[#0056b3] font-bold uppercase tracking-[0.2em] text-[11px] mb-3 inline-block">Acoustical Perfection</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-8">
+                Facility Paging Built for High Intelligibility
+              </h2>
+              <div className="space-y-6 text-slate-600 text-base leading-relaxed">
+                <p>
+                  A public address system is only as good as its readability. Traditional analog systems degrade over long lines and suffer from muffled low-frequency distortion. HTC Africa designs and deploys fully digital IP-based PA and Voice Alarm (PAVA) systems that process, route, and output crisp digital sound over standard copper Ethernet cabling.
+                </p>
+                <p>
+                  Our advanced systems integrate <strong>Adaptive Ambient Level Sensing</strong>. Sound sensors strategically positioned inside the facility continuously monitor the surrounding ambient din (e.g., peak lunch rush hours) and dynamically calibrate the zone speaker volume outputs by up to +12dB ensuring every announcement is heard without causing ear fatigue.
+                </p>
+                <p>
+                  System features standard SIP integration, letting security and administration personnel dial directly into facility speakers using an IP phone from anywhere in the country over secure virtual private networks.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive zone controller */}
+            <div className="bg-slate-50 p-6 md:p-10 rounded-2xl border border-slate-100 shadow-sm font-sans flex flex-col">
+              <div className="mb-6 flex justify-between items-center pb-4 border-b border-slate-200">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">IP Unified Broadcast Console</h3>
+                  <p className="text-[11px] text-slate-400 font-medium">Select target zone on the controller map to test signal output or adjust volume meters.</p>
+                </div>
+                <div className="bg-slate-900 text-green-400 font-mono text-[10px] px-3 py-1 rounded border border-white/5 uppercase tracking-wider">
+                  SIP CORE: OK
+                </div>
+              </div>
+
+              {/* Zone selectors */}
+              <div className="space-y-3 mb-6">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Broadcast Target</span>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveZone('all')}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${activeZone === 'all' ? 'bg-[#0056b3] text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}`}
+                  >
+                    🔥 All Zones Combined
+                  </button>
+                  {zones.map(z => (
+                    <button
+                      key={z.id}
+                      type="button"
+                      onClick={() => setActiveZone(z.id)}
+                      className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2 ${activeZone === z.id ? 'bg-[#0056b3] text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}`}
+                    >
+                      {z.icon}
+                      {z.name.split(' & ')[0]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dynamic volume controls for selected target */}
+              <div className="bg-white p-5 rounded-xl border border-slate-100 space-y-4 mb-6">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block font-sans">Volume Dynamics & Signal Levels</span>
+                
+                {zones.map((z) => {
+                  const isMuted = activeZone !== 'all' && activeZone !== z.id;
+                  return (
+                    <div key={z.id} className={`flex items-center gap-4 transition-all duration-300 ${isMuted ? 'opacity-30' : 'opacity-100'}`}>
+                      <div className="w-6 h-6 text-[#0056b3] flex-shrink-0">{z.icon}</div>
+                      <div className="flex-grow">
+                        <div className="flex justify-between text-[11px] mb-1 font-bold">
+                          <span className="text-slate-700">{z.name}</span>
+                          <span className="text-slate-400">{volumes[z.id]}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          disabled={isMuted}
+                          min="0"
+                          max="100"
+                          value={volumes[z.id]}
+                          onChange={(e) => handleVolumeChange(z.id, Number(e.target.value))}
+                          className="w-full accent-[#0056b3] h-1 bg-slate-100 rounded disabled:pointer-events-none"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Testing / Audio triggers wrapper */}
+              <div className="bg-white p-5 rounded-xl border border-slate-100 space-y-4">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block font-sans">Broadcast Simulator Controls</span>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex-grow">
+                    <div className="text-[11px] font-bold text-slate-400 uppercase mb-2">Signal Type</div>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['chime', 'voice', 'emergency'].map(t => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setAlertType(t as any)}
+                          className={`py-2 px-1 border rounded-md text-[10px] font-bold uppercase tracking-wider transition-all duration-200 ${alertType === t ? 'border-[#0056b3] bg-[#0056b3]/5 text-[#0056b3]' : 'border-slate-100 text-slate-400 hover:text-slate-800'}`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleTriggerAlert}
+                    className={`px-6 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 text-white h-full transition-all duration-300 ${isPlayingAlert ? 'bg-red-500 hover:bg-red-600 animate-pulse' : 'bg-slate-900 hover:bg-slate-800'}`}
+                  >
+                    {isPlayingAlert ? <><Power size={14} className="animate-spin" /> stop feed</> : <><Play size={14} /> broadcast</>}
+                  </button>
+                </div>
+
+                {/* Simulated waveforms */}
+                {isPlayingAlert && (
+                  <div className="h-6 flex items-center justify-center gap-1.5 bg-slate-100 p-2 rounded-lg">
+                    {Array.from({ length: 15 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ height: [4, 20, 4] }}
+                        transition={{ repeat: Infinity, duration: 0.8, delay: i * 0.05 }}
+                        className={`w-1 rounded-full ${alertType === 'emergency' ? 'bg-red-500' : 'bg-[#0056b3]'}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Log files console */}
+              <div className="mt-6 bg-[#001d3d] p-4 rounded-xl border border-white/5 text-slate-300 font-mono text-[10px] space-y-2">
+                <div className="flex justify-between text-[9px] text-white/30 border-b border-white/5 pb-2 uppercase tracking-widest font-bold">
+                  <span>Audited System Feed Logs</span>
+                  <span>IP/Core Level V2</span>
+                </div>
+                <div className="space-y-2 max-h-[80px] overflow-y-auto">
+                  {logs.map(log => (
+                    <div key={log.id} className="leading-normal">
+                      <span className="text-[#00a9e0] pr-2">[{log.time}]</span>
+                      <span className={`${log.type === 'emergency' ? 'text-red-400 font-semibold' : 'text-stone-300'}`}>{log.msg}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MultimediaControlDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => {
+  const [routed, setRouted] = useState<{ [key: string]: string }>({
+    podium: 'projector',
+    camera: 'server',
+    feed: 'lobby',
+  });
+  const [activeSource, setActiveSource] = useState<string>('podium');
+
+  const sources = [
+    { id: 'podium', name: 'Podium 4K Laptop', desc: 'Pre-installed tabletop HDMI integration feed' },
+    { id: 'camera', name: 'PTZ Tracking Cam', desc: 'Pristine 3G-SDI optical tracking camera source' },
+    { id: 'feed', name: 'External Fiber Link', desc: 'Secure remote virtual private streaming port' },
+    { id: 'bluray', name: 'Multimedia Player', desc: 'Local backup high-fidelity Bluray sound & view block' },
+  ];
+
+  const destinations = [
+    { id: 'projector', name: 'Dual Laser Main Projectors', desc: '15,000 Lumens redundant overlapping arrays' },
+    { id: 'lobby', name: 'Lobby LED Video Wall', desc: '0.9mm micro-pitch immersive display walls' },
+    { id: 'foyer', name: 'Foyer Hospitality Screens', desc: 'Pre-functional corridor high-brightness signage' },
+    { id: 'server', name: 'SDI Archiving Recorder', desc: 'Raw high bit-rate secure hardware server storage' },
+  ];
+
+  const handleRoute = (destId: string) => {
+    setRouted(prev => {
+      const updated = { ...prev };
+      // Find and remove if another source is already routed here
+      Object.keys(updated).forEach(src => {
+        if (updated[src] === destId) {
+          delete updated[src];
+        }
+      });
+      // Set new route
+      updated[activeSource] = destId;
+      return updated;
+    });
+  };
+
+  return (
+    <div className="animate-in fade-in duration-700 font-sans">
+      <ServiceHero 
+        title="Centralized Multimedia Control"
+        description="Unified Crestron/AMX control surfaces, robust secure AV-over-IP matrices, automated architectural scene execution, and comprehensive venue management."
+        image="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop"
+        onContact={onContact}
+      />
+
+      <div className="bg-white py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
+            <div>
+              <span className="text-[#0056b3] font-bold uppercase tracking-[0.2em] text-[11px] mb-3 inline-block">Smart Automation</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-8">
+                One-Touch Control Panel Ecosystem
+              </h2>
+              <div className="space-y-6 text-slate-600 text-base leading-relaxed">
+                <p>
+                  A modern facility contains dozens of electronic sub-systems: motorized screens, projectors, wireless audio levels, HVAC thermostatic settings, and specialized dimmable architectural light rigs. Attempting to manage these independently is complex and disrupts the meeting schedule.
+                </p>
+                <p>
+                  HTC Africa specializes in unified centralized touch-surfaces. One sleek capacitive touch screen mounted on the wall or on the executive dais controls the entire room dynamically. Click "Presentation Mode" — and the automated system automatically lowers the blackout shades, rolls down the projection screen, wakes the high-luminance dual laser projection arrays from standby, and routes the presenter's tabletop laptop feed to the main screens while dimming spotlight banks by 80%.
+                </p>
+                <p>
+                  By deploying professional robust SDVoE standard or Dante AV protocols, we distribute raw 4K@60Hz video files over standard 10Gb copper fiber backbones with zero latency and absolute color accuracy.
+                </p>
+              </div>
+            </div>
+
+            {/* Signal routing console */}
+            <div className="bg-slate-50 p-6 md:p-10 rounded-2xl border border-slate-100 shadow-sm font-sans">
+              <div className="mb-6 pb-4 border-b border-slate-200">
+                <h3 className="text-lg font-bold text-slate-900">AV-over-IP Dynamic Routing Interceptor</h3>
+                <p className="text-[11px] text-slate-400 font-medium">Click on an input source, then select a target output port to establish virtual matrix routing links.</p>
+              </div>
+
+              {/* Grid Layout of Matrix Routing */}
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                {/* Source Nodes */}
+                <div className="space-y-3">
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
+                    <span>1. Select Input Source</span>
+                    <span className="w-2 h-2 rounded-full bg-[#0056b3]" />
+                  </div>
+                  {sources.map(src => {
+                    const isSelected = activeSource === src.id;
+                    const connectedDestId = routed[src.id];
+                    const connectedDest = destinations.find(d => d.id === connectedDestId);
+                    return (
+                      <div
+                        key={src.id}
+                        onClick={() => setActiveSource(src.id)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-300 relative overflow-hidden group/card ${isSelected ? 'border-[#0056b3] bg-white shadow-md' : 'border-slate-150 bg-slate-100/40 hover:bg-slate-100'}`}
+                      >
+                        <div className="flex justify-between items-start mb-1">
+                          <h4 className={`text-xs font-black uppercase tracking-wider ${isSelected ? 'text-[#0056b3]' : 'text-slate-800'}`}>{src.name}</h4>
+                          {isSelected && <div className="text-[9px] bg-[#0056b3] text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">active selection</div>}
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium leading-relaxed mb-2">{src.desc}</p>
+                        
+                        {connectedDest ? (
+                          <div className="text-[9px] text-[#00a9e0] font-bold uppercase tracking-wider flex items-center gap-1 bg-[#00a9e0]/5 px-2 py-1 rounded w-fit font-mono">
+                            🔌 Linked Route: {connectedDest.name.split(' ')[0]}
+                          </div>
+                        ) : (
+                          <div className="text-[9px] text-slate-400 font-medium italic">Unassigned (Idle Airway)</div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Destination Ports */}
+                <div className="space-y-3">
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center justify-between">
+                    <span>2. Map Output Port</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                  </div>
+                  {destinations.map(dest => {
+                    // Find which source is connected to this destination
+                    const routingSourceId = Object.keys(routed).find(key => routed[key] === dest.id);
+                    const routingSource = sources.find(s => s.id === routingSourceId);
+                    return (
+                      <div
+                        key={dest.id}
+                        onClick={() => handleRoute(dest.id)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-300 relative overflow-hidden flex flex-col justify-between h-[92px] group/item ${routingSource ? 'border-[#00a9e0] bg-white shadow-sm' : 'border-slate-150 bg-white/40 hover:bg-slate-50'}`}
+                      >
+                        <div>
+                          <h4 className="text-xs font-black uppercase tracking-wider text-slate-800 mb-1">{dest.name}</h4>
+                          <p className="text-[10px] text-slate-400 font-medium leading-tight truncate">{dest.desc}</p>
+                        </div>
+
+                        {routingSource ? (
+                          <div className="text-[9px] font-bold text-green-500 uppercase flex items-center gap-1.5 pt-1 border-t border-slate-100 font-mono">
+                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
+                            Feed: {routingSource.name.split(' ')[0]}
+                          </div>
+                        ) : (
+                          <div className="text-[9px] text-slate-300 font-medium uppercase tracking-wider flex items-center gap-1 pt-1 border-t border-slate-100 italic">
+                            ❌ Blank Port (Muted Input)
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Dynamic Signal Quality Metrics */}
+              <div className="bg-[#001730] rounded-xl p-5 text-white flex flex-col md:flex-row justify-between items-center gap-4 border border-white/5 shadow-inner">
+                <div className="flex items-center gap-3">
+                  <Monitor size={32} className="text-[#00a9e0]" />
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-white/40">Active Stream Interface</div>
+                    <div className="text-xs font-mono font-bold text-[#00a9e0]">{sources.find(s => s.id === activeSource)?.name} Stream</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-6 text-center w-full md:w-auto font-mono text-[10px]">
+                  <div>
+                    <div className="text-white/30 text-[8px] uppercase">Resolution</div>
+                    <div className="text-green-400 font-bold mt-0.5">3840x2160 (4K)</div>
+                  </div>
+                  <div>
+                    <div className="text-white/30 text-[8px] uppercase">Bandwidth</div>
+                    <div className="text-[#00a9e0] font-bold mt-0.5">8.2 Gbps</div>
+                  </div>
+                  <div>
+                    <div className="text-white/30 text-[8px] uppercase">Latency</div>
+                    <div className="text-stone-300 font-bold mt-0.5">&lt; 1.0 ms</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ProductsDetailPage = ({ onNavigate, key }: { onNavigate: (v: View) => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="OUR HARDWARE"
@@ -1013,7 +1956,7 @@ const ProductsDetailPage = () => (
               <p className="text-white/60 mb-12 max-w-xl text-lg">
                 Our procurement team can source specific hardware tailored to your project requirements. From specialized servers to high-performance workstations.
               </p>
-              <button className="px-10 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs">Request a Quote</button>
+              <button onClick={() => onNavigate('support')} className="px-10 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs">Request a Quote</button>
            </div>
            <div className="absolute top-0 right-0 opacity-10 scale-150 pointer-events-none">
               <Settings size={400} strokeWidth={0.5} />
@@ -1119,13 +2062,13 @@ const ManagedITDetailPage = ({ onContact, onNavigate }: { onContact: () => void;
   </div>
 );
 
-const CloudSolutionsDetailPage = () => (
+const CloudSolutionsDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Cloud Solutions"
       description="Technology is ever-changing so, investing in new on-premise solutions can be costly and time-consuming. Cloud Services give organizations the flexibility to have the latest in business technologies for their business."
       image="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -1169,13 +2112,13 @@ const CloudSolutionsDetailPage = () => (
   </div>
 );
 
-const NetworkingDetailPage = () => (
+const NetworkingDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Networking & IT Environment"
       description="Your network is the core technology your company relies on for productivity and efficiency. HTC Africa specializes in network design, support and maintenance — no matter how big or small."
       image="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -1218,13 +2161,13 @@ const NetworkingDetailPage = () => (
   </div>
 );
 
-const VoiceSolutionsDetailPage = () => (
+const VoiceSolutionsDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Business Voice Solutions"
       description="HTC Africa offers a range of voice communication plans designed to meet various business needs. We aim to empower businesses with reliable and flexible communication solutions."
       image="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2069&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     
     <div className="bg-white py-24 px-4">
@@ -1247,7 +2190,7 @@ const VoiceSolutionsDetailPage = () => (
           <h3 className="text-3xl font-bold text-slate-900 mb-4">Need help choosing?</h3>
           <p className="text-slate-600">Our team can help you identify the perfect voice solution for your team size and workflow requirements.</p>
         </div>
-        <button className="px-10 py-5 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all">
+        <button onClick={onContact} className="px-10 py-5 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all">
           Consult With An Expert
         </button>
       </div>
@@ -1267,13 +2210,13 @@ const PricingColumn = ({ title, price, features, isHighlighted = false }: any) =
   </div>
 );
 
-const FleetFuelDetailPage = () => (
+const FleetFuelDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Fleet & Fuel Management"
       description="Real-time location monitoring and fuel usage tracking to save time, money, and increase driver responsibility."
       image="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=2075&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4">
       <div className="max-w-7xl mx-auto">
@@ -1316,13 +2259,13 @@ const FleetFuelDetailPage = () => (
   </div>
 );
 
-const CablingDetailPage = () => (
+const CablingDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Cabling & Infrastructure"
       description="Infrastructure is as important as the technology backbone of your company. We have installed miles of copper CAT5e and CAT6 as well as Fiber Optic cable, making us a trusted, experienced provider."
       image="https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2074&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -1378,105 +2321,207 @@ const ServicesOverviewPage = ({ onNavigate }: { onNavigate: (v: View) => void, k
   </div>
 );
 
-const AboutUsDetailPage = () => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="WHO WE ARE"
-      mainTitle="About Us"
-      subtitle="One of the leading ICT and digital system integrators in Africa, dedicated to excellence since 2013."
-    />
-    <div className="bg-white py-24 px-4 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-20 items-center">
-          <div className="lg:w-1/2">
-             <h3 className="text-4xl font-bold text-[#0056b3] mb-8 tracking-tighter">Our Story</h3>
-             <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-                <p>
-                  Established in 2013, HTC Africa has grown to become one of the leading companies in Tanzania dealing with supply, installation, and commissioning of ICT, Digital Security, and Fleet and Fuel Monitoring.
-                </p>
-                <p>
-                  We have the unique ability to design and deliver full tailor-made turn-key solutions for even the most complex projects. Over the years, we have reached significant milestones, including expanding into internet services and forming strategic partnerships with global tech leaders.
-                </p>
-                <p>
-                  Our vision is to become the most successful and respected Digital System integrator company in Africa, while our mission is to be the most innovative and cost-efficient provider of Digital System Solutions.
-                </p>
-             </div>
-          </div>
-          <div className="lg:w-1/2 relative">
-             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Our Team" className="w-full h-full object-cover" />
-             </div>
-             <div className="absolute -bottom-10 -left-10 bg-[#0056b3] text-white p-12 rounded-xl hidden md:block">
-                <div className="text-6xl font-bold mb-2">13+</div>
-                <div className="font-bold text-xs uppercase tracking-[0.2em] opacity-60">Years of Excellence</div>
-             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
+const AboutUsDetailPage = () => {
+  const [selectedMilestone, setSelectedMilestone] = useState(0);
+  const milestones = [
+    { year: "2013", title: "Core Genesis", desc: "HTC Africa is incorporated in Dar es Salaam, pioneering structured enterprise networks & electronic physical defenses.", icon: <Zap size={18} />, loadPercentage: 100 },
+    { year: "2017", title: "Operational Scaling", desc: "Introduced smart telemetric GPS vehicle tracking & advanced fuel theft management suites for logistics agencies.", icon: <Globe size={18} />, loadPercentage: 100 },
+    { year: "2021", title: "Enterprise Convergence", desc: "Forged elite tier certifications with Cisco, Sophos, Bosch and Dante multicast hardware manufacturers.", icon: <Settings size={18} />, loadPercentage: 100 },
+    { year: "2026", title: "Next-Gen AI Systems", desc: "Expanding into intelligent, IP-based centralized facility control arrays across East Africa.", icon: <CheckCircle2 size={18} />, loadPercentage: 100 }
+  ];
 
-const CoreValuesDetailPage = () => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="WHAT GUIDES US"
-      mainTitle="Core Values"
-      subtitle="The REDMAT principles that guide everything we do at HTC Africa."
-    />
-    <div className="bg-white py-24 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {[
-            { tag: "R", title: "Responsibility", desc: "Taking ownership of our actions and ensuring we deliver on our promises to clients and partners." },
-            { tag: "E", title: "Excellence", desc: "Striving for the highest quality in every solution we design and every service we provide." },
-            { tag: "D", title: "Dedicated", desc: "Wholly committed to our mission and to the success of our clients' business operations." },
-            { tag: "M", title: "Motivated", desc: "Driven by innovation and a constant desire to excel and be dynamic in a changing industry." },
-            { tag: "A", title: "And", desc: "We believe in the power of collaboration and synergy between our teams and our clients." },
-            { tag: "T", title: "Time-Oriented", desc: "Understanding the critical importance of efficiency and timely delivery in the digital age." }
-          ].map((v) => (
-            <div key={v.tag} className="p-12 bg-slate-50 rounded-2xl hover:bg-[#0056b3] group transition-all duration-500">
-              <div className="text-6xl font-black text-[#0056b3]/10 group-hover:text-white/20 mb-8 transition-colors">{v.tag}</div>
-              <h4 className="text-2xl font-bold text-slate-900 group-hover:text-white mb-4 transition-colors">{v.title}</h4>
-              <p className="text-slate-500 group-hover:text-white/70 leading-relaxed transition-colors">{v.desc}</p>
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white font-sans">
+      <PageHeader 
+        title="TZ DIGITAL STALWARTS"
+        mainTitle="About Our Enterprise"
+        subtitle="One of East Africa's premier technology integrators. We design, deploy, and maintain robust infrastructure since 2013."
+      />
+
+      <div className="py-24 px-4 relative">
+        <div className="absolute inset-0 bg-[#070e1e]/20" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-28">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/25 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] rounded">
+                🚀 ESTABLISHED 2013
+              </div>
+              <h3 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">Our Modern Cybernetic Story</h3>
+              <div className="space-y-6 text-slate-400 text-sm md:text-base leading-relaxed">
+                <p>
+                  Established in 2013, HTC Africa (High Tech Center) has built its legacy on unyielding service resilience. We serve as the primary integrator for corporations requesting secure, zero-fail data paths, reliable biometric barriers, and highly transparent fuel tracking systems.
+                </p>
+                <p>
+                  We operate as architectural partner wizards, taking the complex networking, power, signal routing, and cabling constraints and transforming them into streamlined turn-key control terminals.
+                </p>
+                <p className="border-l-2 border-cyan-500 pl-4 py-2 italic text-[#00a9e0] bg-cyan-500/5 rounded-r">
+                  &ldquo;Our vision is to become the most successful and respected digital system integration corporation in Africa.&rdquo;
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
-const TeamDetailPage = () => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="THE EXPERTS"
-      mainTitle="Meet Our Team"
-      subtitle="A phenomenal team of client-focused professionals who are committed to providing excellent IT support."
-    />
-    <div className="bg-white py-24 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-             <div key={i} className="group cursor-pointer">
-                <div className="aspect-[3/4] bg-slate-100 rounded-xl mb-6 overflow-hidden relative">
-                   <img 
-                      src={`https://images.unsplash.com/photo-${1500648767791 + i}-00dcc994a43e?q=80&w=1974&auto=format&fit=crop`} 
-                      alt="Team Member" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                   />
-                   <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                      <div className="text-white font-bold text-lg">Team Member {i}</div>
-                      <div className="text-white/60 text-xs font-bold uppercase tracking-widest">IT Specialist</div>
-                   </div>
+            <div className="relative">
+              <div className="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(37,99,235,0.15)] bg-slate-950">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Our Team" className="w-full h-full object-cover filter brightness-75 hover:scale-105 transition-transform duration-700 font-sans" referrerPolicy="no-referrer" />
+              </div>
+              
+              <div className="absolute -bottom-8 -left-8 bg-slate-900 border border-white/10 px-8 py-6 rounded-xl shadow-2xl hidden md:block">
+                 <div className="text-5xl font-black text-[#00a9e0]">13+</div>
+                 <div className="font-mono text-[9px] text-slate-500 uppercase tracking-widest mt-1">Years of Operational Integrity</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Milestone Console */}
+          <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-6 md:p-12 mb-16">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-white/5 mb-8">
+              <div>
+                <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">Interactive History Modules</span>
+                <h4 className="text-xl font-bold text-white mt-1">Digital Timeline Exploration</h4>
+              </div>
+              <span className="text-[9px] font-mono text-slate-500 bg-slate-950 px-3 py-1 rounded">SYS_REV: 4.09b</span>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4 mb-8">
+              {milestones.map((mil, idx) => {
+                const isSelected = selectedMilestone === idx;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedMilestone(idx)}
+                    className={`p-4 rounded-xl border transition-all duration-300 text-left relative ${isSelected ? 'bg-cyan-500/10 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.15)] text-white' : 'bg-slate-950/40 border-white/5 text-slate-400 hover:text-white hover:bg-white/5'}`}
+                  >
+                    <div className="flex items-center justify-between font-mono text-xs font-bold mb-2">
+                      <span>PHASE 0{idx+1}</span>
+                      <span className={isSelected ? 'text-cyan-400 animate-pulse' : 'text-slate-600'}>{mil.year}</span>
+                    </div>
+                    <div className="text-sm font-bold truncate">{mil.title}</div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <motion.div
+              key={selectedMilestone}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="bg-slate-950/70 p-6 sm:p-8 rounded-xl border border-white/5 flex flex-col md:flex-row gap-8 justify-between items-center"
+            >
+              <div className="space-y-4 max-w-2xl">
+                <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#00a9e0] bg-cyan-400/10 px-3 py-1 rounded font-mono">
+                  {milestones[selectedMilestone].icon}
+                  {milestones[selectedMilestone].title.toUpperCase()}
                 </div>
-             </div>
-           ))}
+                <h3 className="text-2xl font-bold text-white">Milestone Achieved in {milestones[selectedMilestone].year}</h3>
+                <p className="text-slate-450 text-sm leading-relaxed">{milestones[selectedMilestone].desc}</p>
+              </div>
+
+              <div className="flex-shrink-0 bg-slate-900 border border-white/5 p-6 rounded-lg text-center min-w-[160px] font-mono">
+                <div className="text-xs text-slate-500 uppercase tracking-widest mb-1">DATA FLOW RANGE</div>
+                <div className="text-3xl font-black text-cyan-400">{milestones[selectedMilestone].loadPercentage}%</div>
+                <div className="text-[8px] text-green-400 mt-2">● SYS_CALIBRATED</div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+const CoreValuesDetailPage = () => {
+  const [activeValue, setActiveValue] = useState(0);
+  const values = [
+    { tag: "R", title: "Responsibility", sub: "Operational Accountability", desc: "Taking profound, zero-fail ownership of our customized structural solutions. We guarantee client operations deliver flawlessly under SLA commitments.", compliance: "100% committed response priority", latency: "N/A" },
+    { tag: "E", title: "Excellence", sub: "Rigorous Technical Caliber", desc: "Striving for the absolute peak of network, biometric and physical design engineering. Every socket, link and stream is commissioned to standard.", compliance: "Fully certified Cisco/Bosch compliance", latency: "2ms" },
+    { tag: "D", title: "Dedicated", sub: "Client-Centric Infrastructure", desc: "Completely aligned with the high-caliber requirements of our clients. Our engineering crews stand by, active and alert, through the life cycle.", compliance: "24/7 client portal accessibility", latency: "14ms" },
+    { tag: "M", title: "Motivated", sub: "Disruptive Tech Pioneers", desc: "Driven by technical progression and continuous education. We incorporate complex AI, VoIP, and smart telemetry features to simplify user paths.", compliance: "Continuous training updates", latency: "N/A" },
+    { tag: "A", title: "And", sub: "Synergetic Collaboration", desc: "Active integration of internal resources and external partnerships. Creating seamless paths between hardware, software, and human workflow.", compliance: "Dynamic team-to-team matrix", latency: "8ms" },
+    { tag: "T", title: "Time-Oriented", sub: "SLA-Driven Efficiency", desc: "Speed is a primary security attribute. Our emergency deployment protocols, automated monitoring updates, and next-day resolutions protect enterprise value.", compliance: "Fast 1-hour service priority commitment", latency: "Instant" }
+  ];
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
+      <PageHeader 
+        title="OPERATIONAL REDMAT DIRECTIVES"
+        mainTitle="Our Core Values"
+        subtitle="The REDMAT pillars that define the behavioral compliance, code, and response standards of HTC Africa."
+      />
+
+      <div className="py-24 px-4 font-sans max-w-7xl mx-auto">
+        {/* Interactive Values HUD */}
+        <div className="grid lg:grid-cols-3 gap-12 items-start">
+          
+          {/* Left panel: selection letters */}
+          <div className="lg:col-span-1 grid grid-cols-3 gap-4">
+            {values.map((v, i) => {
+              const isActive = activeValue === i;
+              return (
+                <button
+                  key={v.tag}
+                  type="button"
+                  onClick={() => setActiveValue(i)}
+                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center border font-mono transition-all duration-300 relative overflow-hidden group ${isActive ? 'bg-cyan-500/15 border-cyan-400 text-white shadow-[0_0_30px_rgba(6,182,212,0.2)] scale-105' : 'bg-slate-950/40 border-white/5 text-slate-500 hover:text-white hover:bg-slate-900'}`}
+                >
+                  <div className={`absolute top-0 left-0 w-full h-1 bg-cyan-500 transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+                  <span className="text-5xl font-black">{v.tag}</span>
+                  <span className="text-[8px] uppercase tracking-widest text-[#00a9e0] scale-90 mt-2 font-bold">{v.title.slice(0, 4)}.</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right panel: Active details terminal */}
+          <div className="lg:col-span-2">
+            <motion.div
+              key={activeValue}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-slate-900/60 backdrop-blur-md border border-white/10 p-8 sm:p-12 rounded-2xl relative"
+            >
+              <div className="absolute top-8 right-8 text-[120px] font-black font-mono text-cyan-500/5 select-none leading-none">
+                {values[activeValue].tag}
+              </div>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-400/10 border border-cyan-400/25 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] rounded mb-6">
+                <span>REDMAT MATRIX // DIRECTIVE 0{activeValue + 1}</span>
+              </div>
+
+              <h3 className="text-3xl md:text-4xl font-black text-white leading-none">
+                {values[activeValue].title}
+              </h3>
+              <p className="text-xs font-mono text-slate-500 tracking-wider uppercase mt-1 mb-8">
+                {values[activeValue].sub}
+              </p>
+
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
+                {values[activeValue].desc}
+              </p>
+
+              {/* Status table */}
+              <div className="grid sm:grid-cols-2 gap-4 pt-6 border-t border-white/5 font-mono text-[10px]">
+                <div className="bg-slate-950/50 p-4 rounded border border-white/5">
+                  <span className="text-slate-500 block mb-1">SYSTEM COMPLIANCE</span>
+                  <span className="text-green-400 font-bold uppercase">{values[activeValue].compliance}</span>
+                </div>
+                <div className="bg-slate-950/50 p-4 rounded border border-white/5">
+                  <span className="text-slate-500 block mb-1">TYPICAL SIGNAL LATENCY</span>
+                  <span className="text-[#00a9e0] font-bold uppercase">{values[activeValue].latency}</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 const ProcessDetailPage = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -1486,199 +2531,343 @@ const ProcessDetailPage = () => {
       step: "01", 
       title: "Assess", 
       color: "#00eeff",
-      desc: "To start, we’ll look at your entire IT environment. Since an IT network includes more than just the hardware and software, we’ll also talk to your team about your business goals. With your goals and infrastructure needs in mind, our IT professionals will assess where you are now to where you want to be – and map out a way to get there." 
+      badge: "DIAGNOSTIC_DEFENSE",
+      desc: "To start, we look at your entire digital and physical facility footprint. Because technology networks are closely intertwined with personnel workflows and physical boundaries, we run deep network traffic scans, cable diagnostics, and server compliance audits to understand your baseline operational security posture.",
+      outputs: ["Vulnerability Scorecards", "Topology Gap Analysis", "Security Compliance Reports"]
     },
     { 
       step: "02", 
       title: "Design", 
-      color: "#a1c4fd",
-      desc: "Your business is unique, and so are your IT solutions. Technology solutions are built based on your budget, space and specific needs. So, we’ll never present you with a system that costs too much or is too complicated for your needs. Our IT professionals have experience managing networks with an array of constraints — from the most-complex to the simplest needs. We know how to design solutions that are tailored just for you." 
+      color: "#38bdf8",
+      badge: "BLUEPRINT_RACK",
+      desc: "No two enterprises share the same constraints. We build tailored blueprints mapping out exact multicast configurations, CCTV focal ranges, fuel sensor telemetry paths, and failover network ports, optimized for your compliance, physical layout, and budget parameters.",
+      outputs: ["Precision CAD Map Drafts", "SLA Performance Model", "BOM Procurement Spreadsheets"]
     },
     { 
       step: "03", 
       title: "Deploy", 
-      color: "#3498db",
-      desc: "Our team has decades of experience with complex IT environments, so we know that it’s more than just connecting cables. Yes, we always make sure that everything “works” but, we also make sure that you and your staff have the knowledge and skills needed to confidently use your new IT investment." 
+      color: "#3b82f6",
+      badge: "COMMISSION_LAUNCH",
+      desc: "Our installation wizard engineers systematically route fiber channels, connect biometric access barriers, configure smart digital mixers, and calibrate fuel trackers. We do not just power things on—we conduct rigorous cross-handshake verification and thoroughly train your crew.",
+      outputs: ["Zero-Friction Cabling Matrices", "Admin Control Console Setup", "Direct Team SLA Training"]
     },
     { 
       step: "04", 
       title: "Manage", 
-      color: "#0000ff",
-      desc: "No matter what happens, we’ll be there to help manage your IT systems. As a Managed Services Client, you are fully covered. No surprises. We want to partner with you, not just install systems. We’re always only a phone call away." 
+      color: "#6366f1",
+      badge: "SLA_PROACTIVE",
+      desc: "HTC Africa stands by your infrastructure indefinitely. With active remote surveillance monitoring, automatic security patches, next-business-day hardware swaps, and instantaneous hotline escalation under your chosen support SLA tier, your systems remain perpetually resilient.",
+      outputs: ["24/7 Remote Telemetry Audits", "Automatic Firmware Repatches", "1-Hour Critical Helpdesk Priority"]
     }
   ];
 
   return (
-    <div className="animate-in fade-in duration-700">
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
       <PageHeader 
-        title="HOW WE WORK"
-        mainTitle="Our Proven Managed IT Method"
-        subtitle="HTC Africa follows a proven, structured process designed to align technology with your business goals and deliver reliable IT results."
+        title="OUR FIVE-STAR METHOD"
+        mainTitle="Our Proven System Integration Method"
+        subtitle="HTC Africa follows a rigorous, military-grade four-stage lifecycle designed to seamlessly align digital architecture with physical operations."
       />
       
-      <div className="bg-white py-24 px-4 font-sans">
-        <div className="max-w-7xl mx-auto">
-          {/* Timeline */}
-          <div className="relative mb-32 pb-8">
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2 z-0 rounded-full"></div>
-            <div className="relative z-10 flex justify-between items-center px-4 md:px-20">
-              {stepsContent.map((s, i) => (
+      <div className="py-24 px-4 font-sans bg-transparent max-w-7xl mx-auto">
+        {/* Step progress indicators */}
+        <div className="relative mb-20">
+          {/* Glowing trajectory line */}
+          <div className="absolute top-1/2 left-0 w-full h-[2px] bg-slate-800 -translate-y-1/2 z-0 rounded-full overflow-hidden">
+            <motion.div 
+               animate={{ x: [`-100%`, `100%`] }}
+               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+               className="h-full w-1/3 bg-gradient-to-r from-transparent via-[#00a9e0] to-transparent"
+            />
+          </div>
+          
+          <div className="relative z-10 flex justify-between items-center px-4 sm:px-12">
+            {stepsContent.map((s, i) => {
+              const isActive = activeStep === i;
+              return (
                 <div key={i} className="flex flex-col items-center">
-                  <div className="hidden md:block mb-8 font-black text-xs uppercase tracking-widest text-[#0056b3]/40">{s.title}</div>
+                  <span className={`hidden md:block mb-4 font-mono text-[10px] uppercase tracking-wider font-extrabold transition-colors ${isActive ? 'text-white' : 'text-slate-500'}`}>
+                    {s.title}
+                  </span>
+                  
                   <button 
+                    type="button"
                     onClick={() => setActiveStep(i)}
-                    className={`w-12 h-12 md:w-16 md:h-16 rounded-full border-4 transition-all duration-500 relative ${activeStep === i ? 'scale-125 border-[#0056b3] shadow-lg' : 'border-white bg-white shadow-sm hover:scale-110'}`}
-                    style={{ borderColor: activeStep === i ? s.color : 'white' }}
+                    className={`w-14 h-14 rounded-full border-2 bg-slate-950 transition-all duration-500 relative flex items-center justify-center font-mono text-sm font-black ${isActive ? 'scale-110 shadow-[0_0_25px_rgba(6,182,212,0.4)]' : 'border-slate-800 text-slate-500 hover:text-white hover:border-slate-400'}`}
+                    style={{ borderColor: isActive ? s.color : undefined }}
                   >
-                    <div 
-                      className={`w-full h-full rounded-full transition-all duration-500`}
-                      style={{ backgroundColor: s.color, opacity: activeStep === i ? 1 : 0.6 }}
-                    ></div>
+                    <span style={{ color: isActive ? s.color : undefined }}>{s.step}</span>
                   </button>
-                  <div className="md:hidden mt-4 font-bold text-[10px] uppercase tracking-wider text-slate-400">{s.title}</div>
+                  <span className="md:hidden mt-3 font-mono text-[9px] uppercase font-bold text-slate-500">{s.title}</span>
                 </div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Focused Interactive Console Card */}
+        <motion.div 
+          key={activeStep}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-16 relative overflow-hidden"
+        >
+          {/* Abstract numbers in corner */}
+          <div className="absolute top-8 right-8 text-[120px] font-black font-mono text-white/5 select-none leading-none">
+            {stepsContent[activeStep].step}
           </div>
 
-          {/* Content Card */}
-          <motion.div 
-            key={activeStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-slate-50 p-12 md:p-20 rounded-3xl border-l-[12px]"
-            style={{ borderLeftColor: stepsContent[activeStep].color }}
-          >
-             <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-8">Step {activeStep + 1}: {stepsContent[activeStep].title}</h3>
-             <p className="text-xl md:text-2xl text-slate-500 leading-relaxed max-w-4xl font-medium">
-               {stepsContent[activeStep].desc}
-             </p>
-          </motion.div>
+          <div className="flex flex-col lg:flex-row gap-12 justify-between items-start">
+            <div className="space-y-6 max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 rounded text-slate-350">
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: stepsContent[activeStep].color }} />
+                METHOD_PHASE // {stepsContent[activeStep].badge}
+              </span>
+              
+              <h3 className="text-3xl md:text-5xl font-black text-white leading-tight">
+                Phase {stepsContent[activeStep].step}: {stepsContent[activeStep].title}
+              </h3>
+              
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans">
+                {stepsContent[activeStep].desc}
+              </p>
+            </div>
+
+            {/* Generated Outputs list */}
+            <div className="flex-shrink-0 bg-slate-950/60 p-6 md:p-8 rounded-2xl border border-white/5 min-w-[300px] w-full lg:w-auto font-mono">
+              <span className="text-[10px] text-slate-500 block mb-6 font-bold uppercase tracking-widest">OUTPUTS CALIBRATED</span>
+              <ul className="space-y-3.5 text-xs">
+                {stepsContent[activeStep].outputs.map((out, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-slate-350">
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: stepsContent[activeStep].color }} />
+                    {out}
+                  </li>
+                ))}
+              </ul>
+              
+              <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-[10px]">
+                 <span className="text-slate-500">SLA OPERATIONAL COMPLIANCE</span>
+                 <span className="text-green-400 font-bold">100% OK READY</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+const IndustriesDetailPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const industries = [
+    { name: "Government", desc: "Sovereign cyber-defense, redundant fiber layouts, centralized biometric databases, and secure IP-based intercom facility grids.", icon: <Shield size={20} /> },
+    { name: "Education", desc: "Campus-wide smart multi-room class matrices, digital paperless lecture audio, high-density secure wireless networks.", icon: <Users size={20} /> },
+    { name: "Real Estate", desc: "Automated gate access barricades, high-density CCTV feeds, central multi-tenant lobby system integrators.", icon: <MapPin size={20} /> },
+    { name: "Logistics & Courier", desc: "Real-time satellite GPS tracking arrays, instant fuel telemetry monitors, high-transparency diagnostic consoles.", icon: <Network size={20} /> },
+    { name: "Manufacturing", desc: "High-integrity telemetry automation networks, central security walls, and extreme environment hardware cabling.", icon: <Settings size={20} /> },
+    { name: "Healthcare & Hospitals", desc: "Zero-fail IP intercom systems, redundant campus networks, physical biometric barriers, clean room access control.", icon: <Zap size={20} /> },
+    { name: "Banks & Financial", desc: "Ultra-secure dual-factor entry vaults, fully redundant Cisco threat firewalls, structured mainframe connection cables.", icon: <Lock size={20} /> },
+    { name: "Hotels & Hospitality", desc: "Fully integrated VoIP room routing, dense secure guest WiFi pools, intelligent centralized multi-venue audio.", icon: <Star size={20} /> },
+    { name: "Construction & Mining", desc: "Rugged mobile radio control units, solar-powered GPS tracking fleets, heavy-duty fiber infrastructure pathing.", icon: <Briefcase size={20} /> },
+    { name: "Public Transport", desc: "Active GPS vehicle route tracking panels, live wireless fuel diagnostic nodes, terminal passenger signage screens.", icon: <Globe size={20} /> },
+    { name: "Retail & Shopping Centers", desc: "Large format LED display wall matrices, automated security access gates, visitor crowd analytic sensors.", icon: <Inbox size={20} /> },
+    { name: "Restaurants & Catering", desc: "Compact centralized order printers, reliable point-of-sale network paths, physical facility environmental alarms.", icon: <CheckCircle2 size={20} /> },
+    { name: "Fisheries & Agriculture", desc: "Satellite asset trackers, thermal fuel control sensors, resilient outdoor industrial network terminals.", icon: <Database size={20} /> },
+    { name: "NGOs & Diplomat Missions", desc: "Top-level secure satellite networks, encrypted physical boundary entry locks, high-priority support SLAs.", icon: <Shield size={20} /> },
+    { name: "Security Companies", desc: "Enterprise telemetry aggregation tools, next-gen CCTV camera networks, direct integration api handshakes.", icon: <Lock size={20} /> }
+  ];
+
+  const filteredIndustries = industries.filter((ind) =>
+    ind.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
+      <PageHeader 
+        title="WHO WE SERVE"
+        mainTitle="Our Industries"
+        subtitle="Learn about the industry expertise we have and those that we specialize in."
+      />
+      <div className="bg-transparent py-24 px-4 font-sans max-w-7xl mx-auto">
+        {/* Real-time search/filter mechanism */}
+        <div className="max-w-md mx-auto mb-16 relative">
+          <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-505 font-mono text-xs">
+            <Search size={14} className="text-[#00a9e0]" />
+          </span>
+          <input 
+             type="text" 
+             placeholder="SEARCH CUSTOM SECTORS..." 
+             value={searchQuery}
+             onChange={(e) => setSearchQuery(e.target.value)}
+             className="w-full pl-11 pr-4 py-3 bg-slate-900/60 border border-white/10 rounded-xl text-xs font-mono tracking-widest text-[#00a9e0] placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all font-bold"
+          />
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredIndustries.map((ind, i) => (
+            <div 
+               key={i} 
+               className="p-8 md:p-10 border border-white/10 rounded-2xl hover:border-cyan-500/40 hover:bg-slate-900/40 backdrop-blur transition-all duration-350 group relative overflow-hidden bg-slate-950/20"
+            >
+               <div className="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity text-cyan-400">
+                  {ind.icon}
+               </div>
+               <div className="flex items-center gap-3 mb-6">
+                 <div className="text-cyan-400 p-2.5 rounded bg-cyan-400/15 border border-cyan-400/20">
+                   {ind.icon}
+                 </div>
+                 <div className="font-mono text-[9px] text-[#00a9e0] uppercase tracking-wider">SECTOR // PROTOCOL</div>
+               </div>
+               <h3 className="text-2xl font-black text-white mb-4 tracking-tight relative z-10 uppercase font-sans">{ind.name}</h3>
+               <p className="text-slate-400 text-xs md:text-sm leading-relaxed relative z-10 font-normal">
+                 {ind.desc}
+               </p>
+               
+               <div className="w-full h-[1px] bg-white/5 my-6" />
+               <div className="flex items-center justify-between font-mono text-[8px] text-slate-500 tracking-widest">
+                 <span>COMPLIANCE RATING</span>
+                 <span className="text-green-400 font-bold">★ MIL-SPEC OK</span>
+               </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-const IndustriesDetailPage = () => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="WHO WE SERVE"
-      mainTitle="Our Industries"
-      subtitle="Learn about the industry expertise we have and those that we specialize in."
-    />
-    <div className="bg-white py-24 px-4">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-         {[
-           "Government",
-           "Education",
-           "Real Estate",
-           "Logistics & Courier",
-           "Manufacturing",
-           "Healthcare & Hospitals",
-           "Banks & Financial",
-           "Hotels & Hospitality",
-           "Construction & Mining",
-           "Public Transport",
-           "Retail & Shopping Centers",
-           "Restaurants & Catering",
-           "Fisheries & Agriculture",
-           "NGOs & Diplomat Missions",
-           "Security Companies"
-         ].map((industry, i) => (
-           <div key={i} className="p-12 border border-slate-100 rounded-2xl hover:shadow-xl transition-all group relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                 <Globe size={120} />
-              </div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight relative z-10">{industry}</h3>
-              <p className="text-slate-500 leading-relaxed relative z-10">We provide specialized IT solutions tailored to the unique regulatory and operational needs of {industry.toLowerCase()} organizations.</p>
-           </div>
-         ))}
+const PartnershipsDetailPage = () => {
+  const partners = [
+    { name: "Cisco Systems", tier: "Gold Certified Integrator", sector: "Routing, Switching & Threat Protection" },
+    { name: "Bosch Security", tier: "Premier System Integrator", sector: "IP Audio, CCTV & Intelligent Video" },
+    { name: "Sophos Endpoint", tier: "Gold Security Partner", sector: "Next-Gen Firewall & Cybersecurity Solutions" },
+    { name: "Dante Systems", tier: "Certified Multicast Partner", sector: "Professional IP-Based Digital Audio" },
+    { name: "Hikvision Corp", tier: "Value Solutions Integrator", sector: "CCTV, Analytics & Biometrics" },
+    { name: "HP Enterprise", tier: "Strategic Storage Partner", sector: "Datacenter Rack & Enterprise Computing" },
+    { name: "Dell Technics", tier: "Certified Deploy Partner", sector: "Client Terminals & Backup Systems" },
+    { name: "Zebra Hardware", tier: "Premier Hardware Partner", sector: "Industrial Barcoding & Logistics Printing" },
+    { name: "Synology NAS", tier: "Storage Vault Integrator", sector: "Network Attached Storage & Security Backups" },
+    { name: "Krone Cable", tier: "Certified Structured Cabling", sector: "Enterprise Fiber & Copper Signal Runs" },
+    { name: "Oracle Databases", tier: "Database Deploy Integrator", sector: "Relational Cloud Infrastructure" },
+    { name: "Microsoft Cloud", tier: "Silver Server Integrator", sector: "Active Directory & Office 365 Architecture" }
+  ];
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
+      <PageHeader 
+        title="STRATEGIC ECOSYSTEM"
+        mainTitle="Partnerships"
+        subtitle="Read about the strategic partnerships we have created with manufacturers and vendors to offer our client the best IT solutions."
+      />
+      <div className="bg-transparent py-24 px-4 font-sans max-w-7xl mx-auto">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+           {partners.map((p, i) => (
+             <div key={i} className="p-6 md:p-8 bg-slate-900/40 border border-white/10 rounded-2xl flex flex-col justify-between hover:border-blue-500/30 transition-all group">
+                <div>
+                  <div className="flex items-center justify-between font-mono text-[8px] uppercase tracking-wider text-cyan-400 mb-6 font-bold">
+                    <span>PARTNER BRAND</span>
+                    <span>0{i+1}</span>
+                  </div>
+                  <h4 className="text-xl font-extrabold text-white mb-2 tracking-tight group-hover:text-blue-400 transition-colors uppercase font-sans">
+                    {p.name}
+                  </h4>
+                  <p className="text-slate-400 text-xs leading-relaxed font-sans mb-6">
+                    {p.sector}
+                  </p>
+                </div>
+                <div className="p-2.5 bg-slate-950 border border-white/5 rounded-lg text-center font-mono text-[9px]">
+                   <span className="text-slate-500">TIER STATUS //</span> <span className="text-[#00a9e0] font-bold">{p.tier.toUpperCase()}</span>
+                </div>
+             </div>
+           ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const PartnershipsDetailPage = () => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="STRATEGIC ECOSYSTEM"
-      mainTitle="Partnerships"
-      subtitle="Read about the strategic partnerships we have created with manufacturers and vendors to offer our client the best IT solutions."
-    />
-    <div className="bg-white py-24 px-4 font-sans">
-       <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 items-center opacity-40 grayscale hover:grayscale-0 transition-all">
-             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-               <div key={i} className="aspect-video bg-slate-50 rounded-lg flex items-center justify-center p-8">
-                  <div className="w-full h-4 bg-slate-200 rounded-full"></div>
-               </div>
-             ))}
-          </div>
-       </div>
-    </div>
-  </div>
-);
+const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) => void, onSelectJob: (title: string) => void }) => {
+  const jobs = [
+    { title: "Cisco Network Engineer", type: "Full Time", salary: "Competitive", exp: "3+ Years Experience", badge: "NET_INFRASTRUCTURE" },
+    { title: "IT Helpdesk Specialist", type: "Full Time", salary: "Competitive", exp: "2+ Years Experience", badge: "SYS_SUPPORT" },
+    { title: "Cloud Solutions Architect", type: "Full Time", salary: "Competitive", exp: "5+ Years Experience", badge: "CLOUD_OPERATIONS" },
+    { title: "Service Desk Lead", type: "Full Time", salary: "Competitive", exp: "4+ Years Experience", badge: "MANAGED_SERVICES" }
+  ];
 
-const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) => void, onSelectJob: (title: string) => void }) => (
-  <div className="animate-in fade-in duration-700">
-    <PageHeader 
-      title="JOIN US"
-      mainTitle="Careers"
-      subtitle="Join our team of client-focused professionals committed to providing excellent IT support."
-    />
-    <div className="bg-white py-24 px-4 font-sans">
-      <div className="max-w-4xl mx-auto space-y-12">
+  return (
+    <div className="animate-in fade-in duration-700 bg-[#030914] text-white">
+      <PageHeader 
+        title="JOIN OUR CADRE"
+        mainTitle="Career Integration Opportunities"
+        subtitle="Become a leading professional in Tanzania's premier digital security and systems integration vanguard."
+      />
+      <div className="bg-transparent py-24 px-4 font-sans max-w-4xl mx-auto space-y-16">
          {/* Direct Apply Banner */}
-         <div className="bg-slate-50 border border-slate-200/60 p-8 md:p-10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
-           <div className="space-y-3">
-             <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#0056b3] bg-[#0056b3]/5 px-3 py-1 rounded-full">
-               <Mail size={12} /> Direct Applications
+         <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl relative overflow-hidden">
+           {/* Abstract aesthetic accents */}
+           <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 blur-3xl rounded-full" />
+           <div className="space-y-4 relative z-10">
+             <div className="inline-flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-wider text-[#00a9e0] bg-cyan-400/15 border border-cyan-400/20 px-3 py-1 rounded">
+               <Mail size={12} /> SECURE DIRECT RECRUITMENT
              </div>
-             <h3 className="text-2xl font-bold text-slate-900">How to Apply</h3>
-             <p className="text-slate-600 text-sm font-medium leading-relaxed max-w-xl">
-               Interested candidates should submit their comprehensive CV, application letter, and academic/professional certificates directly to our HR department via email at <a href="mailto:htc@htc.co.tz" className="text-[#0056b3] hover:underline font-bold">htc@htc.co.tz</a>.
+             <h3 className="text-2xl md:text-3xl font-black text-white">Direct Email Portal</h3>
+             <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-xl font-normal">
+               Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
+             <div className="text-xs font-mono text-[#00a9e0] pt-2">
+               GATEWAY MAIL: <a href="mailto:htc@htc.co.tz" className="hover:underline font-bold text-white">htc@htc.co.tz</a>
+             </div>
            </div>
            <a 
              href="mailto:htc@htc.co.tz?subject=Job Application - HTC Africa"
-             className="px-8 py-4 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:shadow-lg flex items-center gap-2 whitespace-nowrap"
+             className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
-             <Mail size={14} /> Email Application
+             <Mail size={13} /> SECURE MAIL ENVELOPE
            </a>
          </div>
 
          <div className="pt-6">
-           <h2 className="text-4xl font-bold text-[#0056b3] tracking-tighter mb-10">Open Positions</h2>
-           <div className="space-y-6">
-              {[
-                { title: "Cisco Network Engineer", type: "Full Time" },
-                { title: "IT Helpdesk Specialist", type: "Full Time" },
-                { title: "Cloud Solutions Architect", type: "Full Time" },
-                { title: "Service Desk Lead", type: "Full Time" }
-              ].map((job, i) => (
-                <div key={i} className="p-10 border border-slate-100 rounded-xl flex flex-col md:flex-row justify-between items-center gap-8 hover:bg-slate-50 transition-colors">
-                   <div>
-                      <h3 className="text-2xl font-bold text-slate-900 mb-2">{job.title}</h3>
-                      <div className="text-[#0056b3] font-bold text-xs uppercase tracking-widest">{job.type}</div>
+            <div className="flex items-center gap-3 mb-10">
+              <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
+              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight uppercase">Active Vacant Nodes</h2>
+            </div>
+            <div className="space-y-6">
+              {jobs.map((job, i) => (
+                <div key={i} className="p-8 md:p-10 border border-white/10 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-8 hover:border-[#00a9e0]/45 hover:bg-slate-900/20 backdrop-blur transition-all duration-300">
+                   <div className="space-y-3">
+                      <span className="inline-block px-2.5 py-0.5 bg-slate-950 border border-white/5 font-mono text-[8px] font-bold text-slate-500 uppercase rounded">
+                        ROLE // {job.badge}
+                      </span>
+                      <h3 className="text-xl md:text-2xl font-black text-white uppercase">{job.title}</h3>
+                      <div className="flex flex-wrap items-center gap-4 text-slate-400 font-mono text-[9px] uppercase tracking-wider">
+                        <span className="text-[#00a9e0] font-bold">{job.type}</span>
+                        <span>•</span>
+                        <span>{job.exp}</span>
+                        <span>•</span>
+                        <span>{job.salary} TIER</span>
+                      </div>
                    </div>
                    <button 
+                     type="button"
                      onClick={() => {
                        onSelectJob(job.title);
                        onNavigate('job-apply');
                      }}
-                     className="px-8 py-3 border-2 border-[#0056b3] text-[#0056b3] font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#0056b3] hover:text-white transition-all"
+                     className="px-6 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-950 font-mono font-bold rounded text-[9px] uppercase tracking-widest transition-all self-stretch md:w-auto text-center"
                    >
-                      Apply Now
+                     EXECUTE APPLICATION
                    </button>
                 </div>
               ))}
-           </div>
+            </div>
          </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+
 
 const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavigate: (v: View) => void }) => {
   const [formData, setFormData] = useState({
@@ -2357,13 +3546,13 @@ const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   );
 };
 
-const ITStrategyDetailPage = () => (
+const ITStrategyDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="IT Strategy Consultation"
       description="HTC Africa aligns your digital path with critical business directives. Our custom advisory team prepares and scales your operational technology for maximum output, safety, and modern flexibility."
       image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -2410,13 +3599,13 @@ const ITStrategyDetailPage = () => (
   </div>
 );
 
-const SLADetailPage = () => (
+const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Service Level Agreements"
       description="HTC Africa provides transparent, customizable support SLA tiers to keep your business technology resilient, optimized, and safe. Choose the exact tier that fits your SLA targets."
       image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
-      onContact={() => {}}
+      onContact={onContact}
     />
     <div className="bg-white py-24 px-4 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -2487,38 +3676,50 @@ const SLADetailPage = () => (
 );
 
 const ServiceHero = ({ title, description, image, onContact }: any) => (
-  <div className="relative min-h-[500px] flex items-center bg-[#002d5f] overflow-hidden">
+  <div className="relative min-h-[500px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
+    {/* Tech grid mask */}
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_100%,transparent_100%)] opacity-70 z-0" />
+    
     <div className="absolute inset-0 opacity-20 z-0">
-       <img src={image} alt={title} className="w-full h-full object-cover" />
-       <div className="absolute inset-0 bg-[#002d5f]/80"></div>
+       <img src={image} alt={title} className="w-full h-full object-cover filter brightness-50 animate-pulse duration-[8s]" referrerPolicy="no-referrer" />
+       <div className="absolute inset-0 bg-[#030914]/90"></div>
     </div>
     
-    <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-16 py-32 items-center">
-      <div className="lg:w-1/2">
-        <h1 className="text-6xl md:text-8xl font-bold text-white mb-10 tracking-tight">{title}</h1>
-        <p className="text-white/70 text-xl leading-relaxed font-medium">
+    {/* Ambient glowing fields */}
+    <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-blue-500/10 blur-[90px] rounded-full pointer-events-none z-0" />
+
+    <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-16 py-28 items-center">
+      <div className="lg:w-1/2 text-left">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] mb-6 font-bold shadow-[0_0_15px_rgba(37,99,235,0.1)]">
+          <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping" />
+          HTC CORE SOLUTION PIPELINE
+        </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+          {title}
+        </h1>
+        <p className="text-slate-400 text-base md:text-lg leading-relaxed font-normal max-w-xl">
           {description}
         </p>
       </div>
       <div className="lg:w-1/2 w-full">
-        <div className="bg-white p-12 md:p-16 rounded-xl shadow-2xl relative">
-           <div className="absolute top-8 right-8 text-[#0056b3]/10">
-              <Zap size={120} />
+        <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,169,224,0.1)] relative">
+           <div className="absolute top-8 right-8 text-[#0056b3]/15">
+              <Zap size={100} />
            </div>
-           <span className="text-[#0056b3] font-bold uppercase tracking-[0.3em] text-[10px] mb-8 inline-block">Ready For Change?</span>
-           <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tighter">Problem Solved.</h2>
-           <p className="text-slate-600 mb-12 text-lg leading-relaxed">
-             When you work with us, you aren't outsourcing your problems — you're tapping into a <span className="font-bold text-slate-900">powerful resource.</span>
+           <span className="text-[#00a9e0] font-bold uppercase tracking-[0.25em] text-[9px] font-mono mb-6 inline-block">SYSTEM HANDSHAKE HANDOVER</span>
+           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight">Enterprise Standard</h2>
+           <p className="text-slate-400 mb-8 text-xs md:text-sm leading-relaxed">
+             When you collaborate with HTC Africa, you aren't outsourcing your infrastructure issues — you're integrating an <span className="text-white font-bold">unstoppable digital matrix</span>.
            </p>
-           <div className="flex flex-wrap items-center gap-10">
+           <div className="flex flex-col sm:flex-row items-center gap-6 font-mono text-[10px]">
               <button 
                 onClick={onContact}
-                className="px-10 py-5 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all shadow-lg"
+                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-105 duration-300"
               >
-                Schedule A Consultation
+                📥 REQUEST AUDIT & DEMO
               </button>
-              <div className="flex items-center gap-4 font-bold text-[11px] uppercase tracking-widest text-slate-900 group cursor-pointer">
-                Call Us Now <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform text-[#0056b3]" />
+              <div className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors cursor-pointer group">
+                DIAL CORE SUPPORT <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform text-[#00a9e0]" />
               </div>
            </div>
         </div>
@@ -2594,7 +3795,7 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 // --- Main App ---
 
-type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'team' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal';
+type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal' | 'conference-systems' | 'public-address' | 'multimedia-control';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -2626,35 +3827,37 @@ export default function App() {
               <Hero onNavigate={setCurrentView} />
               <OurServicesHeader onNavigate={setCurrentView} />
               <ServicesSection onNavigate={setCurrentView} />
-              <SupportSection />
-              <TestimonialsSection />
+              <SupportSection onSelectJob={setSelectedJob} onNavigate={setCurrentView} />
             </div>
           )}
 
           {currentView === 'about-us' && <AboutUsDetailPage key="about" />}
-          {currentView === 'products' && <ProductsDetailPage key="products" />}
+          {currentView === 'products' && <ProductsDetailPage key="products" onNavigate={setCurrentView} />}
           {currentView === 'solutions' && <SolutionsDetailPage key="solutions" onNavigate={setCurrentView} />}
           {currentView === 'services' && <ServicesOverviewPage key="services" onNavigate={setCurrentView} />}
-          {currentView === 'support' && <SupportSection key="support" />}
+          {currentView === 'support' && <SupportSection key="support" standalone={true} onSelectJob={setSelectedJob} onNavigate={setCurrentView} />}
 
           {currentView === 'managed-it' && <ManagedITDetailPage key="managed" onContact={() => setCurrentView('support')} onNavigate={(v) => setCurrentView(v)} />}
-          {currentView === 'digital-security' && <DigitalSecurityDetailPage key="security" />}
-          {currentView === 'ict-services' && <ICTDetailPage key="ict" />}
-          {currentView === 'fleet-fuel' && <FleetFuelDetailPage key="fleet" />}
-          {currentView === 'cloud-solutions' && <CloudSolutionsDetailPage key="cloud" />}
-          {currentView === 'networking' && <NetworkingDetailPage key="net" />}
-          {currentView === 'voice-solutions' && <VoiceSolutionsDetailPage key="voice" />}
-          {currentView === 'cabling' && <CablingDetailPage key="cabling" />}
+          {currentView === 'digital-security' && <DigitalSecurityDetailPage key="security" onContact={() => setCurrentView('support')} />}
+          {currentView === 'ict-services' && <ICTDetailPage key="ict" onContact={() => setCurrentView('support')} />}
+          {currentView === 'fleet-fuel' && <FleetFuelDetailPage key="fleet" onContact={() => setCurrentView('support')} />}
+          {currentView === 'cloud-solutions' && <CloudSolutionsDetailPage key="cloud" onContact={() => setCurrentView('support')} />}
+          {currentView === 'networking' && <NetworkingDetailPage key="net" onContact={() => setCurrentView('support')} />}
+          {currentView === 'voice-solutions' && <VoiceSolutionsDetailPage key="voice" onContact={() => setCurrentView('support')} />}
+          {currentView === 'cabling' && <CablingDetailPage key="cabling" onContact={() => setCurrentView('support')} />}
+          
+          {currentView === 'conference-systems' && <ConferenceSystemsDetailPage key="conference" onContact={() => setCurrentView('support')} />}
+          {currentView === 'public-address' && <PublicAddressDetailPage key="pa" onContact={() => setCurrentView('support')} />}
+          {currentView === 'multimedia-control' && <MultimediaControlDetailPage key="multimedia" onContact={() => setCurrentView('support')} />}
           
           {currentView === 'core-values' && <CoreValuesDetailPage key="values" />}
-          {currentView === 'team' && <TeamDetailPage key="team" />}
           {currentView === 'process' && <ProcessDetailPage key="process" />}
           {currentView === 'industries' && <IndustriesDetailPage key="industries" />}
           {currentView === 'partnerships' && <PartnershipsDetailPage key="partnerships" />}
           {currentView === 'careers' && <motion.div key="careers" className="w-full"><CareersDetailPage onNavigate={setCurrentView} onSelectJob={setSelectedJob} /></motion.div>}
           {currentView === 'services-overview' && <ServicesOverviewPage key="overview" onNavigate={setCurrentView} />}
-          {currentView === 'it-strategy' && <ITStrategyDetailPage key="it-strategy" />}
-          {currentView === 'sla' && <SLADetailPage key="sla" />}
+          {currentView === 'it-strategy' && <ITStrategyDetailPage key="it-strategy" onContact={() => setCurrentView('support')} />}
+          {currentView === 'sla' && <SLADetailPage key="sla" onContact={() => setCurrentView('support')} />}
           {currentView === 'job-apply' && <motion.div key="apply" className="w-full"><JobApplyPage selectedJob={selectedJob} onNavigate={setCurrentView} /></motion.div>}
           {currentView === 'admin-portal' && <motion.div key="admin" className="w-full"><AdminPortalPage onNavigate={setCurrentView} /></motion.div>}
         </AnimatePresence>
