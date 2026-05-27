@@ -3972,58 +3972,732 @@ ${formData.fullName}`;
   );
 };
 
-const ServiceHero = ({ title, description, image, onContact }: any) => (
-  <div className="relative min-h-[500px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
-    {/* Tech grid mask */}
-    <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_100%,transparent_100%)] opacity-70 z-0" />
-    
-    <div className="absolute inset-0 opacity-20 z-0">
-       <img src={image} alt={title} className="w-full h-full object-cover filter brightness-50 animate-pulse duration-[8s]" referrerPolicy="no-referrer" />
-       <div className="absolute inset-0 bg-[#030914]/90"></div>
-    </div>
-    
-    {/* Ambient glowing fields */}
-    <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-blue-500/10 blur-[90px] rounded-full pointer-events-none z-0" />
+const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onContact: () => void }) => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    companyName: '',
+    email: '',
+    phone: '',
+    serviceDomain: 'Cisco Enterprise Networking Integration',
+    preferredDate: '',
+    notes: ''
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-    <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-16 py-28 items-center">
-      <div className="lg:w-1/2 text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] mb-6 font-bold shadow-[0_0_15px_rgba(37,99,235,0.1)]">
-          <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping" />
-          HTC CORE SOLUTION PIPELINE
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Representative's full name is required.";
+    } else if (formData.fullName.trim().length < 3) {
+      newErrors.fullName = "Representative name must be at least 3 characters.";
+    }
+
+    if (!formData.companyName.trim()) {
+      newErrors.companyName = "Company or Organization name is required.";
+    } else if (formData.companyName.trim().length < 2) {
+      newErrors.companyName = "Company name must be at least 2 characters.";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Business email address is required.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Please specify a valid business email address.";
+    }
+
+    const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required with country code.";
+    } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
+      newErrors.phone = "Phone number must be valid digits (minimum 7 numbers).";
+    }
+
+    if (!formData.preferredDate) {
+      newErrors.preferredDate = "Please choose a preferred date.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    // Save submission locally
+    const newInquiry = {
+      id: "AUDIT-" + Date.now().toString().slice(-6),
+      firstName: formData.fullName.split(' ')[0] || '',
+      lastName: formData.fullName.split(' ').slice(1).join(' ') || '',
+      fullName: formData.fullName.trim(),
+      company: formData.companyName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      concern: `[REQUEST AUDIT & DEMO]\nService Domain: ${formData.serviceDomain}\nPreferred Schedule Date: ${formData.preferredDate}\nSpecial Notes: ${formData.notes.trim() || 'None specified.'}`,
+      dateSubmitted: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    try {
+      const existing = localStorage.getItem('htc_contact_submissions');
+      const submissions = existing ? JSON.parse(existing) : [];
+      submissions.unshift(newInquiry);
+      localStorage.setItem('htc_contact_submissions', JSON.stringify(submissions));
+    } catch (err) {
+      console.error('Failed to save Audit & Demo submission to localStorage:', err);
+    }
+
+    // Trigger Mailto immediately
+    const mailSubject = `Technology Audit & Demo Request: ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Technical Team,
+
+We would like to request an on-site technology audit and hardware equipment demonstration for our organization:
+
+Selected Domain: ${formData.serviceDomain}
+Company Name: ${formData.companyName}
+Representative: ${formData.fullName}
+Direct Phone: ${formData.phone}
+Contact Email: ${formData.email}
+Requested Schedule Date: ${formData.preferredDate}
+
+Custom Infrastructure Profile & Notes:
+${formData.notes.trim() || 'No additional notes provided.'}
+
+Please coordinate with us to confirm the audit window slot and arrange for the necessary hardware demo kits.
+
+Best regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+
+    setIsSubmitted(true);
+  };
+
+  const triggerEmailAgain = () => {
+    const mailSubject = `Technology Audit & Demo Request: ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Technical Team,
+
+We would like to request an on-site technology audit and hardware equipment demonstration for our organization:
+
+Selected Domain: ${formData.serviceDomain}
+Company Name: ${formData.companyName}
+Representative: ${formData.fullName}
+Direct Phone: ${formData.phone}
+Contact Email: ${formData.email}
+Requested Schedule Date: ${formData.preferredDate}
+
+Custom Infrastructure Profile & Notes:
+${formData.notes.trim() || 'No additional notes provided.'}
+
+Please coordinate with us to confirm the audit window slot and arrange for the necessary hardware demo kits.
+
+Best regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="animate-in fade-in duration-700 bg-white min-h-[80vh] py-20 px-4 font-sans">
+        <div className="max-w-2xl mx-auto text-center space-y-8 bg-slate-50 border border-slate-100 p-8 sm:p-16 rounded-3xl shadow-xl">
+          <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <CheckCircle2 size={44} />
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tight">Audit Request Registered</h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              Your technology audit & hardware demonstration request for <strong className="text-slate-900 font-bold">{formData.companyName}</strong> has been successfully registered.
+            </p>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              We generated an automatic email handshake payload to <strong className="text-[#0056b3]">htc@htc.co.tz</strong>. If your mail browser did not dispatch, please trigger the direct handshake link below.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 pt-4">
+            <button
+              onClick={triggerEmailAgain}
+              className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+            >
+              📤 Dispatch Handshake Email Again
+            </button>
+            <button
+              onClick={onBack}
+              className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+            >
+              &larr; Return to Application
+            </button>
+          </div>
         </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
-          {title}
-        </h1>
-        <p className="text-slate-400 text-base md:text-lg leading-relaxed font-normal max-w-xl">
-          {description}
-        </p>
       </div>
-      <div className="lg:w-1/2 w-full">
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,169,224,0.1)] relative">
-           <div className="absolute top-8 right-8 text-[#0056b3]/15">
-              <Zap size={100} />
-           </div>
-           <span className="text-[#00a9e0] font-bold uppercase tracking-[0.25em] text-[9px] font-mono mb-6 inline-block">SYSTEM HANDSHAKE HANDOVER</span>
-           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight">Enterprise Standard</h2>
-           <p className="text-slate-400 mb-8 text-xs md:text-sm leading-relaxed">
-             When you collaborate with HTC Africa, you aren't outsourcing your infrastructure issues — you're integrating an <span className="text-white font-bold">unstoppable digital matrix</span>.
-           </p>
-           <div className="flex flex-col sm:flex-row items-center gap-6 font-mono text-[10px]">
-              <button 
-                onClick={onContact}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-105 duration-300"
-              >
-                📥 REQUEST AUDIT & DEMO
-              </button>
-              <div className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors cursor-pointer group">
-                DIAL CORE SUPPORT <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform text-[#00a9e0]" />
+    );
+  }
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-white min-h-[90vh]">
+      <PageHeader 
+        title="INFRASTRUCTURE AUDIT"
+        mainTitle="Request Audit & Equipment Demo"
+        subtitle="Schedule a deep physical infrastructure sweep, signal topology scan, or high-definition live system trials at your commercial facility."
+      />
+      
+      <div className="py-20 px-4 font-sans">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-xs font-bold text-[#0056b3] uppercase tracking-widest hover:underline mb-12"
+          >
+            &larr; Return to Previous Page
+          </button>
+          
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 md:p-12 shadow-md">
+            <span className="text-[#0056b3] font-bold text-xs uppercase tracking-widest mb-2 inline-block">DEPLOYMENT REQUEST</span>
+            <h2 className="text-3xl font-black text-slate-900 mb-8 uppercase tracking-tight">On-Site Demonstration Setup</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Representative Full Name <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. John Doe"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.fullName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.fullName && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.fullName}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Company / Organization Name <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Shamo Towers Office"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.companyName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.companyName && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.companyName}</p>}
+                </div>
               </div>
-           </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Business Email Address <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="e.g. contact@company.co.tz"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.email ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.email && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Direct Phone Number <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="e.g. +255 712 345 678"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.phone ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.phone && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.phone}</p>}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Core System Selection
+                  </label>
+                  <select
+                    name="serviceDomain"
+                    value={formData.serviceDomain}
+                    onChange={handleInputChange}
+                    className="w-full bg-white border border-slate-200 rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none text-slate-950 font-medium"
+                  >
+                    <option value="Cisco Enterprise Networking Integration">Cisco Enterprise Networking Integration</option>
+                    <option value="High-Definition Video Surveillance & Biometrics">High-Definition Video Surveillance & Biometrics</option>
+                    <option value="Real-Time Fleet Intelligence & Fuel Probes">Real-Time Fleet Intelligence & Fuel Probes</option>
+                    <option value="IP-Based Facility Public Address System">IP-Based Facility Public Address System</option>
+                    <option value="Wireless Delegate Conference Systems">Wireless Delegate Conference Systems</option>
+                    <option value="Enterprise C-Suite Management Systems">Enterprise C-Suite Management Systems</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Preferred Audit Schedule Date <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="date" 
+                    name="preferredDate"
+                    value={formData.preferredDate}
+                    onChange={handleInputChange}
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none text-slate-950 ${errors.preferredDate ? 'border-red-500 focus:ring-red-500' : 'border-slate-200'}`}
+                  />
+                  {errors.preferredDate && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.preferredDate}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-900 mb-2">
+                  Infrastructure Overview / Custom Remarks
+                </label>
+                <textarea 
+                  name="notes"
+                  rows={4} 
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                  placeholder="Describe your server racks, facility layout, custom security regulations, or desired test-kit components."
+                  className="w-full bg-white border border-slate-200 rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none resize-none text-slate-950 font-medium"
+                />
+              </div>
+
+              <div className="pt-4">
+                <button 
+                  type="submit" 
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+                >
+                  🚀 Validate & Register Demonstration
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    companyName: '',
+    email: '',
+    phone: '',
+    urgency: 'MEDIUM - SLA Configuration Request',
+    description: ''
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Representative's name is required.";
+    } else if (formData.fullName.trim().length < 3) {
+      newErrors.fullName = "Name must be at least 3 characters.";
+    }
+
+    if (!formData.companyName.trim()) {
+      newErrors.companyName = "Company or Organization name is required.";
+    } else if (formData.companyName.trim().length < 2) {
+      newErrors.companyName = "Company name must be at least 2 characters.";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email address is required.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Please specify a valid email address.";
+    }
+
+    const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Direct support hotline phone of requester is required.";
+    } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
+      newErrors.phone = "Enter a valid direct phone line (minimum 7 digits).";
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = "Please describe the system incident or required request.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    // Save support registry locally
+    const newSupportInquiry = {
+      id: "SUPPORT-" + Date.now().toString().slice(-6),
+      firstName: formData.fullName.split(' ')[0] || '',
+      lastName: formData.fullName.split(' ').slice(1).join(' ') || '',
+      fullName: formData.fullName.trim(),
+      company: formData.companyName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      concern: `[CORE SUPPORT DISPATCH - ${formData.urgency.toUpperCase()}]\nIncident Description: ${formData.description.trim()}`,
+      dateSubmitted: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    try {
+      const existing = localStorage.getItem('htc_contact_submissions');
+      const submissions = existing ? JSON.parse(existing) : [];
+      submissions.unshift(newSupportInquiry);
+      localStorage.setItem('htc_contact_submissions', JSON.stringify(submissions));
+    } catch (err) {
+      console.error('Failed to save Core support incident to localStorage:', err);
+    }
+
+    // Trigger Mailto immediately
+    const mailSubject = `[URGENT SUPPORT] Core Dispatch Handshake: ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Support Desk,
+
+We are initiating a Priority Support Handshake for our organization:
+
+Urgency Level: ${formData.urgency}
+Company/Org: ${formData.companyName}
+Contact Representative: ${formData.fullName}
+Direct Phone Support Line: ${formData.phone}
+Contact Email: ${formData.email}
+
+System Incident Description & Urgent Support Request details:
+${formData.description.trim()}
+
+Please coordinate an active SLA dispatch response line as per our service tier parameters.
+
+Regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+
+    setIsSubmitted(true);
+  };
+
+  const triggerEmailAgain = () => {
+    const mailSubject = `[URGENT SUPPORT] Core Dispatch Handshake: ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Support Desk,
+
+We are initiating a Priority Support Handshake for our organization:
+
+Urgency Level: ${formData.urgency}
+Company/Org: ${formData.companyName}
+Contact Representative: ${formData.fullName}
+Direct Phone Support Line: ${formData.phone}
+Contact Email: ${formData.email}
+
+System Incident Description & Urgent Support Request details:
+${formData.description.trim()}
+
+Please coordinate an active SLA dispatch response line as per our service tier parameters.
+
+Regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="animate-in fade-in duration-700 bg-white min-h-[80vh] py-20 px-4 font-sans">
+        <div className="max-w-2xl mx-auto text-center space-y-8 bg-slate-950 text-white p-8 sm:p-16 rounded-3xl shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:2rem_2rem] border border-blue-500/5 opacity-10" />
+          <div className="w-20 h-20 bg-blue-500/10 text-[#00a9e0] border border-blue-500/20 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(0,169,224,0.2)]">
+            <Zap size={44} className="animate-pulse" />
+          </div>
+          <div className="space-y-4 relative z-10">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">Support Handshake Initiated</h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Your priority support ticket has been recorded for <strong className="text-white font-bold">{formData.companyName}</strong>. 
+            </p>
+            <div className="bg-[#030914] p-6 rounded-2xl border border-white/5 space-y-3">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block font-bold">// DIRECT VOICE SUPPORT LINE READY</span>
+              <p className="text-xl font-bold tracking-tight text-white">+255 (0) 22 212 8482</p>
+              <a 
+                href="tel:+255222128482"
+                className="inline-flex items-center gap-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-lg uppercase tracking-wider transition-all mt-2"
+              >
+                <Phone size={14} /> Dial Line Now
+              </a>
+            </div>
+            <p className="text-slate-500 text-xs leading-relaxed max-w-md mx-auto pt-4">
+              We generated an automated priority dispatch payload to <strong className="text-cyan-400">htc@htc.co.tz</strong>. If your email application failed to load, click below to trigger sending again.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 relative z-10">
+            <button
+              onClick={triggerEmailAgain}
+              className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 border border-white/15 text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+            >
+              📤 Resend Email Dispatch
+            </button>
+            <button
+              onClick={onBack}
+              className="flex-1 py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+            >
+              &larr; Exit Control Room
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-in fade-in duration-700 bg-white min-h-[90vh]">
+      <PageHeader 
+        title="PRIORITY SUPPORT SYSTEM"
+        mainTitle="Core Support Gateway Activation"
+        subtitle="Initialize a high-availability active network response session, emergency device dispatch request, or system configuration task."
+      />
+      
+      <div className="py-20 px-4 font-sans">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-xs font-bold text-[#0056b3] uppercase tracking-widest hover:underline mb-12"
+          >
+            &larr; Return to Previous Page
+          </button>
+          
+          <div className="bg-slate-900 text-white border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-20 pointer-events-none" />
+            <span className="text-[#00a9e0] font-bold text-xs uppercase tracking-widest mb-2 inline-block font-mono">// SECURITY LEVEL: PREMIUM DISPATCH</span>
+            <h2 className="text-3xl font-black text-white mb-8 uppercase tracking-tight">Active Handshake Form</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                    Representative Name *
+                  </label>
+                  <input 
+                    type="text" 
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. John Doe"
+                    className={`w-full bg-slate-950/80 border text-white rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none ${errors.fullName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-800'}`}
+                  />
+                  {errors.fullName && <p className="text-red-400 text-xs font-bold mt-1.5">{errors.fullName}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                    Company / Organization *
+                  </label>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Shamo Towers Office"
+                    className={`w-full bg-slate-950/80 border text-white rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none ${errors.companyName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-800'}`}
+                  />
+                  {errors.companyName && <p className="text-red-400 text-xs font-bold mt-1.5">{errors.companyName}</p>}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                    Corporate Email Address *
+                  </label>
+                  <input 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="e.g. secure@industry.co.tz"
+                    className={`w-full bg-slate-950/80 border text-white rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none ${errors.email ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-800'}`}
+                  />
+                  {errors.email && <p className="text-red-400 text-xs font-bold mt-1.5">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                    Direct Phone Support Line *
+                  </label>
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="e.g. +255 712 345 678"
+                    className={`w-full bg-slate-950/80 border text-white rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none ${errors.phone ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-800'}`}
+                  />
+                  {errors.phone && <p className="text-red-400 text-xs font-bold mt-1.5">{errors.phone}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                  SLA Urgency Level Selection
+                </label>
+                <select
+                  name="urgency"
+                  value={formData.urgency}
+                  onChange={handleInputChange}
+                  className="w-full bg-slate-950 text-white border border-slate-800 rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none font-medium"
+                >
+                  <option value="CRITICAL - System Major Outage">💥 CRITICAL - System Down / Workflow Block</option>
+                  <option value="HIGH - Active Service Degradation">⚠️ HIGH - Active Service Degradation</option>
+                  <option value="MEDIUM - SLA Configuration Request">⚡ MEDIUM - SLAs / Configuration Updates</option>
+                  <option value="LOW - Consultative Support">ℹ️ LOW - Maintenance Query</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-300 mb-2 font-mono">
+                  Describe the Incident / Required Task *
+                </label>
+                <textarea 
+                  name="description"
+                  rows={4} 
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Describe your server outage, active equipment faults, cabling faults, system bugs, or configuration assistance required."
+                  className={`w-full bg-slate-950/80 border text-white rounded-md px-5 py-4 focus:ring-2 focus:ring-[#00a9e0] transition-all outline-none resize-none font-medium ${errors.description ? 'border-red-500 focus:ring-red-500' : 'border-slate-800'}`}
+                />
+                {errors.description && <p className="text-red-400 text-xs font-bold mt-1.5">{errors.description}</p>}
+              </div>
+
+              <div className="pt-4">
+                <button 
+                  type="submit" 
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 font-mono"
+                >
+                  📡 Validate & Activate Emergency Handshake
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ServiceHero = ({ title, description, image, onContact }: any) => {
+  const handleRequestAudit = () => {
+    if ((window as any).__htc_navigate) {
+      (window as any).__htc_navigate('audit-demo');
+    } else if (onContact) {
+      onContact();
+    }
+  };
+
+  const handleDialSupport = () => {
+    if ((window as any).__htc_navigate) {
+      (window as any).__htc_navigate('core-support');
+    }
+  };
+
+  return (
+    <div className="relative min-h-[500px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
+      {/* Tech grid mask */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_100%,transparent_100%)] opacity-70 z-0" />
+      
+      <div className="absolute inset-0 opacity-20 z-0">
+         <img src={image} alt={title} className="w-full h-full object-cover filter brightness-50 animate-pulse duration-[8s]" referrerPolicy="no-referrer" />
+         <div className="absolute inset-0 bg-[#030914]/90"></div>
+      </div>
+      
+      {/* Ambient glowing fields */}
+      <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-blue-500/10 blur-[90px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-16 py-28 items-center">
+        <div className="lg:w-1/2 text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] mb-6 font-bold shadow-[0_0_15px_rgba(37,99,235,0.1)]">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping" />
+            HTC CORE SOLUTION PIPELINE
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+            {title}
+          </h1>
+          <p className="text-slate-400 text-base md:text-lg leading-relaxed font-normal max-w-xl">
+            {description}
+          </p>
+        </div>
+        <div className="lg:w-1/2 w-full">
+          <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,169,224,0.1)] relative">
+             <div className="absolute top-8 right-8 text-[#0056b3]/15">
+                <Zap size={100} />
+             </div>
+             <span className="text-[#00a9e0] font-bold uppercase tracking-[0.25em] text-[9px] font-mono mb-6 inline-block">SYSTEM HANDSHAKE HANDOVER</span>
+             <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight">Enterprise Standard</h2>
+             <p className="text-slate-400 mb-8 text-xs md:text-sm leading-relaxed">
+               When you collaborate with HTC Africa, you aren't outsourcing your infrastructure issues — you're integrating an <span className="text-white font-bold">unstoppable digital matrix</span>.
+             </p>
+             <div className="flex flex-col sm:flex-row items-center gap-6 font-mono text-[10px]">
+                <button 
+                  onClick={handleRequestAudit}
+                  className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-105 duration-300"
+                >
+                  📥 REQUEST AUDIT & DEMO
+                </button>
+                <button 
+                  type="button"
+                  onClick={handleDialSupport}
+                  className="flex items-center gap-3 bg-transparent border-none text-slate-400 hover:text-white transition-colors cursor-pointer group uppercase text-[10px] font-mono font-bold"
+                >
+                  DIAL CORE SUPPORT <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform text-[#00a9e0]" />
+                </button>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const IconBullet = ({ icon, title, description }: any) => (
   <div className="flex gap-8 items-start group">
@@ -4092,22 +4766,35 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 // --- Main App ---
 
-type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal' | 'conference-systems' | 'public-address' | 'multimedia-control';
+type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal' | 'conference-systems' | 'public-address' | 'multimedia-control' | 'audit-demo' | 'core-support';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
+  const [previousView, setPreviousView] = useState<View>('home');
   const [selectedJob, setSelectedJob] = useState('Cisco Network Engineer');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView]);
 
+  useEffect(() => {
+    if (currentView !== 'audit-demo' && currentView !== 'core-support') {
+      setPreviousView(currentView);
+    }
+  }, [currentView]);
+
+  useEffect(() => {
+    (window as any).__htc_navigate = (v: View) => {
+      setCurrentView(v);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#0056b3]/20">
       <Navbar onNavigate={(v) => setCurrentView(v)} currentView={currentView} />
       
       <main className={currentView !== 'home' ? 'pt-20' : ''}>
-        {currentView !== 'home' && currentView !== 'admin-portal' && (
+        {currentView !== 'home' && currentView !== 'admin-portal' && currentView !== 'audit-demo' && currentView !== 'core-support' && (
           <button 
             type="button"
             onClick={() => setCurrentView('home')}
@@ -4157,6 +4844,8 @@ export default function App() {
           {currentView === 'sla' && <SLADetailPage key="sla" onContact={() => setCurrentView('support')} />}
           {currentView === 'job-apply' && <motion.div key="apply" className="w-full"><JobApplyPage selectedJob={selectedJob} onNavigate={setCurrentView} /></motion.div>}
           {currentView === 'admin-portal' && <motion.div key="admin" className="w-full"><AdminPortalPage onNavigate={setCurrentView} /></motion.div>}
+          {currentView === 'audit-demo' && <motion.div key="audit-demo" className="w-full"><AuditDemoRequestPage onBack={() => setCurrentView(previousView)} onContact={() => setCurrentView('support')} /></motion.div>}
+          {currentView === 'core-support' && <motion.div key="core-support" className="w-full"><CoreSupportPage onBack={() => setCurrentView(previousView)} /></motion.div>}
         </AnimatePresence>
       </main>
 
