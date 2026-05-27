@@ -3586,81 +3586,391 @@ const ITStrategyDetailPage = ({ onContact, key }: { onContact: () => void; key?:
   </div>
 );
 
-const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
-  <div className="animate-in fade-in duration-700">
-    <ServiceHero 
-      title="Service Level Agreements"
-      description="HTC Africa provides transparent, customizable support SLA tiers to keep your business technology resilient, optimized, and safe. Choose the exact tier that fits your SLA targets."
-      image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
-      onContact={onContact}
-    />
-    <div className="bg-white py-24 px-4 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold text-center text-slate-900 mb-6 tracking-tight">Our Support SLA Tiers</h2>
-        <p className="text-slate-500 text-center max-w-2xl mx-auto text-lg mb-20">We deliver concrete commitments for response times, hardware support cycles, and remote/onsite engineering response.</p>
-        
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-           <div className="border border-slate-200 rounded-3xl p-12 bg-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <span className="text-[#0056b3] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 01</span>
-                <h3 className="text-4xl font-bold text-slate-900 mb-4">Standard SLA</h3>
-                <p className="text-slate-500 mb-8 font-sans">Perfect for standard organizations looking for consistent, guaranteed business-hour helpdesk support and active device monitoring.</p>
-                
-                <div className="border-t border-slate-100 pt-8 mb-10 space-y-4">
-                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
-                      <span>Official Office Hours Helpdesk (8:00 AM - 5:00 PM)</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
-                      <span>Next Business Day Onsite Engineering Support</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
-                      <span>Active Patch & Firmware Updates</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
-                      <span>4-Hour SLA Response Commitment</span>
-                   </div>
-                </div>
-              </div>
-              <button className="w-full py-4 text-[#0056b3] border-2 border-[#0056b3] hover:bg-[#0056b3] hover:text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs">Choose Standard</button>
-           </div>
+const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => {
+  const [selectedTier, setSelectedTier] = useState<'Standard' | 'Premium' | null>(null);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    companyName: '',
+    email: '',
+    phone: '',
+    specialNeeds: ''
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-           <div className="border border-transparent rounded-3xl p-12 bg-slate-900 text-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-0 right-0 bg-[#0056b3] text-white px-6 py-2 rounded-bl-xl text-[10px] font-bold uppercase tracking-widest">Recommended</div>
-              <div>
-                <span className="text-[#00a9e0] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 02</span>
-                <h3 className="text-4xl font-bold text-white mb-4">Premium SLA</h3>
-                <p className="text-slate-400 mb-8 font-sans">Ideal for high-availability enterprise services requiring robust round-the-clock proactive protection and instantaneous response.</p>
-                
-                <div className="border-t border-slate-800 pt-8 mb-10 space-y-4">
-                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
-                      <span>24/7/365 Around-The-Clock Full IT Helpdesk</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
-                      <span>Under 1-Hour Guaranteed Onsite Response</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
-                      <span>Proactive Cyber Threat Defenses & Network Audits</span>
-                   </div>
-                   <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
-                      <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
-                      <span>Instant phone-line response for Critical Issues</span>
-                   </div>
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Contact person's full name is required.";
+    } else if (formData.fullName.trim().length < 3) {
+      newErrors.fullName = "Full name must be at least 3 characters.";
+    }
+
+    if (!formData.companyName.trim()) {
+      newErrors.companyName = "Company or Organization name is required.";
+    } else if (formData.companyName.trim().length < 2) {
+      newErrors.companyName = "Company name must be at least 2 characters.";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Business email address is required.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Please specify a valid business email address.";
+    }
+
+    const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required with country code.";
+    } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
+      newErrors.phone = "Phone number must be valid digits (minimum 7 numbers).";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    // SLA local Inquiry Storage
+    const newInquiry = {
+      id: "SLA-" + Date.now().toString().slice(-6),
+      firstName: formData.fullName.split(' ')[0] || '',
+      lastName: formData.fullName.split(' ').slice(1).join(' ') || '',
+      fullName: formData.fullName.trim(),
+      company: formData.companyName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      concern: `[SLA REQUEST - ${selectedTier?.toUpperCase()} TIER]\nSpecial requirements & notes: ${formData.specialNeeds.trim() || 'None specified.'}`,
+      dateSubmitted: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    try {
+      const existing = localStorage.getItem('htc_contact_submissions');
+      const submissions = existing ? JSON.parse(existing) : [];
+      submissions.unshift(newInquiry);
+      localStorage.setItem('htc_contact_submissions', JSON.stringify(submissions));
+    } catch (err) {
+      console.error('Failed to save SLA submission to localStorage:', err);
+    }
+
+    // Trigger Mailto immediately
+    const mailSubject = `SLA Service Request (${selectedTier}) - ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Support Team,
+
+We would like to request a Service Level Agreement structure with the following details:
+
+Selected SLA Level: ${selectedTier} SLA
+Company Name: ${formData.companyName}
+Contact Representative: ${formData.fullName}
+Contact Phone: ${formData.phone}
+Contact Email: ${formData.email}
+
+Additional Requisitions & Support Concerns:
+${formData.specialNeeds.trim() || 'No special requirements specified.'}
+
+Please review our inquiry and establish a custom SLA pipeline draft for our review.
+
+Best regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+    
+    setIsSubmitted(true);
+  };
+
+  const triggerEmailAgain = () => {
+    const mailSubject = `SLA Service Request (${selectedTier}) - ${formData.companyName}`;
+    const mailBody = `Dear HTC Africa Support Team,
+
+We would like to request a Service Level Agreement structure with the following details:
+
+Selected SLA Level: ${selectedTier} SLA
+Company Name: ${formData.companyName}
+Contact Representative: ${formData.fullName}
+Contact Phone: ${formData.phone}
+Contact Email: ${formData.email}
+
+Additional Requisitions & Support Concerns:
+${formData.specialNeeds.trim() || 'No special requirements specified.'}
+
+Please review our inquiry and establish a custom SLA pipeline draft for our review.
+
+Best regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="animate-in fade-in duration-700">
+        <ServiceHero 
+          title="Service level Agreements"
+          description="HTC Africa provides transparent, customizable support SLA tiers to keep your business technology resilient, optimized, and safe. Choose the exact tier that fits your SLA targets."
+          image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
+          onContact={onContact}
+        />
+        <div className="bg-white py-24 px-4 font-sans text-center">
+          <div className="max-w-xl mx-auto space-y-8 bg-slate-50 border border-slate-100 p-8 sm:p-16 rounded-3xl shadow-xl">
+             <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                <CheckCircle2 size={44} />
+             </div>
+             <div className="space-y-4">
+                <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tight">SLA Request Recorded!</h2>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                   Your <strong className="text-slate-900 font-bold">{selectedTier} SLA</strong> inquiry has been successfully registered in our client-relations system.
+                </p>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                   An email draft has been generated to <strong className="text-[#0056b3]">htc@htc.co.tz</strong>. If your mail client did not open automatically, please click the button below to send your request directly.
+                </p>
+             </div>
+             <div className="flex flex-col gap-3 pt-4">
+                <button
+                  onClick={triggerEmailAgain}
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+                >
+                   📤 Send Handshake Email Again
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedTier(null);
+                    setFormData({ fullName: '', companyName: '', email: '', phone: '', specialNeeds: '' });
+                    setErrors({});
+                    setIsSubmitted(false);
+                  }}
+                  className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+                >
+                   &larr; Return to Tiers
+                </button>
+             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (selectedTier) {
+    return (
+      <div className="animate-in fade-in duration-700">
+        <ServiceHero 
+          title={`${selectedTier} SLA Request`}
+          description={`Provide your organization details below to configuration your customizable high-availability ${selectedTier} Service Level Agreement.`}
+          image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
+          onContact={onContact}
+        />
+        <div className="bg-white py-24 px-4 font-sans">
+          <div className="max-w-2xl mx-auto">
+            <button
+              onClick={() => setSelectedTier(null)}
+              className="flex items-center gap-2 text-xs font-bold text-[#0056b3] uppercase tracking-widest hover:underline mb-12"
+            >
+              &larr; Back to SLA Tiers
+            </button>
+            
+            <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 md:p-12 shadow-md">
+              <span className="text-[#0056b3] font-bold text-xs uppercase tracking-widest mb-2 inline-block">SLA Tier 0{selectedTier === 'Standard' ? '1' : '2'}</span>
+              <h2 className="text-3xl font-black text-slate-900 mb-8 uppercase tracking-tight">Request {selectedTier} SLA</h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Contact Full Name <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. John Doe"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.fullName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.fullName && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.fullName}</p>}
                 </div>
-              </div>
-              <button className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs">Choose Premium</button>
-           </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Company / Organization <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                    placeholder="e.g. High Tech Center Ltd"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.companyName ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.companyName && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.companyName}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Business Email Address <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="e.g. rep@company.com"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.email ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.email && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    Direct Phone Number <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="e.g. +255 712 345 678"
+                    className={`w-full bg-white border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${errors.phone ? 'border-red-500 focus:ring-red-500 font-medium' : 'border-slate-200'}`}
+                  />
+                  {errors.phone && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.phone}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-900 mb-2">
+                    SLA Custom Requirements / Critical Systems
+                  </label>
+                  <textarea 
+                    name="specialNeeds"
+                    rows={4} 
+                    value={formData.specialNeeds}
+                    onChange={handleInputChange}
+                    placeholder="Describe your server workloads, expected response times, networking gear, or security integrations."
+                    className="w-full bg-white border border-slate-200 rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none resize-none text-slate-900 font-medium"
+                  />
+                </div>
+
+                <div className="pt-4">
+                  <button 
+                    type="submit" 
+                    className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+                  >
+                    🚀 Validate & Submit Request
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-in fade-in duration-700">
+      <ServiceHero 
+        title="Service Level Agreements"
+        description="HTC Africa provides transparent, customizable support SLA tiers to keep your business technology resilient, optimized, and safe. Choose the exact tier that fits your SLA targets."
+        image="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=2070&auto=format&fit=crop"
+        onContact={onContact}
+      />
+      <div className="bg-white py-24 px-4 font-sans">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl font-bold text-center text-slate-900 mb-6 tracking-tight">Our Support SLA Tiers</h2>
+          <p className="text-slate-500 text-center max-w-2xl mx-auto text-lg mb-20">We deliver concrete commitments for response times, hardware support cycles, and remote/onsite engineering response.</p>
+          
+          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+             <div className="border border-slate-200 rounded-3xl p-12 bg-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
+                <div>
+                  <span className="text-[#0056b3] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 01</span>
+                  <h3 className="text-4xl font-bold text-slate-900 mb-4">Standard SLA</h3>
+                  <p className="text-slate-500 mb-8 font-sans">Perfect for standard organizations looking for consistent, guaranteed business-hour helpdesk support and active device monitoring.</p>
+                  
+                  <div className="border-t border-slate-100 pt-8 mb-10 space-y-4">
+                     <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                        <span>Official Office Hours Helpdesk (8:00 AM - 5:00 PM)</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                        <span>Next Business Day Onsite Engineering Support</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                        <span>Active Patch & Firmware Updates</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-700 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-500 flex-shrink-0" size={18} />
+                        <span>4-Hour SLA Response Commitment</span>
+                     </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedTier('Standard')}
+                  className="w-full py-4 text-[#0056b3] border-2 border-[#0056b3] hover:bg-[#0056b3] hover:text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs"
+                >
+                  Choose Standard
+                </button>
+             </div>
+
+             <div className="border border-transparent rounded-3xl p-12 bg-slate-900 text-white hover:shadow-2xl transition-all relative overflow-hidden flex flex-col justify-between">
+                <div className="absolute top-0 right-0 bg-[#0056b3] text-white px-6 py-2 rounded-bl-xl text-[10px] font-bold uppercase tracking-widest">Recommended</div>
+                <div>
+                  <span className="text-[#00a9e0] font-bold text-xs uppercase tracking-widest mb-4 inline-block">Tier 02</span>
+                  <h3 className="text-4xl font-bold text-white mb-4">Premium SLA</h3>
+                  <p className="text-slate-400 mb-8 font-sans">Ideal for high-availability enterprise services requiring robust round-the-clock proactive protection and instantaneous response.</p>
+                  
+                  <div className="border-t border-slate-800 pt-8 mb-10 space-y-4">
+                     <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                        <span>24/7/365 Around-The-Clock Full IT Helpdesk</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                        <span>Under 1-Hour Guaranteed Onsite Response</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                        <span>Proactive Cyber Threat Defenses & Network Audits</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-slate-300 font-semibold text-sm">
+                        <CheckCircle2 className="text-green-400 flex-shrink-0" size={18} />
+                        <span>Instant phone-line response for Critical Issues</span>
+                     </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedTier('Premium')}
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold transition-all uppercase tracking-wider text-xs"
+                >
+                  Choose Premium
+                </button>
+             </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ServiceHero = ({ title, description, image, onContact }: any) => (
   <div className="relative min-h-[500px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
