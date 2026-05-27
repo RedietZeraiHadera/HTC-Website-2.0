@@ -484,8 +484,6 @@ const BlogSection = () => (
 
 const SupportSection = ({ standalone = false, onSelectJob, onNavigate, key }: { standalone?: boolean; onSelectJob?: (title: string) => void; onNavigate?: (v: View) => void; key?: any }) => {
   const [activeTab, setActiveTab] = useState<'request' | 'careers'>('request');
-  const [selectedJobLocal, setSelectedJobLocal] = useState('Cisco Network Engineer');
-  const [showApplyForm, setShowApplyForm] = useState(false);
 
   const jobs = [
     { title: "Cisco Network Engineer", type: "Full Time", salary: "Competitive", exp: "3+ Years Experience", badge: "NET_INFRASTRUCTURE" },
@@ -508,7 +506,7 @@ const SupportSection = ({ standalone = false, onSelectJob, onNavigate, key }: { 
           </div>
           <div className="flex gap-4 p-1.5 bg-slate-950 border border-white/10 rounded-xl">
             <button
-              onClick={() => { setActiveTab('request'); setShowApplyForm(false); }}
+              onClick={() => { setActiveTab('request'); }}
               className={`px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === 'request' ? 'bg-[#0056b3] text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
             >
               📤 Submit Support Request
@@ -525,55 +523,42 @@ const SupportSection = ({ standalone = false, onSelectJob, onNavigate, key }: { 
 
       <div className="bg-white text-slate-900">
         {activeTab === 'request' ? (
-          <ContactSection />
+          <ContactSection hideHeader={true} />
         ) : (
           <div className="max-w-4xl mx-auto py-24 px-4 font-sans text-slate-900">
-            {!showApplyForm ? (
-              <div className="space-y-12">
-                <div className="text-center space-y-4 max-w-xl mx-auto">
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 uppercase tracking-tight">Active Team Openings</h2>
-                  <p className="text-slate-500 text-sm leading-relaxed">Select one of our open engineering or administration positions to submit your credentials directly into our database.</p>
-                </div>
-                <div className="space-y-6">
-                  {jobs.map((job, i) => (
-                    <div key={i} className="p-8 border border-slate-100 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:border-[#0056b3]/30 hover:shadow-lg transition-all duration-300">
-                      <div className="space-y-2">
-                        <span className="inline-block px-2 py-0.5 bg-slate-50 border border-slate-100 font-mono text-[8px] font-bold text-slate-400 uppercase rounded">
-                          ROLE // {job.badge}
-                        </span>
-                        <h3 className="text-lg font-black text-slate-800 uppercase leading-none">{job.title}</h3>
-                        <div className="flex flex-wrap items-center gap-3 text-slate-500 font-mono text-[9px] uppercase tracking-wider">
-                          <span className="text-[#0056b3] font-bold">{job.type}</span>
-                          <span>•</span>
-                          <span>{job.exp}</span>
-                        </div>
+            <div className="space-y-12">
+              <div className="text-center space-y-4 max-w-xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 uppercase tracking-tight">Active Team Openings</h2>
+                <p className="text-slate-500 text-sm leading-relaxed">Select one of our open engineering or administration positions to submit your credentials directly into our database.</p>
+              </div>
+              <div className="space-y-6">
+                {jobs.map((job, i) => (
+                  <div key={i} className="p-8 border border-slate-100 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 hover:border-[#0056b3]/30 hover:shadow-lg transition-all duration-300">
+                    <div className="space-y-2">
+                      <span className="inline-block px-2 py-0.5 bg-slate-50 border border-slate-100 font-mono text-[8px] font-bold text-slate-400 uppercase rounded">
+                        ROLE // {job.badge}
+                      </span>
+                      <h3 className="text-lg font-black text-slate-800 uppercase leading-none">{job.title}</h3>
+                      <div className="flex flex-wrap items-center gap-3 text-slate-500 font-mono text-[9px] uppercase tracking-wider">
+                        <span className="text-[#0056b3] font-bold">{job.type}</span>
+                        <span>•</span>
+                        <span>{job.exp}</span>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onSelectJob) onSelectJob(job.title);
-                          setSelectedJobLocal(job.title);
-                          setShowApplyForm(true);
-                        }}
-                        className="px-6 py-3 bg-[#0056b3] hover:bg-[#00438b] text-white font-mono font-bold rounded text-[9px] uppercase tracking-widest transition-all self-stretch sm:w-auto text-center shadow-md shadow-blue-500/10"
-                      >
-                        EXECUTE APPLICATION
-                      </button>
                     </div>
-                  ))}
-                </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onSelectJob) onSelectJob(job.title);
+                        if (onNavigate) onNavigate('job-apply');
+                      }}
+                      className="px-6 py-3 bg-[#0056b3] hover:bg-[#00438b] text-white font-mono font-bold rounded text-[9px] uppercase tracking-widest transition-all self-stretch sm:w-auto text-center shadow-md shadow-blue-500/10"
+                    >
+                      EXECUTE APPLICATION
+                    </button>
+                  </div>
+                ))}
               </div>
-            ) : (
-              <div className="space-y-8 animate-in fade-in duration-300 bg-white">
-                <button
-                  onClick={() => setShowApplyForm(false)}
-                  className="flex items-center gap-2 text-xs font-bold text-[#0056b3] uppercase tracking-widest hover:underline mb-8"
-                >
-                  ← Back to Openings
-                </button>
-                <JobApplyPage selectedJob={selectedJobLocal} onNavigate={onNavigate || (() => {})} />
-              </div>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -599,7 +584,7 @@ const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
   </div>
 );
 
-const ContactSection = () => {
+const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [isContactSubmitted, setIsContactSubmitted] = useState(false);
 
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -643,13 +628,15 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen">
-      <PageHeader 
-        mainTitle="Contact Us"
-        subtitle="Thank you for your interest in HTC Africa High Tech Center. We look forward to seeing how we can be of service to your organization."
-      />
+    <section id="contact" className={hideHeader ? "" : "min-h-screen"}>
+      {!hideHeader && (
+        <PageHeader 
+          mainTitle="Contact Us"
+          subtitle="Thank you for your interest in HTC Africa High Tech Center. We look forward to seeing how we can be of service to your organization."
+        />
+      )}
       
-      <div className="bg-white py-24 px-4 overflow-hidden">
+      <div className={hideHeader ? "bg-white py-16 px-4" : "bg-white py-24 px-4 overflow-hidden"}>
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
           <div className="lg:w-[60%] flex flex-col">
              <h2 className="text-4xl md:text-6xl font-bold text-[#0056b3] mb-8 tracking-tighter">Get In Touch!</h2>
@@ -1927,7 +1914,7 @@ const ProductsDetailPage = ({ onNavigate, key }: { onNavigate: (v: View) => void
                  desc: "Cisco, Sophos, and Ubiquiti routers, enterprise switches & firewalls."
                },
                { 
-                 image: "https://images.unsplash.com/photo-1551808525-51a94da548ce?w=600&auto=format&fit=crop&q=60", 
+                 image: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&auto=format&fit=crop&q=60", 
                  title: "Servers & Storage",
                  desc: "Scale-out Dell PowerEdge servers, NAS, and redundant backup drives."
                },
