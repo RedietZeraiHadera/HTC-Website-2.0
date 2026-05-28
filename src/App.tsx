@@ -591,6 +591,23 @@ const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [isContactSubmitted, setIsContactSubmitted] = useState(false);
 
+  const countries = [
+    { code: 'TZ', prefix: '+255', flag: '🇹🇿', name: 'Tanzania', placeholder: '712 345 678' },
+    { code: 'KE', prefix: '+254', flag: '🇰🇪', name: 'Kenya', placeholder: '712 345 678' },
+    { code: 'UG', prefix: '+256', flag: '🇺🇬', name: 'Uganda', placeholder: '712 345 678' },
+    { code: 'RW', prefix: '+250', flag: '🇷🇼', name: 'Rwanda', placeholder: '712 345 678' },
+    { code: 'BI', prefix: '+257', flag: '🇧🇮', name: 'Burundi', placeholder: '712 345 678' },
+    { code: 'US', prefix: '+1', flag: '🇺🇸', name: 'United States', placeholder: '202-555-0143' },
+    { code: 'GB', prefix: '+44', flag: '🇬🇧', name: 'United Kingdom', placeholder: '7911 123456' },
+    { code: 'AE', prefix: '+971', flag: '🇦🇪', name: 'United Arab Emirates', placeholder: '50 123 4567' },
+    { code: 'ZA', prefix: '+27', flag: '🇿🇦', name: 'South Africa', placeholder: '82 123 4567' },
+    { code: 'IN', prefix: '+91', flag: '🇮🇳', name: 'India', placeholder: '98765 43210' },
+  ];
+
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [phoneVal, setPhoneVal] = useState('');
+
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -684,18 +701,67 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                        Phone Number<span className="text-red-500 ml-1">*</span>
                      </label>
                      <div className="flex gap-4">
-                        <div className="flex items-center gap-2 bg-[#f1f5f9] rounded-md px-4 py-4 w-32 cursor-pointer hover:bg-[#e2e8f0] transition-colors">
-                           <div className="flex items-center gap-2">
-                              <div className="w-5 h-3 bg-green-600 rounded-[2px] shadow-sm"></div>
-                              <ChevronDown size={14} className="text-slate-400" />
-                           </div>
+                        {/* Country Selector Container */}
+                        <div className="relative">
+                           <button
+                              type="button"
+                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                              className="flex items-center justify-between bg-[#f1f5f9] rounded-md px-4 py-4 w-36 hover:bg-[#e2e8f0] transition-colors focus:ring-2 focus:ring-[#0056b3] outline-none text-left h-full"
+                           >
+                              <span className="flex items-center gap-2">
+                                 <span className="text-lg">{selectedCountry.flag}</span>
+                                 <span className="font-bold text-slate-800 text-sm whitespace-nowrap">{selectedCountry.prefix}</span>
+                              </span>
+                              <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                           </button>
+
+                           {isDropdownOpen && (
+                              <>
+                                 {/* Overlay cover for light dismiss */}
+                                 <div 
+                                    className="fixed inset-0 z-40" 
+                                    onClick={() => setIsDropdownOpen(false)}
+                                 />
+                                 
+                                 <div className="absolute top-[105%] left-0 w-64 bg-white rounded-lg shadow-xl border border-slate-100 py-2 z-50 max-h-60 overflow-y-auto font-sans">
+                                    <div className="px-3 py-1.5 text-[9px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
+                                       Select Country
+                                    </div>
+                                    {countries.map((c) => (
+                                       <button
+                                          key={c.code}
+                                          type="button"
+                                          onClick={() => {
+                                             setSelectedCountry(c);
+                                             setIsDropdownOpen(false);
+                                          }}
+                                          className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-left transition-colors text-slate-700 text-sm ${selectedCountry.code === c.code ? 'bg-blue-50/50 font-bold text-[#0056b3]' : ''}`}
+                                       >
+                                          <span className="text-lg">{c.flag}</span>
+                                          <span className="font-mono text-xs font-bold text-slate-400 w-10">{c.prefix}</span>
+                                          <span className="truncate text-xs font-medium text-slate-700">{c.name}</span>
+                                       </button>
+                                    ))}
+                                 </div>
+                              </>
+                           )}
                         </div>
+                        {/* Hidden Input to store fully qualified phone value which handleContactSubmit will read */}
+                        <input 
+                           type="hidden" 
+                           name="phone" 
+                           value={`${selectedCountry.prefix} ${phoneVal}`} 
+                        />
+
+                        {/* Typed Value Input */}
                         <input 
                            type="tel" 
-                           name="phone"
-                           placeholder="+255 000 000 000"
+                           name="phone_local"
+                           value={phoneVal}
+                           onChange={(e) => setPhoneVal(e.target.value)}
+                           placeholder={selectedCountry.placeholder}
                            required
-                           className="flex-grow bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium" 
+                           className="flex-grow bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium text-slate-900" 
                         />
                      </div>
                   </div>
@@ -796,6 +862,9 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             <ul className="space-y-5 text-white/80 text-sm font-bold">
               <li className="flex items-center gap-3">
                  <MapPin size={18} className="text-[#00a9e0]" /> 1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam
+              </li>
+              <li className="flex items-center gap-3">
+                 <Mail size={18} className="text-[#00a9e0]" /> <a href="mailto:info@htc.co.tz" className="hover:underline">info@htc.co.tz</a>
               </li>
               <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => onNavigate('support')}>
                  Request & Apply
@@ -2889,11 +2958,11 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
              <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:htc@htc.co.tz" className="hover:underline font-bold text-white">htc@htc.co.tz</a>
+               GATEWAY MAIL: <a href="mailto:hrmanager@htc.co.tz" className="hover:underline font-bold text-white">hrmanager@htc.co.tz</a>
              </div>
            </div>
            <a 
-             href="mailto:htc@htc.co.tz?subject=Job Application - HTC Africa"
+             href="mailto:hrmanager@htc.co.tz?subject=Job Application - HTC Africa"
              className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
              <Mail size={13} /> SECURE MAIL ENVELOPE
@@ -3005,7 +3074,7 @@ Please review my credentials. I have attached my official Resume/CV to this mess
 Kind regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:hrmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
   };
 
@@ -3055,7 +3124,7 @@ ${formData.fullName}`;
       <PageHeader 
         title="APPLY NOW"
         mainTitle={`Application: ${selectedJob}`}
-        subtitle="Complete the form below or send your credentials directly via email to htc@htc.co.tz."
+        subtitle="Complete the form below or send your credentials directly via email to hrmanager@htc.co.tz."
       />
       <div className="bg-white py-24 px-4 font-sans">
         <div className="max-w-2xl mx-auto">
@@ -3063,9 +3132,9 @@ ${formData.fullName}`;
           <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
                <Mail size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Prefer direct email? Send your CV directly to <a href={`mailto:htc@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-[#0056b3] font-bold hover:underline">htc@htc.co.tz</a></span>
+               <span>Prefer direct email? Send your CV directly to <a href={`mailto:hrmanager@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-[#0056b3] font-bold hover:underline">hrmanager@htc.co.tz</a></span>
             </span>
-            <a href={`mailto:htc@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-xs uppercase font-bold tracking-wider text-[#0056b3] hover:underline whitespace-nowrap self-end sm:self-auto">
+            <a href={`mailto:hrmanager@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-xs uppercase font-bold tracking-wider text-[#0056b3] hover:underline whitespace-nowrap self-end sm:self-auto">
                Send Email &rarr;
             </a>
           </div>
@@ -3084,7 +3153,7 @@ ${formData.fullName}`;
               <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-3">
                 <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">// EMAIL DISPATCH INSTRUCTIONS</span>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  We have prepared your application packet. To complete delivery to <strong>htc@htc.co.tz</strong>, verify your details and send the generated email draft. 
+                  We have prepared your application packet. To complete delivery to <strong>hrmanager@htc.co.tz</strong>, verify your details and send the generated email draft. 
                 </p>
                 <p className="text-xs text-red-500 font-bold leading-relaxed">
                   ⚠️ Don't forget to attach your actual Resume/CV file ({formData.cvFile ? formData.cvFile.name : 'your resume PDF'}) to that email before clicking send!
@@ -3828,7 +3897,7 @@ Please review our inquiry and establish a custom SLA pipeline draft for our revi
 Best regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
     
     setIsSubmitted(true);
@@ -3854,7 +3923,7 @@ Please review our inquiry and establish a custom SLA pipeline draft for our revi
 Best regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
   };
 
@@ -3878,7 +3947,7 @@ ${formData.fullName}`;
                    Your <strong className="text-slate-900 font-bold">{selectedTier} SLA</strong> inquiry has been successfully registered in our client-relations system.
                 </p>
                 <p className="text-slate-500 text-xs leading-relaxed">
-                   An email draft has been generated to <strong className="text-[#0056b3]">htc@htc.co.tz</strong>. If your mail client did not open automatically, please click the button below to send your request directly.
+                   An email draft has been generated to <strong className="text-[#0056b3]">salesmanager@htc.co.tz</strong>. If your mail client did not open automatically, please click the button below to send your request directly.
                 </p>
              </div>
              <div className="flex flex-col gap-3 pt-4">
@@ -4220,7 +4289,7 @@ Please coordinate with us to confirm the audit window slot and arrange for the n
 Best regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
 
     setIsSubmitted(true);
@@ -4247,7 +4316,7 @@ Please coordinate with us to confirm the audit window slot and arrange for the n
 Best regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
   };
 
@@ -4264,7 +4333,7 @@ ${formData.fullName}`;
               Your technology audit & hardware demonstration request for <strong className="text-slate-900 font-bold">{formData.companyName}</strong> has been successfully registered.
             </p>
             <p className="text-slate-400 text-xs leading-relaxed">
-              We generated an automatic email handshake payload to <strong className="text-[#0056b3]">htc@htc.co.tz</strong>. If your mail browser did not dispatch, please trigger the direct handshake link below.
+              We generated an automatic email handshake payload to <strong className="text-[#0056b3]">salesmanager@htc.co.tz</strong>. If your mail browser did not dispatch, please trigger the direct handshake link below.
             </p>
           </div>
           <div className="flex flex-col gap-3 pt-4">
@@ -4549,7 +4618,7 @@ Please coordinate an active SLA dispatch response line as per our service tier p
 Regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:supportmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
 
     setIsSubmitted(true);
@@ -4575,7 +4644,7 @@ Please coordinate an active SLA dispatch response line as per our service tier p
 Regards,
 ${formData.fullName}`;
 
-    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    const mailtoUrl = `mailto:supportmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     window.location.href = mailtoUrl;
   };
 
@@ -4603,7 +4672,7 @@ ${formData.fullName}`;
               </a>
             </div>
             <p className="text-slate-500 text-xs leading-relaxed max-w-md mx-auto pt-4">
-              We generated an automated priority dispatch payload to <strong className="text-cyan-400">htc@htc.co.tz</strong>. If your email application failed to load, click below to trigger sending again.
+              We generated an automated priority dispatch payload to <strong className="text-cyan-400">supportmanager@htc.co.tz</strong>. If your email application failed to load, click below to trigger sending again.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 pt-6 relative z-10">
