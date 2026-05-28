@@ -67,6 +67,10 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
   };
 
   const navItems: { label: string; view: View; submenu?: { label: string; view: View; desc: string }[] }[] = [
+    {
+      label: 'HOME',
+      view: 'home',
+    },
     { 
       label: 'ABOUT US', 
       view: 'about-us',
@@ -825,10 +829,38 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   const [logs, setLogs] = useState<string[]>([]);
 
   const tanzaniaNodes = {
-    dar: { name: "Dar es Salaam HQ", speed: "10 Gbps", ping: "2ms", cpu: "14%" },
-    arusha: { name: "Arusha Branch", speed: "1 Gbps", ping: "14ms", cpu: "8%" },
-    mwanza: { name: "Mwanza Hub", speed: "1 Gbps", ping: "18ms", cpu: "11%" },
-    dodoma: { name: "Dodoma Center", speed: "10 Gbps", ping: "8ms", cpu: "28%" },
+    dar: { 
+      name: "Dar es Salaam HQ Hub (Shamo Towers Gateway)", 
+      short: "HQ-HUB",
+      speed: "10 Gbps Fibernet", 
+      ping: "2ms", 
+      cpu: "14%", 
+      desc: "HTC central core network cluster and SLA management node based out of Shamo Towers." 
+    },
+    arusha: { 
+      name: "Mbezi Beach Tower Telemetry Gateway", 
+      short: "MBEZI-TWR",
+      speed: "1 Gbps Microwave Link", 
+      ping: "14ms", 
+      cpu: "8%", 
+      desc: "Tower antenna space offering carrier colocations, active transceivers, & power backup generators." 
+    },
+    mwanza: { 
+      name: "National Broadband Backbone Interconnect (NICTBB)", 
+      short: "NICTBB-IX",
+      speed: "10 Gbps Fiber Peering", 
+      ping: "6ms", 
+      cpu: "11%", 
+      desc: "Direct TCRA interface delivering premium fiber loop redundancy and low latency peering." 
+    },
+    dodoma: { 
+      name: "GovNet Dedicated Government Bridge", 
+      short: "GOVNET-BDG",
+      speed: "10 Gbps Redundant SD-WAN", 
+      ping: "8ms", 
+      cpu: "28%", 
+      desc: "Secure ministerial client gateway offering document compliance routing and priority support audits." 
+    },
   };
 
   const runDiagnostics = () => {
@@ -967,6 +999,52 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               <p className="text-xs text-slate-400 leading-relaxed">Launch an automatic network diagnostic audit across our Tanzanian secure gateway modules.</p>
             </div>
 
+            {/* Run Digital Audit Metrics Panel */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {[
+                { 
+                  name: "Usability Metric", 
+                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.98), 98)}%` : '98%'),
+                  color: "text-blue-400",
+                  barColor: "bg-blue-400",
+                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.98, 98) : 98),
+                  desc: "UX flow audits"
+                },
+                { 
+                  name: "Digital Channel Metric", 
+                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.96), 96)}%` : '96%'),
+                  color: "text-cyan-400",
+                  barColor: "bg-cyan-400",
+                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.96, 96) : 96),
+                  desc: "Fiber packet delivery" 
+                },
+                { 
+                  name: "Action Tracker Metric", 
+                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 1.0), 100)}%` : '100%'),
+                  color: "text-emerald-400",
+                  barColor: "bg-emerald-400",
+                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 1.0, 100) : 100),
+                  desc: "SLA response tracking"
+                }
+              ].map((m, idx) => (
+                <div key={idx} className="bg-slate-950/50 border border-white/5 p-3 rounded-lg flex flex-col justify-between h-20 transition-all">
+                  <div className="flex flex-col text-left">
+                    <span className="text-[8px] font-mono font-bold text-slate-500 uppercase tracking-tight truncate">{m.name}</span>
+                    <span className="text-[7px] font-mono text-slate-600 truncate">{m.desc}</span>
+                  </div>
+                  <div className="mt-2 text-left">
+                    <div className="flex items-baseline justify-between">
+                      <span className={`text-base font-black font-mono leading-none ${m.color}`}>{m.val}</span>
+                      <span className="text-[6px] font-mono text-slate-500 hidden sm:inline">REALTIME</span>
+                    </div>
+                    <div className="w-full h-1 bg-white/5 rounded-full mt-1.5 overflow-hidden">
+                      <div className={`h-full ${m.barColor} transition-all duration-300`} style={{ width: `${m.pct}%` }} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Run Diagnostic layout */}
             <div className="bg-slate-950/75 p-5 rounded-xl border border-white/5 mb-6 space-y-4">
               {diagnosticState === 'idle' ? (
@@ -1055,7 +1133,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
                       onClick={() => setActiveNode(nodeKey)}
                       className={`p-2.5 rounded-lg border transition-all duration-300 ${isActive ? 'bg-[#0056b3]/20 border-[#00a9e0] text-white shadow-inner' : 'bg-[#040d1c] border-white/5 text-slate-500 hover:text-slate-300'}`}
                     >
-                      <div className="text-[10px] font-black uppercase font-mono">{nodeKey}</div>
+                      <div className="text-[10px] font-black uppercase font-mono">{node.short}</div>
                       <div className="text-[8px] font-mono text-slate-400 mt-1">{node.ping}</div>
                     </button>
                   );
@@ -1063,14 +1141,22 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               </div>
 
               {/* Active node specifications */}
-              <div className="bg-black/40 p-3 rounded border border-white/5 font-mono text-[9px] text-slate-400 flex justify-between items-center">
-                <div>
-                  <span className="text-white font-bold block">{tanzaniaNodes[activeNode].name}</span>
-                  <span className="text-slate-500">BANDWIDTH: {tanzaniaNodes[activeNode].speed}</span>
+              <div className="bg-black/40 p-3.5 rounded-lg border border-white/5 font-mono text-[9px] text-slate-400 space-y-2">
+                <div className="flex justify-between items-start border-b border-white/5 pb-2">
+                  <div>
+                    <span className="text-white font-bold block text-[10px] tracking-tight">{tanzaniaNodes[activeNode].name}</span>
+                    <span className="text-slate-500 font-medium">CAPACITY: {tanzaniaNodes[activeNode].speed}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[#00a9e0] font-bold block">CPU LOAD: {tanzaniaNodes[activeNode].cpu}</span>
+                    <span className="text-emerald-400 font-bold flex items-center gap-1 justify-end mt-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse animate-duration-1000" />
+                      CALIBRATED
+                    </span>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[#00a9e0] font-bold block">CPU: {tanzaniaNodes[activeNode].cpu}</span>
-                  <span className="text-green-400">STATUS: CALIBRATED</span>
+                <div className="text-slate-500 text-[8px] leading-relaxed italic">
+                  {tanzaniaNodes[activeNode].desc}
                 </div>
               </div>
             </div>
@@ -1914,7 +2000,7 @@ const ProductsDetailPage = ({ onNavigate, key }: { onNavigate: (v: View) => void
                  desc: "Cisco, Sophos, and Ubiquiti routers, enterprise switches & firewalls."
                },
                { 
-                 image: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&auto=format&fit=crop&q=60", 
+                 image: "https://images.unsplash.com/photo-1563770660941-20978e870e26?w=600&auto=format&fit=crop&q=60", 
                  title: "Servers & Storage",
                  desc: "Scale-out Dell PowerEdge servers, NAS, and redundant backup drives."
                },
@@ -2895,6 +2981,34 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
     }
   };
 
+  const triggerApplicationEmail = () => {
+    const mailSubject = `Job Application: ${selectedJob} - ${formData.fullName}`;
+    const mailBody = `Dear HTC Africa Recruiter,
+
+I am submitting my job application via the HTC Africa Careers Portal. Below are my candidate details:
+
+Position Applied For: ${selectedJob}
+Full Name: ${formData.fullName}
+Direct Contact Email: ${formData.email}
+Direct Contact Phone: ${formData.phone}
+Work Experience Tier: ${formData.experience}
+LinkedIn Profile: ${formData.linkedin || 'Not specified'}
+Uploaded Resume File: ${formData.cvFile ? formData.cvFile.name : 'No file chosen'}
+
+Cover Letter / Professional Message:
+------------------------------------------
+${formData.message.trim() || 'No additional cover remarks provided.'}
+------------------------------------------
+
+Please review my credentials. I have attached my official Resume/CV to this message.
+
+Kind regards,
+${formData.fullName}`;
+
+    const mailtoUrl = `mailto:htc@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    window.location.href = mailtoUrl;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -2926,6 +3040,9 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
     } catch (err) {
       console.error('Failed to save job application to localStorage:', err);
     }
+
+    // Direct email mailto dispatch
+    triggerApplicationEmail();
 
     setTimeout(() => {
       setIsSubmitting(false);
@@ -2962,16 +3079,33 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500">
                 <CheckCircle2 size={48} />
               </div>
-              <h3 className="text-3xl font-bold text-slate-900">Application Submitted!</h3>
-              <p className="text-slate-600 leading-relaxed max-w-md mx-auto">
-                Thank you for applying for the <span className="font-bold text-slate-900">{selectedJob}</span> position. Our recruitment team will review your credentials and reach out to you within 3-5 business days.
-              </p>
-              <button 
-                onClick={() => onNavigate('careers')}
-                className="mt-6 px-10 py-4 bg-[#0056b3] text-white font-bold rounded-md uppercase tracking-wider text-xs hover:bg-[#00438b] transition-all"
-              >
-                Back to careers
-              </button>
+              <h3 className="text-3xl font-bold text-slate-1000 uppercase tracking-tight">Application Draft Ready!</h3>
+              
+              <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-3">
+                <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">// EMAIL DISPATCH INSTRUCTIONS</span>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  We have prepared your application packet. To complete delivery to <strong>htc@htc.co.tz</strong>, verify your details and send the generated email draft. 
+                </p>
+                <p className="text-xs text-red-500 font-bold leading-relaxed">
+                  ⚠️ Don't forget to attach your actual Resume/CV file ({formData.cvFile ? formData.cvFile.name : 'your resume PDF'}) to that email before clicking send!
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={triggerApplicationEmail}
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
+                >
+                  🚀 📤 Send Application Email Handshake Now
+                </button>
+                <button 
+                  onClick={() => onNavigate('careers')}
+                  className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+                >
+                  &larr; Back to careers
+                </button>
+              </div>
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-8 bg-slate-50 p-10 md:p-14 border border-slate-100 rounded-2xl shadow-xl">
@@ -4768,6 +4902,39 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
 
 type View = 'home' | 'about-us' | 'products' | 'solutions' | 'services' | 'support' | 'digital-security' | 'fleet-fuel' | 'ict-services' | 'managed-it' | 'cloud-solutions' | 'networking' | 'voice-solutions' | 'cabling' | 'core-values' | 'process' | 'industries' | 'partnerships' | 'careers' | 'services-overview' | 'it-strategy' | 'sla' | 'job-apply' | 'admin-portal' | 'conference-systems' | 'public-address' | 'multimedia-control' | 'audit-demo' | 'core-support';
 
+const getParentView = (view: View): View => {
+  const parents: Record<string, View> = {
+    // Services child pages
+    'managed-it': 'services',
+    'cloud-solutions': 'services',
+    'networking': 'services',
+    'voice-solutions': 'services',
+    'cabling': 'services',
+    'it-strategy': 'services',
+    'sla': 'services',
+    'services-overview': 'services',
+
+    // Solutions child pages
+    'ict-services': 'solutions',
+    'digital-security': 'solutions',
+    'fleet-fuel': 'solutions',
+    'conference-systems': 'solutions',
+    'public-address': 'solutions',
+    'multimedia-control': 'solutions',
+
+    // Careers child pages
+    'job-apply': 'careers',
+
+    // About Us child pages
+    'process': 'about-us',
+    'core-values': 'about-us',
+    'industries': 'about-us',
+    'partnerships': 'about-us',
+    'careers': 'about-us',
+  };
+  return parents[view] || 'home';
+};
+
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [previousView, setPreviousView] = useState<View>('home');
@@ -4797,11 +4964,14 @@ export default function App() {
         {currentView !== 'home' && currentView !== 'admin-portal' && currentView !== 'audit-demo' && currentView !== 'core-support' && (
           <button 
             type="button"
-            onClick={() => setCurrentView('home')}
-            className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform hidden md:flex items-center gap-2 group"
+            onClick={() => setCurrentView(getParentView(currentView))}
+            className="fixed top-24 left-4 z-40 bg-white shadow-lg border border-slate-100 p-3 rounded-full text-[#0056b3] hover:scale-110 transition-transform flex items-center gap-2 group animate-in slide-in-from-left-4 duration-300 pointer-events-auto"
           >
-            <ArrowRight className="rotate-180" size={20} />
-            <span className="text-[10px] font-bold uppercase tracking-widest hidden group-hover:block pr-2">Back to Home</span>
+            <ArrowRight className="rotate-180" size={18} />
+            <span className="text-[10px] font-bold uppercase tracking-widest block sm:hidden pr-1">BACK</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest hidden sm:block pr-2">
+              Back to {getParentView(currentView) === 'home' ? 'Home' : getParentView(currentView).replace('-', ' ')}
+            </span>
           </button>
         )}
 
