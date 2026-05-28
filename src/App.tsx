@@ -2981,11 +2981,11 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
              <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:edietzeraaihadderra@gmail.com" className="hover:underline font-bold text-white">redietzeraaihadderra@gmail.com</a>
+               GATEWAY MAIL: <a href="mailto:hrmanager@htc.co.tz" className="hover:underline font-bold text-white">hrmanager@htc.co.tz</a>
              </div>
            </div>
            <a 
-             href="mailto:edietzeraaihadderra@gmail.com?subject=Job Application - HTC Africa"
+             href="mailto:hrmanager@htc.co.tz?subject=Job Application - HTC Africa"
              className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
              <Mail size={13} /> SECURE MAIL ENVELOPE
@@ -5004,6 +5004,11 @@ const simulateEmailFeedback = (
   let bodyText = "";
   let bodyHtml = "";
 
+  let htcToEmail = "";
+  let htcSubject = "";
+  let htcBodyText = "";
+  let htcBodyHtml = "";
+
   if (type === 'career') {
     fromName = "HTC Africa Recruitment Office";
     fromEmail = "hrmanager@htc.co.tz";
@@ -5054,6 +5059,50 @@ const simulateEmailFeedback = (
         </p>
       </div>
     `;
+
+    htcToEmail = "hrmanager@htc.co.tz";
+    htcSubject = `[HR DISPATCH] New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
+    htcBodyText = `Attention HR Team,\n\nA new candidate job application package has been submitted.\n\nCandidate Details:\n- Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Selected Position: ${details.jobTitle}\n- Experience: ${details.experience}\n- LinkedIn Profile: ${details.linkedin || 'None'}`;
+    htcBodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #ea580c; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #ea580c; margin: 0; font-size: 18px;">HTC INTERNAL RECRUITMENT ROUTER</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">DISPATCH REF: ${refId} // PRIVACY: CONFIDENTIAL HR ONLY</span>
+        </div>
+        <p>Attention HR Lead,</p>
+        <p>A new web application has been dispatched to the Shamo Towers HR queue for the position of <strong>${details.jobTitle || 'Cisco Network Engineer'}</strong>.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">CANDIDATE DOSSIER</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Full Name:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Email Address:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-family: monospace;">${details.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Direct Mobile:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Experience Index:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.experience}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">LinkedIn URL:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-family: monospace;">${details.linkedin || 'Not Provided'}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 16px; color: #ea580c; font-size: 12px; font-weight: bold;">
+          [ ACTION REQUIRED ]: Please log in to the HTC HR Admin Desk to schedule technical vetting or catalog candidate details.
+        </div>
+      </div>
+    `;
   } else if (type === 'contact') {
     fromName = "HTC Africa Client Relations";
     fromEmail = "info@htc.co.tz";
@@ -5092,6 +5141,50 @@ const simulateEmailFeedback = (
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
           This feedback confirmation was dispatched securely on behalf of info@htc.co.tz.
+        </p>
+      </div>
+    `;
+
+    htcToEmail = "info@htc.co.tz";
+    htcSubject = `[CRM NEW TICKET] Web Contact Form - Client: ${details.company || 'Personal'}`;
+    htcBodyText = `Hi Sales Team,\n\nA new commercial handshake inquiry has bypassed normal ticketers.\n\nInquirer Particulars:\n- Name: ${details.fullName}\n- Org: ${details.company || 'Personal'}\n- Phone: ${details.phone}\n- Email: ${details.email}\n- Note/Issue: ${details.concern || 'None'}`;
+    htcBodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #2563eb; margin: 0; font-size: 18px;">HTC SALES & CLIENT DISPATCH ROUTER</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">ROUTED Ref: ${refId} // STATUS: ACTIVE</span>
+        </div>
+        <p>Hi Sales & Client Services Team,</p>
+        <p>A corporate or personal lead has dispatched an organic inquiry from our public digital portal contact form.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">SUBMITTED FORM DATA</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Sender Name:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Organization:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.company || 'Personal Client'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Direct Phone:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Direct Email:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-family: monospace;">${details.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; vertical-align: top;">IT Concern Note:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-style: italic; line-height: 1.4;">"${details.concern || 'None provided.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8;">
+          CRM Agent Action: Please categorize this lead, record details, and call back within standard 24-hour schedules.
         </p>
       </div>
     `;
@@ -5140,6 +5233,54 @@ const simulateEmailFeedback = (
         </p>
       </div>
     `;
+
+    htcToEmail = "salesmanager@htc.co.tz";
+    htcSubject = `[SLA DEAL INBOUND] Enterprise Handshake Custom Request - Company: ${details.company}`;
+    htcBodyText = `Attention Sales Director,\n\nAn enterprise representative has solicited specialized SLA terms.\n\nSLA Config Matrix:\n- Requested SLA: ${details.tier}\n- Firm Name: ${details.company}\n- Contact Personnel: ${details.fullName}\n- Tel Number: ${details.phone}\n- Email Address: ${details.email}\n- Specific parameters: ${details.specialNeeds || 'None'}`;
+    htcBodyHtml = `
+      <div style="font-family: sans-serif; color: #cbd5e1; background-color: #030914; padding: 24px; border-radius: 8px; border: 1px solid #1e293b; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 18px; font-weight: bold; letter-spacing: 1px;">HTC ENTERPRISE DEALS DISPATCH</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #00a9e0;">SLA DEAL PIPELINE ROUTER // REF: ${refId}</span>
+        </div>
+        <p>Attention Sales Manager,</p>
+        <p>A corporate representative has requested customized Service Level Agreement (SLA) terms via the enterprise portal.</p>
+        
+        <div style="background-color: #0b1329; border: 1px solid #1e293b; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #00a9e0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; font-family: monospace;">// INBOUND SLA CORE ENVELOPE</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; color: #cbd5e1; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; width: 40%;">Requested SLA:</td>
+              <td style="padding: 6px 0; color: #00a9e0; font-weight: bold; font-family: monospace;">${details.tier} SLA TIER</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Enterprise Client:</td>
+              <td style="padding: 6px 0; color: #ffffff; font-weight: bold;">${details.company}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Contact Agent:</td>
+              <td style="padding: 6px 0; color: #ffffff;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Hotline Tel:</td>
+              <td style="padding: 6px 0; color: #00a9e0; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Client Email:</td>
+              <td style="padding: 6px 0; color: #ffffff; font-family: monospace;">${details.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Stated Needs:</td>
+              <td style="padding: 6px 0; color: #94a3b8; font-style: italic;">"${details.specialNeeds || 'No special clauses requested.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 11px; border-top: 1px solid #1e293b; padding-top: 12px; color: #64748b; font-family: monospace;">
+          SYSTEM CRITICAL: Compile dedicated response ratios for client-end network systems. Dial the Hotline within 4 hours.
+        </p>
+      </div>
+    `;
   } else if (type === 'audit') {
     fromName = "HTC Africa Core Technical Dispatch";
     fromEmail = "salesmanager@htc.co.tz";
@@ -5182,6 +5323,50 @@ const simulateEmailFeedback = (
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
           Technical Scheduling routing configured to salesmanager@htc.co.tz.
+        </p>
+      </div>
+    `;
+
+    htcToEmail = "salesmanager@htc.co.tz";
+    htcSubject = `[SURVEY INBOUND] Tech Audit & Equipment Demonstration Request - ${details.companyName}`;
+    htcBodyText = `Attention Engineering Coordinators,\n\nA web scheduler has asked for a physical site survey and tech demo.\n\nDemonstration Scope:\n- Subject Focus: ${details.serviceDomain}\n- Target Date: ${details.preferredDate}\n- Organization: ${details.companyName}\n- Coordinator: ${details.fullName}\n- Tel Contact: ${details.phone}\n- Brief Notes: ${details.notes || 'None'}`;
+    htcBodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 18px;">HTC FIELD SURVEY ENGINEER CHANNEL</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">DISPATCH Ref: ${refId} // PRIVILEGES: LEVEL 3 SURVEYOR</span>
+        </div>
+        <p>Attention Field Engineering & Core Architect Union,</p>
+        <p>An authorized coordinator has requested a physical/on-site facility audit & equipment demonstration directly at their workspace.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">Physical Site Parameters</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Primary Integration:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.serviceDomain}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Proposed Calendar Window:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-weight: bold; font-family: monospace;">${details.preferredDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Corporate Entity:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.companyName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Point of Contact:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.fullName} (${details.email} / ${details.phone})</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Scope Logistics Notes:</td>
+              <td style="padding: 6px 0; color: #64748b; font-style: italic;">"${details.notes || 'No custom deployment needs noted.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-weight: bold; color: #0056b3; font-size: 12px;">
+          [ACTION DIRECTIVE]: Mobilize surveyor kit bags (with Dante audio configurations, biometric readers, and network diagnostics) matching this date window.
         </p>
       </div>
     `;
@@ -5230,6 +5415,50 @@ const simulateEmailFeedback = (
         </p>
       </div>
     `;
+
+    htcToEmail = "supportmanager@htc.co.tz";
+    htcSubject = `[🔥 SEVERE INCIDENT DISPATCH] PRIORITY: ${details.urgency} // Outage Alert - Ref: ${refId}`;
+    htcBodyText = `CRITICAL INCIDENT ALERT!\n\nA priority outage report has been submitted.\n\nIncident Details:\n- Ticket: ${refId}\n- Severity/Priority: ${details.urgency}\n- Corporate Account: ${details.companyName}\n- Contact: ${details.fullName}\n- Tel Number: ${details.phone}\n- Outage Summary: ${details.description}`;
+    htcBodyHtml = `
+      <div style="font-family: sans-serif; color: #cbd5e1; background-color: #0a0101; padding: 24px; border-radius: 8px; border: 1px solid #ef4444; text-align: left;">
+        <div style="border-bottom: 2px solid #ef4444; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #ef4444; margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 1px;">🚨 HTC NETWORKING CENTRAL DISPATCH</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #f87171;">TICKET RELAY: ${refId} // EXTREME ESCALATION QUEUE</span>
+        </div>
+        <p>🚨 ACTIVE NETWORK OUTAGE INCIDENT REPORTED:</p>
+        <p>A critical support session request has breached normal support pipelines. Flashing visual alerts are triggered in Shamo Towers control room.</p>
+        
+        <div style="background-color: #1a0808; border: 1px solid #ef4444/35; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #f87171; border-bottom: 1px solid #331515; padding-bottom: 8px; font-family: monospace;">CRITICAL DISPATCH PAYLOAD</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; color: #cbd5e1; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #f87171; font-weight: 600; width: 40%; font-family: monospace;">Urgency Index:</td>
+              <td style="padding: 6px 0; color: #ef4444; font-weight: bold; font-family: monospace; font-size: 13px;">${details.urgency}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Calling Company:</td>
+              <td style="padding: 6px 0; color: #ffffff; font-weight: bold;">${details.companyName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Sender Persona:</td>
+              <td style="padding: 6px 0; color: #ffffff;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Hotline Callbacks:</td>
+              <td style="padding: 6px 0; color: #00a9e0; font-family: monospace;">${details.phone} // ${details.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace; vertical-align: top;">Outage logs / Status:</td>
+              <td style="padding: 6px 0; color: #fecaca; line-height: 1.4; font-style: italic;">"${details.description}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-weight: bold; color: #f87171; font-size: 12px;">
+          🚨 [EMERGENCY PROTOCOL]: On-call rapid network support response teams are mobilized instantly. Dial direct callback line ${details.phone} immediately.
+        </p>
+      </div>
+    `;
   }
 
   const newEmail: SimulatedEmail = {
@@ -5244,16 +5473,33 @@ const simulateEmailFeedback = (
     type
   };
 
+  const htcEmail: SimulatedEmail = {
+    id: refId + "-INT",
+    to: htcToEmail || "info@htc.co.tz",
+    subject: htcSubject || "Web Notification",
+    fromName: `${details.fullName || 'Valued Client'} (via Portal)`,
+    fromEmail: details.email || 'portal@htc.co.tz',
+    date: dateStr,
+    bodyText: htcBodyText || "Notification Content",
+    bodyHtml: htcBodyHtml || "<p>Notification content is empty</p>",
+    type
+  };
+
   try {
     const existing = localStorage.getItem('htc_simulated_emails');
     const list = existing ? JSON.parse(existing) : [];
-    list.unshift(newEmail);
+    
+    // Unshift both emails (so they appear at the top of the feed)
+    list.unshift(htcEmail); // HTC inbound
+    list.unshift(newEmail); // Applicant inbound receipt
+    
     localStorage.setItem('htc_simulated_emails', JSON.stringify(list));
     
-    // Dispatch custom event
+    // Dispatch custom events for live updates in the widget and logs view
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: newEmail }));
+    window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: htcEmail }));
   } catch (err) {
-    console.error("Failed to persist simulated email confirmation", err);
+    console.error("Failed to persist simulated email confirmations", err);
   }
 };
 
