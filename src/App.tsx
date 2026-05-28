@@ -645,6 +645,16 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       console.error('Failed to save contact submission to localStorage:', err);
     }
     
+    if (typeof (window as any).__htc_simulate_email === 'function') {
+      (window as any).__htc_simulate_email(email, 'contact', {
+        fullName: `${firstName} ${lastName}`.trim() || 'Valued Client',
+        company,
+        email,
+        phone,
+        concern
+      });
+    }
+
     setIsContactSubmitted(true);
   };
 
@@ -3082,6 +3092,17 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
       console.error('Failed to save job application to localStorage:', err);
     }
 
+    if (typeof (window as any).__htc_simulate_email === 'function') {
+      (window as any).__htc_simulate_email(formData.email, 'career', {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        experience: formData.experience,
+        linkedin: formData.linkedin,
+        jobTitle: selectedJob
+      });
+    }
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -3854,6 +3875,17 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
       console.error('Failed to save SLA submission to localStorage:', err);
     }
 
+    if (typeof (window as any).__htc_simulate_email === 'function') {
+      (window as any).__htc_simulate_email(formData.email, 'sla', {
+        fullName: formData.fullName.trim(),
+        company: formData.companyName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        tier: selectedTier || 'Premium',
+        specialNeeds: formData.specialNeeds.trim()
+      });
+    }
+
     setIsSubmitted(true);
   };
 
@@ -4209,6 +4241,18 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
       console.error('Failed to save Audit & Demo submission to localStorage:', err);
     }
 
+    if (typeof (window as any).__htc_simulate_email === 'function') {
+      (window as any).__htc_simulate_email(formData.email, 'audit', {
+        fullName: formData.fullName.trim(),
+        companyName: formData.companyName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        serviceDomain: formData.serviceDomain,
+        preferredDate: formData.preferredDate,
+        notes: formData.notes.trim()
+      });
+    }
+
     setIsSubmitted(true);
   };
 
@@ -4499,6 +4543,17 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
       localStorage.setItem('htc_contact_submissions', JSON.stringify(submissions));
     } catch (err) {
       console.error('Failed to save Core support incident to localStorage:', err);
+    }
+
+    if (typeof (window as any).__htc_simulate_email === 'function') {
+      (window as any).__htc_simulate_email(formData.email, 'support', {
+        fullName: formData.fullName.trim(),
+        companyName: formData.companyName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        urgency: formData.urgency,
+        description: formData.description.trim()
+      });
     }
 
     setIsSubmitted(true);
@@ -4872,6 +4927,607 @@ const getParentView = (view: View): View => {
   return parents[view] || 'home';
 };
 
+interface SimulatedEmail {
+  id: string;
+  to: string;
+  subject: string;
+  fromName: string;
+  fromEmail: string;
+  date: string;
+  bodyText: string;
+  bodyHtml: string;
+  type: 'contact' | 'career' | 'sla' | 'audit' | 'support';
+}
+
+const simulateEmailFeedback = (
+  to: string,
+  type: 'contact' | 'career' | 'sla' | 'audit' | 'support',
+  details: Record<string, string>
+) => {
+  const dateStr = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  
+  const refId = "HTC-" + type.toUpperCase() + "-" + Math.floor(10000 + Math.random() * 90000);
+  
+  let subject = "";
+  let fromName = "";
+  let fromEmail = "";
+  let bodyText = "";
+  let bodyHtml = "";
+
+  if (type === 'career') {
+    fromName = "HTC Africa Recruitment Office";
+    fromEmail = "hrmanager@htc.co.tz";
+    subject = `[RECEIVED] Job Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
+    bodyText = `Dear ${details.fullName},\n\nWe have successfully received your job application for the ${details.jobTitle} position via the HTC Africa Careers Portal.\n\nApplication Details:\n- Full Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Experience Tier: ${details.experience}\n- Reference ID: ${refId}\n\nOur HR evaluation team is currently auditing your credentials. Thank you for your interest in joining the HTC Africa family in Shamo Towers.\n\nBest regards,\nHTC Africa HR Recruitment`;
+    bodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 20px;">HTC AFRICA HUMAN RESOURCES</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">REF: ${refId} // SECURITY LEVEL: INTERNAL</span>
+        </div>
+        <p>Dear <strong>${details.fullName}</strong>,</p>
+        <p>This is an automated handshake confirmation. We have successfully received and cataloged your job application packet for the position of <strong>${details.jobTitle || 'Cisco Network Engineer'}</strong> directly in our careers dispatch router.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">SUBMISSION SNAPSHOT</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Position:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.jobTitle || 'Cisco Network Engineer'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Full Name:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Contact Phone:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Experience Tier:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.experience}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">LinkedIn Profile:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-family: monospace;">${details.linkedin || 'None Provided'}</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.5; color: #475569;">
+          <strong>Next Action Sequence:</strong><br>
+          If your background matches our physical networking/AV core needs, our talent coordinator will reach out to schedule a technical screening or on-site meeting at our Shamo Towers headquarters.
+        </p>
+
+        <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
+          This is an automated transmission confirming delivery directly to hrmanager@htc.co.tz. Do not reply to this email thread.
+        </p>
+      </div>
+    `;
+  } else if (type === 'contact') {
+    fromName = "HTC Africa Client Relations";
+    fromEmail = "info@htc.co.tz";
+    subject = `[CONFIRMATION] Inquiry Handshake Received - Ref: ${refId}`;
+    bodyText = `Dear ${details.fullName},\n\nThank you for reaching out to HTC Africa. We have successfully registered your inquiry.\n\nYour Details:\n- Full Name: ${details.fullName}\n- Company: ${details.company || 'Not Specified'}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Your IT Concern: ${details.concern || 'General consultation'}\n\nOur service managers will investigate your request and follow up within 24 business hours. Thank you for choosing HTC Africa.\n\nKind regards,\nHTC Africa Client Support Team`;
+    bodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 20px;">HTC AFRICA SUPPORT</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">TICKET REF: ${refId} // SLA CHANNEL: PUBLIC</span>
+        </div>
+        <p>Dear <strong>${details.fullName}</strong>,</p>
+        <p>Thank you for initiating communication with us. Our client relationship matrix has registered your support dispatch profile.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">INQUIRY PROFILE</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Organization:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.company || 'Personal Client'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Direct Phone:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Stated IT Concern:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-style: italic;">"${details.concern || 'None provided.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.5; color: #475569;">
+          <strong>Target Follow-up SLA:</strong> Our team is committed to analyzing physical infrastructure concerns quickly. A support agent has been assigned to contact you within 24 business hours at the telephone number provided.
+        </p>
+
+        <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
+          This feedback confirmation was dispatched securely on behalf of info@htc.co.tz.
+        </p>
+      </div>
+    `;
+  } else if (type === 'sla') {
+    fromName = "HTC Africa Enterprise SLA Team";
+    fromEmail = "salesmanager@htc.co.tz";
+    subject = `PROPOSAL: Custom ${details.tier || 'Premium'} SLA Handshake Config - Ref: ${refId}`;
+    bodyText = `Dear ${details.fullName},\n\nWe have received your custom Service Level Agreement (SLA) solicitation.\n\nSLA Requisition Summary:\n- SLA Tier: ${details.tier} SLA\n- Organization: ${details.company}\n- Contact Personnel: ${details.fullName}\n- Hotline Phone: ${details.phone}\n- Special Requests/Notes: ${details.specialNeeds || 'None specified.'}\n\nOur service directors are formulating your custom legal SLA framework. A digital PDF outline will be dispatched to you shortly.\n\nBest regards,\nHTC Africa Solutions & Sales Unit`;
+    bodyHtml = `
+      <div style="font-family: sans-serif; color: #cbd5e1; background-color: #030914; padding: 24px; border-radius: 8px; border: 1px solid #1e293b; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 1px;">HTC AFRICA SYSTEM SLA</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #00a9e0;">SLA PIPELINE ACCESS // REF: ${refId}</span>
+        </div>
+        <p>Dear Representative <strong>${details.fullName}</strong>,</p>
+        <p>Your request for a custom <strong style="color: #0056b3;">${details.tier} SLA Contract</strong> draft has bypassed standard ticketing queues and logged directly in our Sales Desk router database.</p>
+        
+        <div style="background-color: #0b1329; border: 1px solid #1e293b; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #00a9e0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; font-family: monospace;">// REQUISITION SUMMARY</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; color: #cbd5e1; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; width: 40%;">Tier Request:</td>
+              <td style="padding: 6px 0; color: #00a9e0; font-weight: bold; font-family: monospace;">${details.tier} SLA TIER</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Firm / Organization:</td>
+              <td style="padding: 6px 0; color: #ffffff; font-weight: bold;">${details.company}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Secure Hotline Prefix:</td>
+              <td style="padding: 6px 0; color: #ffffff; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600;">Compliance Notes:</td>
+              <td style="padding: 6px 0; color: #94a3b8; font-style: italic;">"${details.specialNeeds || 'No supplementary terms specified.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.5; color: #94a3b8;">
+          Our technical account manager is compiling standard and customized response schedules for your physical hardware, CCTV gateway systems, or Dante AV network loops. A detailed project executive will connect within 4 hours.
+        </p>
+
+        <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #1e293b; padding-top: 12px; color: #64748b; font-family: monospace; font-style: italic;">
+          CONFIDENTIAL TRANSMISSION ROUTED DIRECTLY TO salesmanager@htc.co.tz.
+        </p>
+      </div>
+    `;
+  } else if (type === 'audit') {
+    fromName = "HTC Africa Core Technical Dispatch";
+    fromEmail = "salesmanager@htc.co.tz";
+    subject = `CONFIRMED: On-Site Audit & Demo Initiative - Ref: ${refId}`;
+    bodyText = `Dear ${details.fullName},\n\nWe have scheduled your on-site technology audit & hardware equipment demonstration.\n\nAudit Parameters:\n- Category: ${details.serviceDomain}\n- Scheduled On: ${details.preferredDate}\n- Organization: ${details.companyName}\n- Contact Rep: ${details.fullName}\n- Supplementary Directives: ${details.notes || 'None specified.'}\n\nOur engineering team will confirm details shortly. Best regards,\nHTC Africa Solution Architects Unit`;
+    bodyHtml = `
+      <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
+        <div style="border-bottom: 2px solid #0056b3; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #0056b3; margin: 0; font-size: 20px;">HTC TECH AUDIT SCHEDULE</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #64748b;">SCHED Ref: ${refId} // SECURITY CLEARANCE: LEVEL 2</span>
+        </div>
+        <p>Dear <strong>${details.fullName}</strong>,</p>
+        <p>Your requisition for an official on-site equipment demonstration and facility tech audit for <strong>${details.companyName}</strong> has been successfully registered.</p>
+        
+        <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">AUDIT SCHEDULING DISPATCH</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600; width: 40%;">Primary Target Domain:</td>
+              <td style="padding: 6px 0; color: #0f172a; font-weight: bold;">${details.serviceDomain}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Proposed Calendar Window:</td>
+              <td style="padding: 6px 0; color: #0056b3; font-weight: bold; font-family: monospace;">${details.preferredDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Organization Scope:</td>
+              <td style="padding: 6px 0; color: #0f172a;">${details.companyName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Special instructions:</td>
+              <td style="padding: 6px 0; color: #64748b; font-style: italic;">"${details.notes || 'None specified.'}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.5; color: #475569;">
+          <strong>Deployment Notice:</strong> Our core engineers will bring functional Dante-enabled network units, wireless conference setups, and live integration telemetry kits to showcase during the physical site survey.
+        </p>
+
+        <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
+          Technical Scheduling routing configured to salesmanager@htc.co.tz.
+        </p>
+      </div>
+    `;
+  } else if (type === 'support') {
+    fromName = "HTC Support Operations Desk";
+    fromEmail = "supportmanager@htc.co.tz";
+    subject = `[CRITICAL TRACE: ${refId}] Core Support Operations - Active Line Init`;
+    bodyText = `ALERT: Critical Incident Thread Registered.\n\nSupport Ticket Particulars:\n- Ticket ID: ${refId}\n- Priority Level: ${details.urgency}\n- Business Client: ${details.companyName}\n- Contact Rep: ${details.fullName}\n- Hotline: ${details.phone}\n- Detailed Description:\n"${details.description}"\n\nOur engineering shift lead has been alerted. Your active line is initiated. Emergency dial line +255-712-345-678.`;
+    bodyHtml = `
+      <div style="font-family: sans-serif; color: #cbd5e1; background-color: #030914; padding: 24px; border-radius: 8px; border: 1px solid #ef4444; text-align: left;">
+        <div style="border-bottom: 2px solid #ef4444; padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 style="color: #ef4444; margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 1px;">⚠️ HTC CORE DISPATCH</h2>
+          <span style="font-size: 11px; font-family: monospace; color: #f87171;">TICKET ID: ${refId} // PRIORITY LEVEL: ${details.urgency}</span>
+        </div>
+        <p>Dear <strong>${details.fullName}</strong>,</p>
+        <p>At <strong>${dateStr}</strong>, we recorded an active priority support incident ticket on behalf of <strong style="color: #ffffff;">${details.companyName}</strong>.</p>
+        
+        <div style="background-color: #0b1329; border: 1px solid #ef4444/20; border-radius: 6px; padding: 16px; margin: 20px 0;">
+          <h3 style="margin-top: 0; font-size: 13px; color: #ef4444; border-bottom: 1px solid #1e293b; padding-bottom: 8px; font-family: monospace;">SYSTEM ALERT TELEMETRY</h3>
+          <table style="width: 100%; font-size: 12px; border-collapse: collapse; color: #cbd5e1; text-align: left;">
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; width: 40%; font-family: monospace;">Urgency Index:</td>
+              <td style="padding: 6px 0; color: #ef4444; font-weight: bold; font-family: monospace;">${details.urgency}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Contact Person:</td>
+              <td style="padding: 6px 0; color: #ffffff;">${details.fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Hotline Link:</td>
+              <td style="padding: 6px 0; color: #00a9e0; font-family: monospace;">${details.phone}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #94a3b8; font-weight: 600; font-family: monospace;">Incident Report:</td>
+              <td style="padding: 6px 0; color: #cbd5e1; font-style: italic;">"${details.description}"</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="font-size: 13px; line-height: 1.5; color: #94a3b8;">
+          <strong>Emergency Routing Active:</strong> Our Shamo Tower dispatch engineers have received this payload. The shift lead has initiated active SLA guidelines for your organization.
+        </p>
+
+        <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #ef4444; padding-top: 12px; color: #7f1d1d; font-family: monospace;">
+          COMS RELAY ACTIVE AT PORT: supportmanager@htc.co.tz.
+        </p>
+      </div>
+    `;
+  }
+
+  const newEmail: SimulatedEmail = {
+    id: refId,
+    to,
+    subject,
+    fromName,
+    fromEmail,
+    date: dateStr,
+    bodyText,
+    bodyHtml,
+    type
+  };
+
+  try {
+    const existing = localStorage.getItem('htc_simulated_emails');
+    const list = existing ? JSON.parse(existing) : [];
+    list.unshift(newEmail);
+    localStorage.setItem('htc_simulated_emails', JSON.stringify(list));
+    
+    // Dispatch custom event
+    window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: newEmail }));
+  } catch (err) {
+    console.error("Failed to persist simulated email confirmation", err);
+  }
+};
+
+function ApplierEmailSimulatorWidget() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [emails, setEmails] = useState<SimulatedEmail[]>([]);
+  const [selectedEmail, setSelectedEmail] = useState<SimulatedEmail | null>(null);
+  const [search, setSearch] = useState('');
+  const [activeToast, setActiveToast] = useState<{ id: string; email: string; subject: string } | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const loadEmails = () => {
+      try {
+        const stored = localStorage.getItem('htc_simulated_emails');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setEmails(parsed);
+          setUnreadCount(parsed.length);
+        }
+      } catch (err) {
+        console.error("Failed to load simulated emails", err);
+      }
+    };
+    loadEmails();
+
+    const handleNewEmail = (e: any) => {
+      const email = e.detail as SimulatedEmail;
+      setEmails(prev => [email, ...prev]);
+      setSelectedEmail(email);
+      setUnreadCount(prev => prev + 1);
+      
+      setActiveToast({
+        id: email.id,
+        email: email.to,
+        subject: email.subject
+      });
+    };
+
+    window.addEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
+    (window as any).__htc_simulate_email_impl = simulateEmailFeedback;
+    (window as any).__htc_simulate_email = (to: string, type: 'contact' | 'career' | 'sla' | 'audit' | 'support', details: any) => {
+      if (typeof (window as any).__htc_simulate_email_impl === 'function') {
+        (window as any).__htc_simulate_email_impl(to, type, details);
+      }
+    };
+
+    return () => {
+      window.removeEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeToast) {
+      const timer = setTimeout(() => {
+        setActiveToast(null);
+      }, 7000);
+      return () => clearTimeout(timer);
+    }
+  }, [activeToast]);
+
+  const handleClear = () => {
+    localStorage.removeItem('htc_simulated_emails');
+    setEmails([]);
+    setSelectedEmail(null);
+    setUnreadCount(0);
+  };
+
+  const handleOpenSandbox = () => {
+    setIsOpen(true);
+    setUnreadCount(0);
+    if (emails.length > 0 && !selectedEmail) {
+      setSelectedEmail(emails[0]);
+    }
+  };
+
+  const filteredEmails = emails.filter(e => 
+    e.to.toLowerCase().includes(search.toLowerCase()) ||
+    e.subject.toLowerCase().includes(search.toLowerCase()) ||
+    e.fromName.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <>
+      <AnimatePresence>
+        {activeToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-24 right-4 sm:right-8 z-50 max-w-sm bg-slate-900 border border-emerald-500/30 text-white rounded-xl shadow-2xl p-4 font-sans flex flex-col gap-2.5 shadow-emerald-500/5 cursor-pointer"
+            onClick={handleOpenSandbox}
+          >
+            <div className="flex justify-between items-start">
+              <div className="flex gap-2 items-center text-emerald-400 font-bold font-mono text-[10px] uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                <span>Auto-Reply Feedback Sent!</span>
+              </div>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setActiveToast(null); }}
+                className="text-white/40 hover:text-white p-1 rounded hover:bg-white/5"
+              >
+                <X size={12} />
+              </button>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                <Mail size={18} />
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-xs text-white/50 truncate font-semibold">Recipient: <strong className="text-white font-bold">{activeToast.email}</strong></span>
+                <span className="text-[11px] text-white/80 font-bold truncate mt-0.5">{activeToast.subject}</span>
+              </div>
+            </div>
+            <div className="text-[10px] text-[#00a9e0] font-mono tracking-widest uppercase font-extrabold flex justify-end gap-1 items-center hover:underline">
+              <span>View In Applier Sandbox</span> &rarr;
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="fixed bottom-6 right-6 z-50">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => { 
+            if (isOpen) {
+              setIsOpen(false);
+            } else {
+              handleOpenSandbox();
+            }
+          }}
+          className="flex items-center gap-2.5 px-5 py-4 bg-slate-900 hover:bg-slate-950 text-white rounded-full shadow-2xl border border-white/5 font-sans relative"
+        >
+          {unreadCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 bg-emerald-500 text-white font-black text-[10px] rounded-full flex items-center justify-center px-1 border border-slate-900 animate-pulse">
+              {unreadCount}
+            </span>
+          )}
+          <div className="w-5 h-5 bg-gradient-to-tr from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
+            <Mail size={11} className="text-white" />
+          </div>
+          <span className="text-xs font-bold uppercase tracking-wider hidden sm:block">Applier Inbox Sandbox</span>
+          <span className="text-xs font-mono text-cyan-400 font-bold bg-[#00a9e0]/10 px-2 py-0.5 rounded uppercase text-[9px] hidden sm:block">
+            ACTIVE
+          </span>
+          <ChevronDown size={14} className={`opacity-60 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        </motion.button>
+      </div>
+
+      {isOpen && (
+        <div className="fixed bottom-24 right-4 sm:right-6 z-40 bg-white border border-slate-200/80 rounded-2xl shadow-2xl font-sans w-[92vw] sm:w-[600px] md:w-[750px] max-w-full h-[580px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
+          
+          <div className="bg-slate-950 text-white px-5 py-4 flex justify-between items-center border-b border-white/5 relative flex-shrink-0">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:1rem_1rem] opacity-5 pointer-events-none" />
+            <div className="flex items-center gap-3 relative z-10">
+              <div className="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-cyan-400">
+                <Database size={14} />
+              </div>
+              <div>
+                <h3 className="text-xs font-black tracking-widest uppercase text-white/90 font-mono">// APPLIER EMAIL FEEDBACK GATEWAY</h3>
+                <span className="text-[10px] text-slate-400 font-mono">HTC simulated mail server loop logs</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 relative z-10">
+              {emails.length > 0 && (
+                <button
+                  onClick={handleClear}
+                  className="text-xs hover:text-red-400 text-slate-400 flex items-center gap-1.5 px-2.5 py-1.5 rounded hover:bg-white/5 font-semibold font-mono text-[9px] uppercase tracking-wider"
+                  title="Clear Sandbox"
+                >
+                  <Trash2 size={12} /> Clear Logs
+                </button>
+              )}
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex-shrink-0 flex items-center gap-2">
+            <Search size={14} className="text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search by applier's email or form type..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-transparent text-xs w-full text-slate-700 outline-none placeholder-slate-400 font-medium"
+            />
+            {search && (
+              <button onClick={() => setSearch('')} className="text-slate-400 hover:text-slate-600 text-xs font-bold font-mono px-1">
+                Clear
+              </button>
+            )}
+          </div>
+
+          {emails.length === 0 ? (
+            <div className="flex-grow flex flex-col items-center justify-center p-8 text-center text-slate-400 bg-slate-50/50">
+              <Mail size={48} className="text-slate-300 stroke-[1.5] mb-4 animate-pulse" />
+              <h4 className="font-bold text-slate-700 text-sm uppercase tracking-wide">No emails captured yet</h4>
+              <p className="text-xs text-slate-400 max-w-sm mt-2 leading-relaxed">
+                Submit any email form on our website (Careers Application, Contact Us, SLA Solicitation, Tech Audit request, or Priority Support) to view the feedback!
+              </p>
+            </div>
+          ) : (
+            <div className="flex-grow flex division-x min-h-0">
+              
+              <div className="w-1/3 sm:w-[260px] border-r border-slate-200/60 overflow-y-auto flex-shrink-0 flex flex-col bg-slate-50/50">
+                {filteredEmails.length === 0 ? (
+                  <div className="p-4 text-center text-xs text-slate-400">
+                    No matching emails.
+                  </div>
+                ) : (
+                  filteredEmails.map((email) => {
+                    const isSelected = selectedEmail?.id === email.id;
+                    return (
+                      <div
+                        key={email.id}
+                        onClick={() => setSelectedEmail(email)}
+                        className={`p-3.5 border-b border-slate-100 cursor-pointer text-left transition-colors relative flex flex-col gap-1 ${isSelected ? 'bg-blue-50/70 border-l-4 border-l-[#0056b3]' : 'hover:bg-slate-100/50'}`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="text-[9px] font-mono font-bold uppercase text-[#0056b3] bg-blue-500/5 px-1.5 py-0.5 rounded truncate max-w-[120px]">
+                            {email.type}
+                          </span>
+                          <span className="text-[8px] font-mono text-slate-400 whitespace-nowrap">
+                            {email.id}
+                          </span>
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-800 truncate" title={email.subject}>
+                          {email.subject}
+                        </span>
+                        <div className="text-[10px] text-slate-500 truncate font-semibold mt-0.5">
+                          To: {email.to}
+                        </div>
+                        <span className="text-[8px] font-medium text-slate-400 text-right mt-1 font-mono">
+                          {email.date.split(',')[1]?.trim() || email.date}
+                        </span>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="flex-grow overflow-y-auto bg-white flex flex-col min-w-0">
+                {selectedEmail ? (
+                  <div className="p-5 flex flex-col flex-grow text-left">
+                    <div className="border-b border-slate-100 pb-4 mb-4 space-y-3 flex-shrink-0">
+                      <div className="flex justify-between items-start gap-4">
+                        <h2 className="text-sm font-black text-slate-900 line-clamp-2" title={selectedEmail.subject}>
+                          {selectedEmail.subject}
+                        </h2>
+                        <span className="text-[9px] font-mono shrink-0 bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded font-bold uppercase tracking-wide">
+                          SMTP // DELIVERED
+                        </span>
+                      </div>
+                      <div className="grid gap-1.5 text-xs text-slate-500 font-medium">
+                        <div className="flex justify-start">
+                          <span className="w-16 font-semibold text-slate-400">From:</span>
+                          <span className="text-slate-800 font-bold">{selectedEmail.fromName}</span>
+                          <span className="text-slate-400 font-mono text-[11px] ml-1.5">&lt;{selectedEmail.fromEmail}&gt;</span>
+                        </div>
+                        <div className="flex justify-start">
+                          <span className="w-16 font-semibold text-slate-400">To:</span>
+                          <span className="text-[#0056b3] font-bold font-mono">{selectedEmail.to}</span>
+                        </div>
+                        <div className="flex justify-start">
+                          <span className="w-16 font-semibold text-slate-400">Date:</span>
+                          <span className="text-slate-700 font-mono text-[11px] font-bold">{selectedEmail.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-grow border border-slate-100/80 rounded-xl overflow-hidden bg-[#fdfdfd] shadow-inner p-1 max-w-full">
+                      <iframe
+                        srcDoc={`
+                          <!DOCTYPE html>
+                          <html>
+                            <head>
+                              <meta charset="utf-8">
+                              <style>
+                                body { margin: 0; padding: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #fdfdfd; }
+                              </style>
+                            </head>
+                            <body>
+                              ${selectedEmail.bodyHtml}
+                            </body>
+                          </html>
+                        `}
+                        title="Render Preview"
+                        className="w-full h-[280px] border-0"
+                      />
+                    </div>
+                    <div className="text-[9px] font-mono text-slate-400 text-center mt-3 font-semibold uppercase tracking-widest bg-slate-50 py-1.5 rounded-md border border-slate-100">
+                      🔒 Simulated SMTP Handshake Log Loop Complete
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex-grow flex items-center justify-center text-slate-400 p-6 text-center text-xs">
+                    Please select an email thread from the list to preview the dispatched auto-response message feedback in detail.
+                  </div>
+                )}
+              </div>
+
+            </div>
+          )}
+
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [previousView, setPreviousView] = useState<View>('home');
@@ -4957,6 +5613,7 @@ export default function App() {
       </main>
 
       <Footer onNavigate={setCurrentView} />
+      <ApplierEmailSimulatorWidget />
     </div>
   );
 }
