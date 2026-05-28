@@ -590,6 +590,7 @@ const SupportCard = ({ icon, title, description, buttonText, link }: any) => (
 
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
 
   const countries = [
     { code: 'TZ', prefix: '+255', flag: '🇹🇿', name: 'Tanzania', placeholder: '712 345 678' },
@@ -655,6 +656,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       });
     }
 
+    setSubmittedEmail(email);
     setIsContactSubmitted(true);
   };
 
@@ -689,9 +691,20 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                    <p className="text-slate-600 text-sm leading-relaxed max-w-sm mx-auto">
                      Thank you for reaching out to HTC Africa. Our professional team will review your Inquiry details and contact you shortly.
                    </p>
+                   
+                   <div className="bg-emerald-50/60 border border-emerald-100 p-4 rounded-xl text-left text-xs max-w-sm mx-auto space-y-2">
+                     <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CONFIRMATION EMAIL DISPATCHED</span>
+                     <p className="text-slate-600 leading-relaxed">
+                       An automated confirmation email response was successfully sent to <strong className="text-slate-900 font-bold">{submittedEmail || 'your email'}</strong>. View it in the <span className="font-bold text-[#0056b3]">Applier Inbox Sandbox</span> at the bottom right.
+                     </p>
+                   </div>
+
                    <button 
                      type="button"
-                     onClick={() => setIsContactSubmitted(false)}
+                     onClick={() => {
+                       setIsContactSubmitted(false);
+                       setSubmittedEmail('');
+                     }}
                      className="px-6 py-2.5 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-lg text-xs uppercase tracking-wider transition-all"
                    >
                      Submit another inquiry
@@ -3165,6 +3178,13 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                 </div>
               </div>
 
+              <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
+                <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 APPLICANT CONFIRMATION EMAIL</span>
+                <p className="text-slate-600 leading-relaxed">
+                  A receipt confirmation email has been dispatched to your sandbox inbox: <strong className="text-slate-900">{formData.email}</strong>. You can preview/open this simulated mail in the <strong className="text-[#0056b3]">Applier Inbox Sandbox</strong> in the bottom right corner of this page.
+                </p>
+              </div>
+
               <div className="flex flex-col gap-3 pt-4">
                 <button 
                   onClick={() => onNavigate('careers')}
@@ -3929,6 +3949,14 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
                   </div>
                 </div>
              </div>
+
+             <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
+               <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CLIENT CONFIRMATION EMAIL</span>
+               <p className="text-slate-600 leading-relaxed">
+                 A custom SLA handshake confirmation has been simulated and sent to your address: <strong className="text-slate-900">{formData.email}</strong>. Inspect it in the <span className="font-bold text-[#0056b3]">Applier Inbox Sandbox</span> in the bottom right corner.
+               </p>
+             </div>
+
              <div className="flex flex-col gap-3 pt-2">
                 <button
                   onClick={() => {
@@ -4289,6 +4317,14 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
               </div>
             </div>
           </div>
+
+          <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
+            <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CLIENT CONFIRMATION EMAIL</span>
+            <p className="text-slate-600 leading-relaxed">
+              An on-site audit schedule & demonstration confirmation receipt has been sent to client mailbox <strong className="text-slate-900 font-bold">{formData.email}</strong>. View it in the <strong className="text-[#0056b3]">Applier Inbox Sandbox</strong>.
+            </p>
+          </div>
+
           <div className="flex flex-col gap-3 pt-2">
             <button
               onClick={onBack}
@@ -4602,6 +4638,13 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
                   <span className="font-mono font-bold text-white">HTC-SUP-{Date.now().toString().slice(-5)}</span>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-emerald-500/10 border border-emerald-500/20 p-6 rounded-xl text-left space-y-2 text-xs">
+              <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block font-bold">📧 APPLICANT CONFIRMATION EMAIL</span>
+              <p className="text-slate-300 leading-relaxed">
+                A high-priority ticket registration confirmation has been simulated and sent to your address: <strong className="text-white font-bold">{formData.email}</strong>. View it in the <strong className="text-cyan-400 font-bold">Applier Inbox Sandbox</strong>.
+              </p>
             </div>
           </div>
           <div className="flex flex-col gap-3 pt-4 relative z-10">
@@ -5214,6 +5257,13 @@ const simulateEmailFeedback = (
   }
 };
 
+// Bind to window immediately at module level to guarantee availability at all times
+if (typeof window !== 'undefined') {
+  (window as any).__htc_simulate_email = (to: string, type: 'contact' | 'career' | 'sla' | 'audit' | 'support', details: any) => {
+    simulateEmailFeedback(to, type, details);
+  };
+}
+
 function ApplierEmailSimulatorWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [emails, setEmails] = useState<SimulatedEmail[]>([]);
@@ -5251,12 +5301,6 @@ function ApplierEmailSimulatorWidget() {
     };
 
     window.addEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
-    (window as any).__htc_simulate_email_impl = simulateEmailFeedback;
-    (window as any).__htc_simulate_email = (to: string, type: 'contact' | 'career' | 'sla' | 'audit' | 'support', details: any) => {
-      if (typeof (window as any).__htc_simulate_email_impl === 'function') {
-        (window as any).__htc_simulate_email_impl(to, type, details);
-      }
-    };
 
     return () => {
       window.removeEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
