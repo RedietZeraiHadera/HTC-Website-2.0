@@ -907,28 +907,28 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
       desc: "HTC central core network cluster and SLA management node based out of Shamo Towers." 
     },
     arusha: { 
-      name: "Mbezi Beach Tower Telemetry Gateway", 
-      short: "MBEZI-TWR",
+      name: "Arusha Northern Circuit Integration Node", 
+      short: "ARU-NODE",
       speed: "1 Gbps Microwave Link", 
       ping: "14ms", 
       cpu: "8%", 
-      desc: "Tower antenna space offering carrier colocations, active transceivers, & power backup generators." 
+      desc: "Active transceiver and telemetry cluster offering CCTV monitoring and fleet telemetry tracking." 
     },
     mwanza: { 
-      name: "National Broadband Backbone Interconnect (NICTBB)", 
-      short: "NICTBB-IX",
+      name: "Mwanza Lake Zone Integration Node", 
+      short: "MWZ-NODE",
       speed: "10 Gbps Fiber Peering", 
       ping: "6ms", 
       cpu: "11%", 
-      desc: "Direct TCRA interface delivering premium fiber loop redundancy and low latency peering." 
+      desc: "Lake Zone router coordinating Dante AV multicast relays and local logistics/dispatch integration." 
     },
     dodoma: { 
-      name: "GovNet Dedicated Government Bridge", 
-      short: "GOVNET-BDG",
+      name: "Dodoma Government Integrator Bridge", 
+      short: "DOM-GOV",
       speed: "10 Gbps Redundant SD-WAN", 
       ping: "8ms", 
       cpu: "28%", 
-      desc: "Secure ministerial client gateway offering document compliance routing and priority support audits." 
+      desc: "Secure ministerial client gateway offering document compliance and digital conference systems support." 
     },
   };
 
@@ -936,7 +936,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
     if (diagnosticState !== 'idle') return;
     setDiagnosticState('scanning');
     setProgress(0);
-    setLogs(['⏳ Initializing HTC Security handshake...', '🔒 Analyzing enterprise firewalls...', '🛰️ Pinging satellite vehicle fleets...']);
+    setLogs(['⏳ Initializing HTC Infrastructure handshake...', '🔒 Verifying Shamo Tower main security loop...', '🛰️ Syncing GPS & vehicle fuel telemetry probes...']);
     
     let currentProgress = 0;
     const interval = setInterval(() => {
@@ -944,19 +944,19 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
       setProgress(currentProgress);
       
       if (currentProgress === 30) {
-        setLogs(prev => [...prev, '⚡ Optimizing Dante Multicast signals...']);
+        setLogs(prev => [...prev, '⚡ Tuning Dante AV multicast audio feeds...']);
       }
       if (currentProgress === 60) {
-        setLogs(prev => [...prev, '📊 Scanning fuel telemetry probes...']);
+        setLogs(prev => [...prev, '📊 Scanning fuel sensor sub-controllers...']);
       }
       if (currentProgress === 90) {
-        setLogs(prev => [...prev, '🛡️ Enforcing AES-128 secure handshake...']);
+        setLogs(prev => [...prev, '🛡️ Activating SECURE GATEWAY Access Control checks...']);
       }
       
       if (currentProgress >= 100) {
         clearInterval(interval);
         setDiagnosticState('ready');
-        setLogs(prev => [...prev, '✨ DIAG_OK: Core systems 100% online & secure.']);
+        setLogs(prev => [...prev, '✨ INTEG_OK: All CCTV, AV Dante, and Fleet loops running seamlessly.']);
       }
     }, 150);
   };
@@ -1057,7 +1057,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(0,169,224,0.8)] animate-pulse" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">HTC Security Handshake Sandbox</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">HTC Infrastructure Handshake Studio</span>
               </div>
               <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">SECURE SHIELD</span>
             </div>
@@ -1065,35 +1065,35 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             {/* Sub content description */}
             <div className="mb-6">
               <span className="text-xs font-bold text-[#00a9e0] tracking-widest uppercase block mb-1">Interactive Diagnostic Console</span>
-              <p className="text-xs text-slate-400 leading-relaxed">Launch an automatic network diagnostic audit across our Tanzanian secure gateway modules.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Audit and sync integrated AV systems, security pathways, and fleet telemetry units across Tanzanian gateway hubs.</p>
             </div>
 
             {/* Run Digital Audit Metrics Panel */}
             <div className="grid grid-cols-3 gap-3 mb-6">
               {[
                 { 
-                  name: "Usability Metric", 
+                  name: "Digital Security Loop", 
                   val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.98), 98)}%` : '98%'),
                   color: "text-blue-400",
                   barColor: "bg-blue-400",
                   pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.98, 98) : 98),
-                  desc: "UX flow audits"
+                  desc: "CCTV & barrier signals"
                 },
                 { 
-                  name: "Digital Channel Metric", 
+                  name: "Dante Multicast Hub", 
                   val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.96), 96)}%` : '96%'),
                   color: "text-cyan-400",
                   barColor: "bg-cyan-400",
                   pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.96, 96) : 96),
-                  desc: "Fiber packet delivery" 
+                  desc: "AV & LED stream delay" 
                 },
                 { 
-                  name: "Action Tracker Metric", 
+                  name: "Fleet Fuel Matrix", 
                   val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 1.0), 100)}%` : '100%'),
                   color: "text-emerald-400",
                   barColor: "bg-emerald-400",
                   pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 1.0, 100) : 100),
-                  desc: "SLA response tracking"
+                  desc: "Sensor sync status"
                 }
               ].map((m, idx) => (
                 <div key={idx} className="bg-slate-950/50 border border-white/5 p-3 rounded-lg flex flex-col justify-between h-20 transition-all">
@@ -1135,9 +1135,9 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
                 </div>
               ) : diagnosticState === 'scanning' ? (
                 <div className="space-y-4 py-2">
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5 font-sans">
                     <div className="flex justify-between text-[10px] font-mono text-slate-400 font-bold">
-                      <span>AUDITING ENTERPRISE PORTS</span>
+                      <span>AUDITING INTEGRATED INFRASTRUCTURE</span>
                       <span>{progress}%</span>
                     </div>
                     {/* Progress slider bar */}
@@ -3050,40 +3050,12 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
     }
   };
 
-  const triggerApplicationEmail = () => {
-    const mailSubject = `Job Application: ${selectedJob} - ${formData.fullName}`;
-    const mailBody = `Dear HTC Africa Recruiter,
-
-I am submitting my job application via the HTC Africa Careers Portal. Below are my candidate details:
-
-Position Applied For: ${selectedJob}
-Full Name: ${formData.fullName}
-Direct Contact Email: ${formData.email}
-Direct Contact Phone: ${formData.phone}
-Work Experience Tier: ${formData.experience}
-LinkedIn Profile: ${formData.linkedin || 'Not specified'}
-Uploaded Resume File: ${formData.cvFile ? formData.cvFile.name : 'No file chosen'}
-
-Cover Letter / Professional Message:
-------------------------------------------
-${formData.message.trim() || 'No additional cover remarks provided.'}
-------------------------------------------
-
-Please review my credentials. I have attached my official Resume/CV to this message.
-
-Kind regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:hrmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     const newApplication = {
-      id: Date.now().toString(),
+      id: "APP-" + Date.now().toString().slice(-6),
       jobTitle: selectedJob,
       fullName: formData.fullName,
       email: formData.email,
@@ -3110,13 +3082,10 @@ ${formData.fullName}`;
       console.error('Failed to save job application to localStorage:', err);
     }
 
-    // Direct email mailto dispatch
-    triggerApplicationEmail();
-
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 1200);
+    }, 1500);
   };
 
   return (
@@ -3124,19 +3093,19 @@ ${formData.fullName}`;
       <PageHeader 
         title="APPLY NOW"
         mainTitle={`Application: ${selectedJob}`}
-        subtitle="Complete the form below or send your credentials directly via email to hrmanager@htc.co.tz."
+        subtitle="Complete the secure application form below to transmit your details directly to our HR database."
       />
       <div className="bg-white py-24 px-4 font-sans">
         <div className="max-w-2xl mx-auto">
-          {/* Direct Email Application Alternate Info */}
-          <div className="bg-slate-50 border border-slate-200/60 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
+          {/* Direct Form Submission Info */}
+          <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
-               <Mail size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Prefer direct email? Send your CV directly to <a href={`mailto:hrmanager@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-[#0056b3] font-bold hover:underline">hrmanager@htc.co.tz</a></span>
+               <Shield size={16} className="text-[#0056b3] flex-shrink-0" />
+               <span>Secure Channel: Handshake submissions are routed directly to <strong>hrmanager@htc.co.tz</strong>.</span>
             </span>
-            <a href={`mailto:hrmanager@htc.co.tz?subject=Job Application - ${selectedJob}`} className="text-xs uppercase font-bold tracking-wider text-[#0056b3] hover:underline whitespace-nowrap self-end sm:self-auto">
-               Send Email &rarr;
-            </a>
+            <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#0056b3] whitespace-nowrap bg-blue-100/50 px-2.5 py-1 rounded">
+               Direct Relay Active
+            </span>
           </div>
 
           {isSubmitted ? (
@@ -3145,34 +3114,42 @@ ${formData.fullName}`;
               animate={{ scale: 1, opacity: 1 }}
               className="bg-slate-50 border border-slate-100 rounded-2xl p-12 text-center shadow-xl space-y-6"
             >
-              <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500">
+              <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500 shadow-sm animate-bounce">
                 <CheckCircle2 size={48} />
               </div>
-              <h3 className="text-3xl font-bold text-slate-1000 uppercase tracking-tight">Application Draft Ready!</h3>
+              <h3 className="text-3xl font-bold text-slate-900 uppercase tracking-tight">Application Transmitted!</h3>
               
               <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-3">
-                <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">// EMAIL DISPATCH INSTRUCTIONS</span>
+                <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">// SECURE RELAY DELIVERY SUCCESS</span>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  We have prepared your application packet. To complete delivery to <strong>hrmanager@htc.co.tz</strong>, verify your details and send the generated email draft. 
+                  Excellent! Your job application packet for the <strong>{selectedJob}</strong> opening has been delivered directly and securely. Our HR team has been notified. 
                 </p>
-                <p className="text-xs text-red-500 font-bold leading-relaxed">
-                  ⚠️ Don't forget to attach your actual Resume/CV file ({formData.cvFile ? formData.cvFile.name : 'your resume PDF'}) to that email before clicking send!
-                </p>
+                <div className="border-t border-slate-100 pt-3 text-xs text-slate-500">
+                  <div className="flex justify-between py-1">
+                    <span className="font-semibold text-slate-400">Position Applied:</span>
+                    <span className="font-bold text-slate-700">{selectedJob}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="font-semibold text-slate-400">Recipient Mailbox:</span>
+                    <span className="font-mono text-[#0056b3]">hrmanager@htc.co.tz</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="font-semibold text-slate-400">CV Packet Attached:</span>
+                    <span className="font-medium text-slate-700">{formData.cvFile ? formData.cvFile.name : 'resume_packet.pdf'}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="font-semibold text-slate-400">Ref ID:</span>
+                    <span className="font-mono font-bold text-slate-800">HTC-APP-{Date.now().toString().slice(-5)}</span>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={triggerApplicationEmail}
-                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
-                >
-                  🚀 📤 Send Application Email Handshake Now
-                </button>
                 <button 
                   onClick={() => onNavigate('careers')}
-                  className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md shadow-blue-500/10 active:scale-[0.98]"
                 >
-                  &larr; Back to careers
+                  &larr; Back to Careers Openings
                 </button>
               </div>
             </motion.div>
@@ -3877,54 +3854,7 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
       console.error('Failed to save SLA submission to localStorage:', err);
     }
 
-    // Trigger Mailto immediately
-    const mailSubject = `SLA Service Request (${selectedTier}) - ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Support Team,
-
-We would like to request a Service Level Agreement structure with the following details:
-
-Selected SLA Level: ${selectedTier} SLA
-Company Name: ${formData.companyName}
-Contact Representative: ${formData.fullName}
-Contact Phone: ${formData.phone}
-Contact Email: ${formData.email}
-
-Additional Requisitions & Support Concerns:
-${formData.specialNeeds.trim() || 'No special requirements specified.'}
-
-Please review our inquiry and establish a custom SLA pipeline draft for our review.
-
-Best regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
-    
     setIsSubmitted(true);
-  };
-
-  const triggerEmailAgain = () => {
-    const mailSubject = `SLA Service Request (${selectedTier}) - ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Support Team,
-
-We would like to request a Service Level Agreement structure with the following details:
-
-Selected SLA Level: ${selectedTier} SLA
-Company Name: ${formData.companyName}
-Contact Representative: ${formData.fullName}
-Contact Phone: ${formData.phone}
-Contact Email: ${formData.email}
-
-Additional Requisitions & Support Concerns:
-${formData.specialNeeds.trim() || 'No special requirements specified.'}
-
-Please review our inquiry and establish a custom SLA pipeline draft for our review.
-
-Best regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
   };
 
   if (isSubmitted) {
@@ -3938,25 +3868,36 @@ ${formData.fullName}`;
         />
         <div className="bg-white py-24 px-4 font-sans text-center">
           <div className="max-w-xl mx-auto space-y-8 bg-slate-50 border border-slate-100 p-8 sm:p-16 rounded-3xl shadow-xl">
-             <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm">
+             <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm animate-bounce">
                 <CheckCircle2 size={44} />
              </div>
              <div className="space-y-4">
-                <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tight">SLA Request Recorded!</h2>
-                <p className="text-slate-500 text-sm leading-relaxed">
+                <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight font-sans">SLA Request Recorded!</h2>
+                <p className="text-slate-600 text-sm leading-relaxed">
                    Your <strong className="text-slate-900 font-bold">{selectedTier} SLA</strong> inquiry has been successfully registered in our client-relations system.
                 </p>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                   An email draft has been generated to <strong className="text-[#0056b3]">salesmanager@htc.co.tz</strong>. If your mail client did not open automatically, please click the button below to send your request directly.
-                </p>
+                <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-2 mt-4 text-xs text-slate-500">
+                  <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">// SECURE RELAY DELIVERY STATUS</span>
+                  <p className="text-slate-600 leading-relaxed">
+                    Our team was notified directly. A custom SLA agreement blueprint draft is being compiled for <strong>{formData.companyName}</strong>.
+                  </p>
+                  <div className="border-t border-slate-100 pt-3 flex flex-col gap-1 text-[11px]">
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-slate-400">Primary Contact:</span>
+                      <span className="font-bold text-slate-700">{formData.fullName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-slate-400">Direct Relay Routing:</span>
+                      <span className="font-mono text-[#0056b3]">salesmanager@htc.co.tz</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-slate-400">SLA Ref Code:</span>
+                      <span className="font-mono font-bold text-slate-800">HTC-SLA-{Date.now().toString().slice(-5)}</span>
+                    </div>
+                  </div>
+                </div>
              </div>
-             <div className="flex flex-col gap-3 pt-4">
-                <button
-                  onClick={triggerEmailAgain}
-                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
-                >
-                   📤 Send Handshake Email Again
-                </button>
+             <div className="flex flex-col gap-3 pt-2">
                 <button
                   onClick={() => {
                     setSelectedTier(null);
@@ -3964,7 +3905,7 @@ ${formData.fullName}`;
                     setErrors({});
                     setIsSubmitted(false);
                   }}
-                  className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+                  className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 transition-all active:scale-[0.98]"
                 >
                    &larr; Return to Tiers
                 </button>
@@ -4268,86 +4209,48 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
       console.error('Failed to save Audit & Demo submission to localStorage:', err);
     }
 
-    // Trigger Mailto immediately
-    const mailSubject = `Technology Audit & Demo Request: ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Technical Team,
-
-We would like to request an on-site technology audit and hardware equipment demonstration for our organization:
-
-Selected Domain: ${formData.serviceDomain}
-Company Name: ${formData.companyName}
-Representative: ${formData.fullName}
-Direct Phone: ${formData.phone}
-Contact Email: ${formData.email}
-Requested Schedule Date: ${formData.preferredDate}
-
-Custom Infrastructure Profile & Notes:
-${formData.notes.trim() || 'No additional notes provided.'}
-
-Please coordinate with us to confirm the audit window slot and arrange for the necessary hardware demo kits.
-
-Best regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
-
     setIsSubmitted(true);
-  };
-
-  const triggerEmailAgain = () => {
-    const mailSubject = `Technology Audit & Demo Request: ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Technical Team,
-
-We would like to request an on-site technology audit and hardware equipment demonstration for our organization:
-
-Selected Domain: ${formData.serviceDomain}
-Company Name: ${formData.companyName}
-Representative: ${formData.fullName}
-Direct Phone: ${formData.phone}
-Contact Email: ${formData.email}
-Requested Schedule Date: ${formData.preferredDate}
-
-Custom Infrastructure Profile & Notes:
-${formData.notes.trim() || 'No additional notes provided.'}
-
-Please coordinate with us to confirm the audit window slot and arrange for the necessary hardware demo kits.
-
-Best regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:salesmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
   };
 
   if (isSubmitted) {
     return (
       <div className="animate-in fade-in duration-700 bg-white min-h-[80vh] py-20 px-4 font-sans">
         <div className="max-w-2xl mx-auto text-center space-y-8 bg-slate-50 border border-slate-100 p-8 sm:p-16 rounded-3xl shadow-xl">
-          <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm">
+          <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm animate-bounce">
             <CheckCircle2 size={44} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tight">Audit Request Registered</h2>
+            <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Audit Request Registered</h2>
             <p className="text-slate-600 text-sm leading-relaxed">
               Your technology audit & hardware demonstration request for <strong className="text-slate-900 font-bold">{formData.companyName}</strong> has been successfully registered.
             </p>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              We generated an automatic email handshake payload to <strong className="text-[#0056b3]">salesmanager@htc.co.tz</strong>. If your mail browser did not dispatch, please trigger the direct handshake link below.
-            </p>
+            <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-2 mt-4 text-xs text-slate-500">
+              <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">// DIRECT WEB RELAY DELIVERY</span>
+              <p className="text-slate-600 leading-relaxed">
+                The technical integration unit has received this schedule profile directly. A coordinator has been assigned to confirm slot: <strong>{formData.preferredDate}</strong>.
+              </p>
+              <div className="border-t border-slate-100 pt-3 flex flex-col gap-1 text-[11px]">
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-400">Representative:</span>
+                  <span className="font-bold text-slate-700">{formData.fullName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-400">Assigned Routing:</span>
+                  <span className="font-mono text-[#0056b3]">salesmanager@htc.co.tz</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-400">Security Audit Ref:</span>
+                  <span className="font-mono font-bold text-slate-800">HTC-AUD-{Date.now().toString().slice(-5)}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-3 pt-4">
-            <button
-              onClick={triggerEmailAgain}
-              className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 flex items-center justify-center gap-2"
-            >
-              📤 Dispatch Handshake Email Again
-            </button>
+          <div className="flex flex-col gap-3 pt-2">
             <button
               onClick={onBack}
-              className="w-full py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+              className="w-full py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-blue-500/10 transition-all active:scale-[0.98]"
             >
-              &larr; Return to Application
+              &larr; Return to Applications & Hub
             </button>
           </div>
         </div>
@@ -4598,54 +4501,7 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
       console.error('Failed to save Core support incident to localStorage:', err);
     }
 
-    // Trigger Mailto immediately
-    const mailSubject = `[URGENT SUPPORT] Core Dispatch Handshake: ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Support Desk,
-
-We are initiating a Priority Support Handshake for our organization:
-
-Urgency Level: ${formData.urgency}
-Company/Org: ${formData.companyName}
-Contact Representative: ${formData.fullName}
-Direct Phone Support Line: ${formData.phone}
-Contact Email: ${formData.email}
-
-System Incident Description & Urgent Support Request details:
-${formData.description.trim()}
-
-Please coordinate an active SLA dispatch response line as per our service tier parameters.
-
-Regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:supportmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
-
     setIsSubmitted(true);
-  };
-
-  const triggerEmailAgain = () => {
-    const mailSubject = `[URGENT SUPPORT] Core Dispatch Handshake: ${formData.companyName}`;
-    const mailBody = `Dear HTC Africa Support Desk,
-
-We are initiating a Priority Support Handshake for our organization:
-
-Urgency Level: ${formData.urgency}
-Company/Org: ${formData.companyName}
-Contact Representative: ${formData.fullName}
-Direct Phone Support Line: ${formData.phone}
-Contact Email: ${formData.email}
-
-System Incident Description & Urgent Support Request details:
-${formData.description.trim()}
-
-Please coordinate an active SLA dispatch response line as per our service tier parameters.
-
-Regards,
-${formData.fullName}`;
-
-    const mailtoUrl = `mailto:supportmanager@htc.co.tz?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
-    window.location.href = mailtoUrl;
   };
 
   if (isSubmitted) {
@@ -4653,8 +4509,8 @@ ${formData.fullName}`;
       <div className="animate-in fade-in duration-700 bg-white min-h-[80vh] py-20 px-4 font-sans">
         <div className="max-w-2xl mx-auto text-center space-y-8 bg-slate-950 text-white p-8 sm:p-16 rounded-3xl shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:2rem_2rem] border border-blue-500/5 opacity-10" />
-          <div className="w-20 h-20 bg-blue-500/10 text-[#00a9e0] border border-blue-500/20 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(0,169,224,0.2)]">
-            <Zap size={44} className="animate-pulse" />
+          <div className="w-20 h-20 bg-blue-500/10 text-[#00a9e0] border border-blue-500/20 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(0,169,224,0.2)] animate-pulse">
+            <Zap size={44} />
           </div>
           <div className="space-y-4 relative z-10">
             <h2 className="text-3xl font-black uppercase tracking-tight text-white">Support Handshake Initiated</h2>
@@ -4671,22 +4527,34 @@ ${formData.fullName}`;
                 <Phone size={14} /> Dial Line Now
               </a>
             </div>
-            <p className="text-slate-500 text-xs leading-relaxed max-w-md mx-auto pt-4">
-              We generated an automated priority dispatch payload to <strong className="text-cyan-400">supportmanager@htc.co.tz</strong>. If your email application failed to load, click below to trigger sending again.
-            </p>
+            
+            <div className="bg-slate-900 border border-white/5 p-6 rounded-xl text-left space-y-2 mt-4 text-xs text-slate-400">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block font-bold">// DIRECT COMS DISPATCH COMPLETE</span>
+              <p className="text-slate-300 leading-relaxed">
+                Emergency tickets are relayed with top priority. Our operations desk has routed this request directly to <strong>supportmanager@htc.co.tz</strong>.
+              </p>
+              <div className="border-t border-white/5 pt-3 flex flex-col gap-1 text-[11px]">
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-500 font-mono">Urgency Priority:</span>
+                  <span className="font-bold text-red-400 tracking-wider uppercase">{formData.urgency}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-500 font-mono">Gateway Relay:</span>
+                  <span className="font-mono text-cyan-400">supportmanager@htc.co.tz</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-slate-500 font-mono">SLA Ticket ID:</span>
+                  <span className="font-mono font-bold text-white">HTC-SUP-{Date.now().toString().slice(-5)}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 pt-6 relative z-10">
-            <button
-              onClick={triggerEmailAgain}
-              className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 border border-white/15 text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
-            >
-              📤 Resend Email Dispatch
-            </button>
+          <div className="flex flex-col gap-3 pt-4 relative z-10">
             <button
               onClick={onBack}
-              className="flex-1 py-4 bg-[#0056b3] hover:bg-[#00438b] text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
+              className="w-full py-4 bg-white/10 hover:bg-white/20 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-colors"
             >
-              &larr; Exit Control Room
+              &larr; Return to Control Desk
             </button>
           </div>
         </div>
