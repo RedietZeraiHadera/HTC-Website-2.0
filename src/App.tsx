@@ -928,66 +928,139 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   };
 
   return (
-    <footer className="bg-[#002d5f] text-white pt-24 pb-12 px-4 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-          <div>
-            <div className="flex items-center gap-4 mb-8 cursor-pointer" onClick={() => onNavigate('home')}>
-              <img 
-                src={htcLogo} 
-                alt="HTC Africa Logo" 
-                className="h-10 w-auto bg-white p-0.5 rounded" 
-                referrerPolicy="no-referrer"
-              />
-              <div className="text-2xl font-bold tracking-tight">
-                HTC AFRICA
+    <footer className="relative bg-gradient-to-b from-[#031424] to-[#01080e] text-slate-300 pt-24 pb-12 px-6 md:px-12 border-t border-white/5 overflow-hidden">
+      {/* Top subtle highlight line */}
+      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#00a9e0]/20 to-transparent" />
+      
+      {/* Accent subtle background gradients */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#00a9e0]/5 rounded-full filter blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-[300px] h-[300px] bg-[#0056b3]/10 rounded-full filter blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 mb-20 animate-fade-in">
+          {/* Logo Column */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="flex items-center gap-3.5 cursor-pointer group" onClick={() => onNavigate('home')}>
+              <div className="bg-white/5 p-2 rounded-xl backdrop-blur-md border border-white/10 group-hover:border-[#00a9e0]/40 group-hover:bg-white/10 transition-all">
+                <img 
+                  src={htcLogo} 
+                  alt="HTC Africa Logo" 
+                  className="h-8 w-auto object-contain" 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div>
+                <div className="text-lg font-black tracking-[0.15em] text-white transition-all group-hover:text-[#00a9e0] leading-none mb-1">
+                  HTC AFRICA
+                </div>
+                <div className="text-[9px] font-bold tracking-widest text-[#00a9e0]/70 uppercase">
+                  High Tech Center
+                </div>
               </div>
             </div>
-            <p className="text-white/50 leading-relaxed mb-8">
-              HTC Africa High Tech Center provides customized IT solutions that empower small to medium-sized businesses with enterprise-grade reliability and strategic guidance.
+            
+            <p className="text-slate-400 font-medium text-sm leading-relaxed max-w-md">
+              A pioneering force in premium digital transformation, empowering high-demand enterprises and ambitious regional businesses across Africa with robust, carrier-grade IT, security, and fuel logistics management.
             </p>
+
+            <div className="pt-4 flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/15 rounded-full text-[10px] font-bold tracking-wider uppercase text-[#00a9e0]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                HQ Dar Es Salaam
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/15 rounded-full text-[10px] font-bold tracking-wider uppercase text-slate-400">
+                Est. 2008
+              </span>
+            </div>
           </div>
           
-          <div>
-            <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Navigation</h4>
-            <ul className="space-y-4 text-white/80 text-sm font-bold">
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('home')}>Home</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('about-us')}>About Us</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('products')}>Products</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('solutions')}>Solutions</li>
-              <li className="hover:text-white transition-colors cursor-pointer" onClick={() => onNavigate('services')}>Services</li>
-              <li className="hover:text-[#00a9e0] transition-colors cursor-pointer uppercase text-xs text-white/30 pt-2" onClick={() => onNavigate('admin-portal')}>Admin Portal →</li>
+          {/* Quick Links Column */}
+          <div className="lg:col-span-3 space-y-6">
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Navigation</h4>
+              <div className="w-8 h-[2px] bg-[#00a9e0] mt-3 rounded" />
+            </div>
+            <ul className="space-y-3.5 text-slate-400 text-sm font-semibold">
+              {[
+                { name: 'Home/Overview', target: 'home' },
+                { name: 'About High Tech Center', target: 'about-us' },
+                { name: 'Products & Platforms', target: 'products' },
+                { name: 'Custom Integrated Solutions', target: 'solutions' },
+                { name: 'Professional Managed Services', target: 'services' },
+                { name: 'Customer Portal & Help Desk', target: 'support' },
+              ].map((link, idx) => (
+                <li key={idx} className="group flex items-center gap-1">
+                  <span className="text-[#00a9e0] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all font-mono text-xs">→</span>
+                  <span 
+                    className="hover:text-white transition-colors cursor-pointer select-none group-hover:translate-x-0.5 transform duration-150" 
+                    onClick={() => onNavigate(link.target as any)}
+                  >
+                    {link.name}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
           
-          <div>
-            <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Get Connected</h4>
-            <ul className="space-y-5 text-white/80 text-sm font-bold">
-              <li className="flex items-center gap-3">
-                 <MapPin size={18} className="text-[#00a9e0]" /> 1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam
-              </li>
-              <li className="flex items-center gap-3">
-                 <Mail size={18} className="text-[#00a9e0]" /> <a href="mailto:info@htc.co.tz" className="hover:underline">info@htc.co.tz</a>
-              </li>
-              <li className="flex items-center gap-3 underline underline-offset-4 decoration-white/20 hover:decoration-white cursor-pointer" onClick={() => onNavigate('support')}>
-                 Request & Apply
-              </li>
-            </ul>
+          {/* Emails & Addresses Column */}
+          <div className="lg:col-span-4 space-y-6">
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Get Connected</h4>
+              <div className="w-8 h-[2px] bg-[#00a9e0] mt-3 rounded" />
+            </div>
+            
+            <div className="space-y-4">
+              {/* Address Card */}
+              <div className="flex gap-3 p-3.5 bg-white/5 border border-white/10 rounded-2xl">
+                <MapPin size={18} className="text-[#00a9e0] mt-0.5 flex-shrink-0" /> 
+                <span className="text-slate-300 text-xs leading-relaxed font-semibold">
+                  1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam, Tanzania
+                </span>
+              </div>
+              
+              {/* Organized Contacts Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {[
+                  {
+                    label: "General Inquiry",
+                    email: "info@htc.co.tz"
+                  },
+                  {
+                    label: "Sales & SLA",
+                    email: "salesmanager@htc.co.tz"
+                  },
+                  {
+                    label: "Support Desk",
+                    email: "supportmanager@htc.co.tz"
+                  },
+                  {
+                    label: "Careers & HR",
+                    email: "hr@htc.co.tz"
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="p-3 bg-white/[0.03] hover:bg-white/5 border border-white/5 hover:border-white/10 rounded-xl transition-all group">
+                    <span className="block text-[9px] uppercase tracking-wider text-slate-500 font-bold mb-1 group-hover:text-slate-400 transition-colors">
+                      {item.label}
+                    </span>
+                    <a 
+                      href={`mailto:${item.email}`} 
+                      className="text-xs text-slate-300 hover:text-[#00a9e0] font-mono break-all font-semibold transition-colors flex items-center gap-1.5"
+                    >
+                      <Mail size={12} className="text-[#00a9e0]/80 group-hover:text-[#00a9e0] flex-shrink-0 transition-colors" />
+                      <span className="truncate">{item.email}</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div>
-             <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/40 mb-8">Solutions</h4>
-             <ul className="space-y-4 text-white/80 text-sm font-bold">
-               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('fleet-fuel')}>Fleet & Fuel</li>
-               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('digital-security')}>Digital Security</li>
-               <li className="hover:text-white transition-colors cursor-pointer uppercase" onClick={() => onNavigate('ict-services')}>ICT & Integrated</li>
-             </ul>
-          </div>
         </div>
 
-        <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
-           <p>© 2026 HTC Africa High Tech Center. All Rights Reserved.</p>
-           <p className="mt-4 md:mt-0">Designed for Productivity & Peace of Mind</p>
+        {/* Divider & Copyright */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 gap-4">
+          <p>© 2026 HTC Africa High Tech Center. All Rights Reserved.</p>
+          <p className="md:mt-0 text-[#00a9e0]/80">Designed for Productivity & Enterprise Precision</p>
         </div>
       </div>
     </footer>
@@ -3061,11 +3134,11 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
              <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:redietzeraihadderra@gmail.com" className="hover:underline font-bold text-white">redietzeraihadderra@gmail.com</a>
+               GATEWAY MAIL: <a href="mailto:hr@htc.co.tz" className="hover:underline font-bold text-white">hr@htc.co.tz</a>
              </div>
            </div>
            <a 
-             href="mailto:redietzeraihadderra@gmail.com?subject=Job Application - HTC Africa"
+             href="mailto:hr@htc.co.tz?subject=Job Application - HTC Africa"
              className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
              <Mail size={13} /> SECURE MAIL ENVELOPE
@@ -3252,7 +3325,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
           <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
                <Shield size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Secure Channel: Handshake submissions are routed directly to <strong>redietzeraihadderra@gmail.com</strong>.</span>
+               <span>Secure Channel: Handshake submissions are routed directly to <strong>hr@htc.co.tz</strong>.</span>
             </span>
             <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#0056b3] whitespace-nowrap bg-blue-100/50 px-2.5 py-1 rounded">
                Direct Relay Active
@@ -3282,7 +3355,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">Recipient Mailbox:</span>
-                    <span className="font-mono text-[#0056b3]">redietzeraihadderra@gmail.com</span>
+                    <span className="font-mono text-[#0056b3]">hr@htc.co.tz</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">CV Packet Attached:</span>
@@ -3456,6 +3529,9 @@ const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [formspreeInputId, setFormspreeInputId] = useState(() => {
+    return localStorage.getItem('htc_formspree_id') || (import.meta as any).env.VITE_FORMSPREE_FORM_ID || '';
+  });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -3623,6 +3699,49 @@ const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               <div className="text-2xl font-bold text-slate-900">HTML5 Local</div>
               <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Data Provider</div>
             </div>
+          </div>
+        </div>
+
+        {/* Formspree Email Connection Dashboard Panel */}
+        <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 mb-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl text-left">
+            <div className="flex items-center gap-2">
+              <span className={`w-2.5 h-2.5 rounded-full ${formspreeInputId.trim() ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500 animate-pulse'}`} />
+              <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Formspree Live Email dispatcher</h2>
+            </div>
+            <p className="text-slate-500 text-xs leading-relaxed">
+              Ensure real-time email dispatch of resumes, tickets, and customer leads. If configured, form submissions are forwarded via POST to 
+              <span className="font-mono bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded text-[10px] ml-1">https://formspree.io/f/&#123;id&#125;</span>.
+              If empty, submissions route to the <strong className="text-slate-800">HTML5 Simulated Sandbox Inbox</strong> floating in the bottom-right of your screen.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+            <div className="relative min-w-[260px]">
+              <input 
+                type="text"
+                placeholder="Paste Formspree ID (e.g., mqakpoyq)"
+                value={formspreeInputId}
+                onChange={(e) => setFormspreeInputId(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:ring-2 focus:ring-[#0056b3] focus:border-transparent outline-none transition-all text-slate-900"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const targetId = formspreeInputId.trim();
+                if (targetId) {
+                  localStorage.setItem('htc_formspree_id', targetId);
+                  alert(`Formspree Live Delivery Enabled!\nEndpoint ID "${targetId}" is now active. All future form submissions will route directly to your Formspree inbox.`);
+                } else {
+                  localStorage.removeItem('htc_formspree_id');
+                  alert(`Formspree integration cleared. Reverting to sandbox email simulation.`);
+                }
+              }}
+              className="px-5 py-2.5 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 flex-shrink-0"
+            >
+              <CheckCircle2 size={13} /> Save Route
+            </button>
           </div>
         </div>
 
@@ -5128,7 +5247,7 @@ const simulateEmailFeedback = (
 
   if (type === 'career') {
     fromName = "HTC Africa Recruitment Office";
-    fromEmail = "redietzeraihadderra@gmail.com";
+    fromEmail = "hr@htc.co.tz";
     subject = `[RECEIVED] Job Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nWe have successfully received your job application for the ${details.jobTitle} position via the HTC Africa Careers Portal.\n\nApplication Details:\n- Full Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Experience Tier: ${details.experience}\n- Reference ID: ${refId}\n\nOur HR evaluation team is currently auditing your credentials. Thank you for your interest in joining the HTC Africa family in Shamo Towers.\n\nBest regards,\nHTC Africa HR Recruitment`;
     bodyHtml = `
@@ -5172,12 +5291,12 @@ const simulateEmailFeedback = (
         </p>
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
-          This is an automated transmission confirming delivery directly to redietzeraihadderra@gmail.com. Do not reply to this email thread.
+          This is an automated transmission confirming delivery directly to hr@htc.co.tz. Do not reply to this email thread.
         </p>
       </div>
     `;
 
-    htcToEmail = "redietzeraihadderra@gmail.com";
+    htcToEmail = "hr@htc.co.tz";
     htcSubject = `[HR DISPATCH] New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     htcBodyText = `Attention HR Team,\n\nA new candidate job application package has been submitted.\n\nCandidate Details:\n- Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Selected Position: ${details.jobTitle}\n- Experience: ${details.experience}\n- LinkedIn Profile: ${details.linkedin || 'None'}`;
     htcBodyHtml = `
@@ -5615,6 +5734,53 @@ const simulateEmailFeedback = (
     // Dispatch custom events for live updates in the widget and logs view
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: newEmail }));
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: htcEmail }));
+    
+    // FORMSPREE LIVE FORWARDING
+    // Check local storage configuration first, fallback to env variable
+    const formspreeFormId = localStorage.getItem('htc_formspree_id') || (import.meta as any).env.VITE_FORMSPREE_FORM_ID;
+    if (formspreeFormId && formspreeFormId.trim().length > 0) {
+      const payload = {
+        _subject: htcSubject || `[${type.toUpperCase()}] New HTC Africa submission from ${details.fullName || details.firstName || 'User'}`,
+        _replyto: details.email || to,
+        referenceId: refId,
+        dateDispatched: dateStr,
+        channel: `Formspree Live Integration`,
+        formType: type,
+        recipient: to,
+        ...details
+      };
+
+      fetch(`https://formspree.io/f/${formspreeFormId.trim()}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(async (res) => {
+        if (res.ok) {
+          console.log(`[Formspree] Successfully sent email for reference ${refId}`);
+          window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
+            detail: { success: true, message: `Real-time form delivered live via Formspree!` }
+          }));
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          console.warn(`[Formspree Error] Failed forwarding status ${res.status}:`, errData);
+          window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
+            detail: { success: false, message: `Formspree transmission failed: ${errData.error || res.statusText || 'Endpoint Error'}` }
+          }));
+        }
+      })
+      .catch((err) => {
+        console.error("[Formspree Network Error]", err);
+        window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
+          detail: { success: false, message: `Connection error dispatching to Formspree endpoint.` }
+        }));
+      });
+    } else {
+      console.log("[Formspree Simulation Notice] Real email delivery not active. Set VITE_FORMSPREE_FORM_ID in the Administrator Portal to receive live submissions.");
+    }
   } catch (err) {
     console.error("Failed to persist simulated email confirmations", err);
   }
@@ -5633,6 +5799,7 @@ function ApplierEmailSimulatorWidget() {
   const [selectedEmail, setSelectedEmail] = useState<SimulatedEmail | null>(null);
   const [search, setSearch] = useState('');
   const [activeToast, setActiveToast] = useState<{ id: string; email: string; subject: string } | null>(null);
+  const [formspreeToast, setFormspreeToast] = useState<{ success: boolean; message: string } | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -5663,10 +5830,19 @@ function ApplierEmailSimulatorWidget() {
       });
     };
 
+    const handleFormspreeNotification = (e: any) => {
+      setFormspreeToast({
+        success: e.detail.success,
+        message: e.detail.message
+      });
+    };
+
     window.addEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
+    window.addEventListener('htc_formspree_notification', handleFormspreeNotification);
 
     return () => {
       window.removeEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
+      window.removeEventListener('htc_formspree_notification', handleFormspreeNotification);
     };
   }, []);
 
@@ -5678,6 +5854,15 @@ function ApplierEmailSimulatorWidget() {
       return () => clearTimeout(timer);
     }
   }, [activeToast]);
+
+  useEffect(() => {
+    if (formspreeToast) {
+      const timer = setTimeout(() => {
+        setFormspreeToast(null);
+      }, 7000);
+      return () => clearTimeout(timer);
+    }
+  }, [formspreeToast]);
 
   const handleClear = () => {
     localStorage.removeItem('htc_simulated_emails');
@@ -5736,6 +5921,28 @@ function ApplierEmailSimulatorWidget() {
             <div className="text-[10px] text-[#00a9e0] font-mono tracking-widest uppercase font-extrabold flex justify-end gap-1 items-center hover:underline">
               <span>View In Applier Sandbox</span> &rarr;
             </div>
+          </motion.div>
+        )}
+
+        {formspreeToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className={`fixed bottom-48 right-4 sm:right-8 z-[60] max-w-sm text-white rounded-xl shadow-2xl p-4 font-sans flex flex-col gap-2 ${formspreeToast.success ? 'bg-slate-900 border border-emerald-500' : 'bg-slate-900 border border-rose-500'}`}
+          >
+            <div className="flex justify-between items-center">
+              <span className={`text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 ${formspreeToast.success ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${formspreeToast.success ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
+                {formspreeToast.success ? 'Formspree Live Delivered' : 'Formspree Failsafe Alert'}
+              </span>
+              <button onClick={() => setFormspreeToast(null)} className="text-white/40 hover:text-white">
+                <X size={12} />
+              </button>
+            </div>
+            <p className="text-xs font-medium text-white/90">
+              {formspreeToast.message}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
