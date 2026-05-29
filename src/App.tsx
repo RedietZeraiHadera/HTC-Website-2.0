@@ -370,7 +370,7 @@ const ServicesSection = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
 
 
 
-const FormInput = ({ label, required = false, type = "text", placeholder = "", name }: any) => (
+const FormInput = ({ label, required = false, type = "text", placeholder = "", name, error, value, onChange }: any) => (
   <div className="mb-6">
     <label className="block text-sm font-bold text-slate-900 mb-2">
       {label}{required && <span className="text-red-500 ml-1">*</span>}
@@ -379,10 +379,12 @@ const FormInput = ({ label, required = false, type = "text", placeholder = "", n
       <input 
         name={name || label.toLowerCase().replace(/\s+/g, '_')}
         type={type} 
-        required={required}
         placeholder={placeholder}
-        className="w-full bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none" 
+        value={value}
+        onChange={onChange}
+        className={`w-full bg-[#f1f5f9] border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none ${error ? 'border-red-500 focus:ring-red-500' : 'border-slate-100'}`} 
       />
+      {error && <p className="text-red-500 text-xs font-bold mt-1.5">{error}</p>}
     </div>
   </div>
 );
@@ -609,15 +611,68 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [phoneVal, setPhoneVal] = useState('');
 
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    email: '',
+    concern: ''
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[field];
+        return copy;
+      });
+    }
+  };
+
+  const handlePhoneChange = (val: string) => {
+    setPhoneVal(val);
+    if (errors.phone) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy.phone;
+        return copy;
+      });
+    }
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "Please tell us your first name—we'd love to greet you properly!";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Please specify an email address so we can reply back to you.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "That email address format doesn't look quite right. Please check again.";
+    }
+
+    if (!phoneVal.trim()) {
+      newErrors.phone = "Please share a telephone number so our team can follow up with a friendly call.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const firstName = data.get('first_name')?.toString() || '';
-    const lastName = data.get('last_name')?.toString() || '';
-    const company = data.get('company_name')?.toString() || '';
-    const email = data.get('email')?.toString() || '';
-    const phone = data.get('phone')?.toString() || '';
-    const concern = data.get('concern')?.toString() || '';
+    if (!validate()) return;
+    
+    const firstName = formData.firstName.trim();
+    const lastName = formData.lastName.trim();
+    const company = formData.companyName.trim();
+    const email = formData.email.trim();
+    const phone = `${selectedCountry.prefix} ${phoneVal.trim()}`;
+    const concern = formData.concern.trim();
     
     const newSubmission = {
       id: Date.now().toString(),
@@ -711,13 +766,38 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                    </button>
                  </motion.div>
                ) : (
-                 <form onSubmit={handleContactSubmit} className="grid md:grid-cols-2 gap-x-8">
-                  <FormInput label="First Name" required={true} name="first_name" />
-                  <FormInput label="Last Name" name="last_name" />
+                 <form onSubmit={handleContactSubmit} noValidate className="grid md:grid-cols-2 gap-x-8">
+                  <FormInput 
+                    label="First Name" 
+                    required={true} 
+                    name="first_name" 
+                    value={formData.firstName}
+                    onChange={(e: any) => handleInputChange('firstName', e.target.value)}
+                    error={errors.firstName}
+                   />
+                  <FormInput 
+                    label="Last Name" 
+                    name="last_name" 
+                    value={formData.lastName}
+                    onChange={(e: any) => handleInputChange('lastName', e.target.value)}
+                   />
                   <div className="md:col-span-2">
-                     <FormInput label="Company Name" name="company_name" />
+                     <FormInput 
+                        label="Company Name" 
+                        name="company_name" 
+                        value={formData.companyName}
+                        onChange={(e: any) => handleInputChange('companyName', e.target.value)}
+                      />
                   </div>
-                  <FormInput label="Email" required={true} type="email" name="email" />
+                  <FormInput 
+                     label="Email" 
+                     required={true} 
+                     type="email" 
+                     name="email" 
+                     value={formData.email}
+                     onChange={(e: any) => handleInputChange('email', e.target.value)}
+                     error={errors.email}
+                   />
                   
                   <div className="mb-6">
                      <label className="block text-sm font-bold text-slate-900 mb-2">
@@ -781,10 +861,10 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                            type="tel" 
                            name="phone_local"
                            value={phoneVal}
-                           onChange={(e) => setPhoneVal(e.target.value)}
+                           onChange={(e) => handlePhoneChange(e.target.value)}
                            placeholder={selectedCountry.placeholder}
                            required
-                           className="flex-grow bg-[#f1f5f9] border-none rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium text-slate-900" 
+                           className={`flex-grow bg-[#f1f5f9] border rounded-md px-5 py-4 focus:ring-2 focus:ring-[#0056b3] transition-all outline-none font-medium text-slate-900 ${errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-none'}`} 
                         />
                      </div>
                   </div>
@@ -2981,11 +3061,11 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
              <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:hrmanager@htc.co.tz" className="hover:underline font-bold text-white">hrmanager@htc.co.tz</a>
+               GATEWAY MAIL: <a href="mailto:redietzeraihadderra@gmail.com" className="hover:underline font-bold text-white">redietzeraihadderra@gmail.com</a>
              </div>
            </div>
            <a 
-             href="mailto:hrmanager@htc.co.tz?subject=Job Application - HTC Africa"
+             href="mailto:redietzeraihadderra@gmail.com?subject=Job Application - HTC Africa"
              className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
              <Mail size={13} /> SECURE MAIL ENVELOPE
@@ -3073,8 +3153,45 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
     }
   };
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Please wrap your beautiful name here so we know who we're speaking with!";
+    } else if (formData.fullName.trim().length < 3) {
+      newErrors.fullName = "Please share your complete name (at least 3 characters long). It helps us connect with you!";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "We'd love to follow up with updates! Please provide an email address.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Please check your email address format—it seems like it's missing a detail or two.";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Let us know a good phone number so our talent team can get in touch with you.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const copy = { ...prev };
+        delete copy[field];
+        return copy;
+      });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     setIsSubmitting(true);
     
     const newApplication = {
@@ -3135,7 +3252,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
           <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
                <Shield size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Secure Channel: Handshake submissions are routed directly to <strong>hrmanager@htc.co.tz</strong>.</span>
+               <span>Secure Channel: Handshake submissions are routed directly to <strong>redietzeraihadderra@gmail.com</strong>.</span>
             </span>
             <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#0056b3] whitespace-nowrap bg-blue-100/50 px-2.5 py-1 rounded">
                Direct Relay Active
@@ -3165,7 +3282,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">Recipient Mailbox:</span>
-                    <span className="font-mono text-[#0056b3]">hrmanager@htc.co.tz</span>
+                    <span className="font-mono text-[#0056b3]">redietzeraihadderra@gmail.com</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">CV Packet Attached:</span>
@@ -3195,7 +3312,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
               </div>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-8 bg-slate-50 p-10 md:p-14 border border-slate-100 rounded-2xl shadow-xl">
+            <form onSubmit={handleSubmit} noValidate className="space-y-8 bg-slate-50 p-10 md:p-14 border border-slate-100 rounded-2xl shadow-xl">
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase tracking-widest text-[#0056b3]">Aspirant Position</label>
                 <input 
@@ -3208,46 +3325,46 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Full Name</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Full Name *</label>
                   <input 
                     type="text" 
-                    required
                     placeholder="Enter your full name"
                     value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    className={`w-full px-5 py-4 bg-white border rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors ${errors.fullName ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                   />
+                  {errors.fullName && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.fullName}</p>}
                 </div>
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Email Address</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Email Address *</label>
                   <input 
                     type="email" 
-                    required
                     placeholder="name@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className={`w-full px-5 py-4 bg-white border rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                   />
+                  {errors.email && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.email}</p>}
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Phone Number</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Phone Number *</label>
                   <input 
                     type="tel" 
-                    required
                     placeholder="+255 000 000 000"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    className={`w-full px-5 py-4 bg-white border rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                   />
+                  {errors.phone && <p className="text-red-500 text-xs font-bold mt-1.5">{errors.phone}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="block text-xs font-bold uppercase tracking-widest text-slate-800">Experience</label>
                   <select 
                     value={formData.experience}
-                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                    onChange={(e) => handleInputChange('experience', e.target.value)}
                     className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
                   >
                     <option>1-3 years</option>
@@ -3263,7 +3380,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                   type="url" 
                   placeholder="https://linkedin.com/in/username"
                   value={formData.linkedin}
-                  onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                  onChange={(e) => handleInputChange('linkedin', e.target.value)}
                   className="w-full px-5 py-4 bg-white border border-slate-200 rounded-lg text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0056b3] transition-colors"
                 />
               </div>
@@ -3822,29 +3939,29 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Contact person's full name is required.";
+      newErrors.fullName = "We'd love to know who we are speaking with! Please share your full name.";
     } else if (formData.fullName.trim().length < 3) {
-      newErrors.fullName = "Full name must be at least 3 characters.";
+      newErrors.fullName = "Could you please share your full name? It helps if it's at least 3 characters.";
     }
 
     if (!formData.companyName.trim()) {
-      newErrors.companyName = "Company or Organization name is required.";
+      newErrors.companyName = "Please let us know which company or group you are representing.";
     } else if (formData.companyName.trim().length < 2) {
-      newErrors.companyName = "Company name must be at least 2 characters.";
+      newErrors.companyName = "A complete company or organization name typically has 2 or more characters.";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = "Business email address is required.";
+      newErrors.email = "We need an email address so we can reply with your SLA draft. Please share yours!";
     } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = "Please specify a valid business email address.";
+      newErrors.email = "That email address format doesn't look quite right. Could you double-check it?";
     }
 
     const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required with country code.";
+      newErrors.phone = "Please share a good phone number so we can easily reach back to you.";
     } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
-      newErrors.phone = "Phone number must be valid digits (minimum 7 numbers).";
+      newErrors.phone = "Please double-check your phone number—it should be a valid number of at least 7 digits.";
     }
 
     setErrors(newErrors);
@@ -4192,33 +4309,33 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Representative's full name is required.";
+      newErrors.fullName = "We would love to know who to ask for! Please enter your full name.";
     } else if (formData.fullName.trim().length < 3) {
-      newErrors.fullName = "Representative name must be at least 3 characters.";
+      newErrors.fullName = "Please enter your real full name (at least 3 characters long).";
     }
 
     if (!formData.companyName.trim()) {
-      newErrors.companyName = "Company or Organization name is required.";
+      newErrors.companyName = "Please tell us which company or organization name to schedule the audit for.";
     } else if (formData.companyName.trim().length < 2) {
-      newErrors.companyName = "Company name must be at least 2 characters.";
+      newErrors.companyName = "A valid organization name should be at least 2 characters.";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = "Business email address is required.";
+      newErrors.email = "Please share a reliable contact email so we can coordinate your demo dispatch.";
     } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = "Please specify a valid business email address.";
+      newErrors.email = "That email address looks like it's missing some details. Could you check again?";
     }
 
     const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required with country code.";
+      newErrors.phone = "A callback telephone number is needed to schedule this. Please provide one.";
     } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
-      newErrors.phone = "Phone number must be valid digits (minimum 7 numbers).";
+      newErrors.phone = "Please check your phone number—it should be at least 7 digits of direct hotline contact.";
     }
 
     if (!formData.preferredDate) {
-      newErrors.preferredDate = "Please choose a preferred date.";
+      newErrors.preferredDate = "Select the day that works best for your team—we would love to bring the demo rigs!";
     }
 
     setErrors(newErrors);
@@ -4504,33 +4621,33 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Representative's name is required.";
+      newErrors.fullName = "Please let us know your name so our support team knows who they are assisting.";
     } else if (formData.fullName.trim().length < 3) {
-      newErrors.fullName = "Name must be at least 3 characters.";
+      newErrors.fullName = "Could you please write your complete name? It helps if it's at least 3 characters.";
     }
 
     if (!formData.companyName.trim()) {
-      newErrors.companyName = "Company or Organization name is required.";
+      newErrors.companyName = "Please enter the name of your organization so we can pull up your service profile.";
     } else if (formData.companyName.trim().length < 2) {
-      newErrors.companyName = "Company name must be at least 2 characters.";
+      newErrors.companyName = "A valid company or organization name usually has at least 2 characters.";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = "Email address is required.";
+      newErrors.email = "Please specify an email address so we can send ticket updates and tracking codes.";
     } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = "Please specify a valid email address.";
+      newErrors.email = "Double check that email formatting—it should look like name@company.com.";
     }
 
     const phoneRegex = /^[+]?[0-9\s$$\)-]{7,20}$/;
     if (!formData.phone.trim()) {
-      newErrors.phone = "Direct support hotline phone of requester is required.";
+      newErrors.phone = "We need a direct phone number to call you back for support. Please provide one.";
     } else if (!phoneRegex.test(formData.phone.trim().replace(/\s/g, ''))) {
-      newErrors.phone = "Enter a valid direct phone line (minimum 7 digits).";
+      newErrors.phone = "Please double-check your phone number—it should be a valid number of at least 7 digits.";
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Please describe the system incident or required request.";
+      newErrors.description = "Tell us a bit about what's going on so our engineers can prep the right tools before calling.";
     }
 
     setErrors(newErrors);
@@ -5011,7 +5128,7 @@ const simulateEmailFeedback = (
 
   if (type === 'career') {
     fromName = "HTC Africa Recruitment Office";
-    fromEmail = "hrmanager@htc.co.tz";
+    fromEmail = "redietzeraihadderra@gmail.com";
     subject = `[RECEIVED] Job Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nWe have successfully received your job application for the ${details.jobTitle} position via the HTC Africa Careers Portal.\n\nApplication Details:\n- Full Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Experience Tier: ${details.experience}\n- Reference ID: ${refId}\n\nOur HR evaluation team is currently auditing your credentials. Thank you for your interest in joining the HTC Africa family in Shamo Towers.\n\nBest regards,\nHTC Africa HR Recruitment`;
     bodyHtml = `
@@ -5055,12 +5172,12 @@ const simulateEmailFeedback = (
         </p>
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
-          This is an automated transmission confirming delivery directly to hrmanager@htc.co.tz. Do not reply to this email thread.
+          This is an automated transmission confirming delivery directly to redietzeraihadderra@gmail.com. Do not reply to this email thread.
         </p>
       </div>
     `;
 
-    htcToEmail = "hrmanager@htc.co.tz";
+    htcToEmail = "redietzeraihadderra@gmail.com";
     htcSubject = `[HR DISPATCH] New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     htcBodyText = `Attention HR Team,\n\nA new candidate job application package has been submitted.\n\nCandidate Details:\n- Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Selected Position: ${details.jobTitle}\n- Experience: ${details.experience}\n- LinkedIn Profile: ${details.linkedin || 'None'}`;
     htcBodyHtml = `
