@@ -45,7 +45,9 @@ import {
   Tv,
   Copy,
   Check,
-  ExternalLink
+  ExternalLink,
+  Send,
+  Sparkles
 } from 'lucide-react';
 
 // --- Components ---
@@ -392,7 +394,7 @@ const FormInput = ({ label, required = false, type = "text", placeholder = "", n
 );
 
 const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: string; mainTitle: string }) => (
-  <div className="bg-[#030914] pt-40 pb-28 px-4 relative overflow-hidden border-b border-blue-500/10 font-sans">
+  <div className="bg-[#030914] pt-32 pb-20 px-4 relative overflow-hidden border-b border-blue-500/10 font-sans">
     {/* Tech grid mask */}
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-80" />
     
@@ -406,15 +408,15 @@ const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: 
     
     <div className="max-w-7xl mx-auto relative z-10 text-center">
        {title && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-blue-500/5 border border-blue-500/20 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.25em] mb-8 font-extrabold shadow-[0_0_15px_rgba(0,169,224,0.05)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-blue-500/5 border border-blue-500/20 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.25em] mb-6 font-extrabold shadow-[0_0_15px_rgba(0,169,224,0.05)]">
             <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
             {title}
           </div>
        )}
-       <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+       <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white mb-4 tracking-tight leading-tight">
          {mainTitle}
        </h2>
-       <p className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed border-t border-white/5 pt-6 font-medium">
+       <p className="text-slate-400 text-xs md:text-sm max-w-xl mx-auto leading-relaxed border-t border-white/5 pt-4 font-normal">
          {subtitle}
        </p>
     </div>
@@ -750,10 +752,29 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                    </p>
                    
                    <div className="bg-emerald-50/60 border border-emerald-100 p-4 rounded-xl text-left text-xs max-w-sm mx-auto space-y-2">
-                     <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CONFIRMATION EMAIL DISPATCHED</span>
+                     <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CONFIRMATION EMAIL SENT</span>
                      <p className="text-slate-600 leading-relaxed">
-                       An automated confirmation email response was successfully sent to <strong className="text-slate-900 font-bold">{submittedEmail || 'your email'}</strong>. View it in the <span className="font-bold text-[#0056b3]">Applier Inbox Sandbox</span> at the bottom right.
+                       A confirmation email has been sent to <strong className="text-slate-900 font-bold">{submittedEmail || 'your email'}</strong>. You can view this simulated email inside our <span className="font-bold text-[#0056b3]">Simulated Inbox Sandbox</span> at the bottom-right corner of this page.
                      </p>
+                   </div>
+
+                   <div className="pt-2 text-center hidden">
+                     <button 
+                       type="button"
+                       onClick={() => {
+                         if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+                           const body = `Hi HTC Sales Team,\n\nI have submitted a new web inquiry with the following details:\n- Name: ${formData.firstName} ${formData.lastName}\n- Company: ${formData.companyName || 'Not Specified'}\n- Email: ${formData.email}\n- Phone: ${phoneVal ? `${selectedCountry.prefix} ${phoneVal}` : ''}\n- Inquiry: ${formData.concern || 'General consultation'}\n\nKind regards,\n${formData.firstName}`;
+                           (window as any).__htc_trigger_dispatch_modal(
+                             "info@htc.co.tz",
+                             `Web Inquiry from ${formData.firstName} ${formData.lastName}`,
+                             body
+                           );
+                         }
+                       }}
+                       className="text-xs font-semibold text-[#0056b3] hover:text-[#00438b] hover:underline cursor-pointer inline-flex items-center gap-1.5 justify-center mx-auto"
+                     >
+                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Prefer to send this inquiry manually via your own email client?
+                     </button>
                    </div>
 
                    <button 
@@ -1062,357 +1083,231 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
 };
 
 const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
-  const [diagnosticState, setDiagnosticState] = useState<'idle' | 'scanning' | 'ready'>('idle');
-  const [progress, setProgress] = useState(0);
-  const [activeNode, setActiveNode] = useState<'dar' | 'arusha' | 'mwanza' | 'dodoma'>('dar');
-  const [logs, setLogs] = useState<string[]>([]);
+  const [workplace, setWorkplace] = useState<string>('office');
+  const [priority, setPriority] = useState<string>('network');
 
-  const tanzaniaNodes = {
-    dar: { 
-      name: "Dar es Salaam HQ Hub (Shamo Towers Gateway)", 
-      short: "HQ-HUB",
-      speed: "10 Gbps Fibernet", 
-      ping: "2ms", 
-      cpu: "14%", 
-      desc: "HTC central core network cluster and SLA management node based out of Shamo Towers." 
-    },
-    arusha: { 
-      name: "Arusha Northern Circuit Integration Node", 
-      short: "ARU-NODE",
-      speed: "1 Gbps Microwave Link", 
-      ping: "14ms", 
-      cpu: "8%", 
-      desc: "Active transceiver and telemetry cluster offering CCTV monitoring and fleet telemetry tracking." 
-    },
-    mwanza: { 
-      name: "Mwanza Lake Zone Integration Node", 
-      short: "MWZ-NODE",
-      speed: "10 Gbps Fiber Peering", 
-      ping: "6ms", 
-      cpu: "11%", 
-      desc: "Lake Zone router coordinating Dante AV multicast relays and local logistics/dispatch integration." 
-    },
-    dodoma: { 
-      name: "Dodoma Government Integrator Bridge", 
-      short: "DOM-GOV",
-      speed: "10 Gbps Redundant SD-WAN", 
-      ping: "8ms", 
-      cpu: "28%", 
-      desc: "Secure ministerial client gateway offering document compliance and digital conference systems support." 
-    },
+  const getSLAString = (wp: string, pr: string) => {
+    switch (wp) {
+      case 'retail':
+        return pr === 'security' ? 'Retail Safe-Guard Suite' : pr === 'cloud' ? 'Store Cloud Sync & Backup' : 'Instant Store POS Connect';
+      case 'industrial':
+        return pr === 'security' ? 'Warehouse Perimeter Watch' : pr === 'cloud' ? 'ICS Cloud Integration' : 'Industrial Fiber Backbone';
+      default:
+        return pr === 'security' ? 'Smart Office CCTV & Shield' : pr === 'cloud' ? 'Managed Cloud & Active Directory' : 'Corporate Fiber & Wi-Fi LAN';
+    }
   };
 
-  const runDiagnostics = () => {
-    if (diagnosticState !== 'idle') return;
-    setDiagnosticState('scanning');
-    setProgress(0);
-    setLogs(['⏳ Initializing HTC Infrastructure handshake...', '🔒 Verifying Shamo Tower main security loop...', '🛰️ Syncing GPS & vehicle fuel telemetry probes...']);
-    
-    let currentProgress = 0;
-    const interval = setInterval(() => {
-      currentProgress += 10;
-      setProgress(currentProgress);
-      
-      if (currentProgress === 30) {
-        setLogs(prev => [...prev, '⚡ Tuning Dante AV multicast audio feeds...']);
-      }
-      if (currentProgress === 60) {
-        setLogs(prev => [...prev, '📊 Scanning fuel sensor sub-controllers...']);
-      }
-      if (currentProgress === 90) {
-        setLogs(prev => [...prev, '🛡️ Activating SECURE GATEWAY Access Control checks...']);
-      }
-      
-      if (currentProgress >= 100) {
-        clearInterval(interval);
-        setDiagnosticState('ready');
-        setLogs(prev => [...prev, '✨ INTEG_OK: All CCTV, AV Dante, and Fleet loops running seamlessly.']);
-      }
-    }, 150);
+  const getRecommendedService = () => {
+    const title = getSLAString(workplace, priority);
+    let desc = "";
+    let setup = "3-4 days";
+    let scale = "Simple implementation";
+    if (priority === 'security') {
+      desc = "Includes 24/7 high-definition smart security cameras, biometric workplace keycards, and a local visual recording backup.";
+      setup = "2-3 days";
+      scale = "Pre-configured & secure";
+    } else if (priority === 'cloud') {
+      desc = "Standardization of corporate cloud profiles, automated files backups on Microsoft 365 or AWS, and smart user permissions.";
+      setup = "3-5 days";
+      scale = "Fully managed by HTC";
+    } else {
+      desc = "High-speed unified networking using optical fiber terminals, premium Wi-Fi routers, and physical server rack integration.";
+      setup = "4-6 days";
+      scale = "Full enterprise routing";
+    }
+    return { title, desc, setup, scale };
   };
 
-  const resetDiagnostics = () => {
-    setDiagnosticState('idle');
-    setProgress(0);
-    setLogs([]);
-  };
+  const recommendation = getRecommendedService();
 
   return (
-    <section id="home" className="bg-[#030914] pt-40 pb-24 px-4 relative overflow-hidden font-sans min-h-[95vh] flex items-center">
+    <section id="home" className="bg-[#030914] pt-40 pb-24 px-4 relative overflow-hidden font-sans min-h-[95vh] flex items-center text-left">
       {/* Absolute cybernetic grid background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-80" />
       
-      {/* Complex technical glowing nodes/orbs backgrounds */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#0056b3]/30 to-[#00a9e0]/5 blur-[120px] rounded-full pointer-events-none opacity-40 animate-pulse duration-[6s]" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#0056b3]/15 blur-[140px] rounded-full pointer-events-none opacity-30" />
+      {/* Glowing background highlights */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#0056b3]/20 to-[#00a9e0]/5 blur-[120px] rounded-full pointer-events-none opacity-40" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#0056b3]/10 blur-[140px] rounded-full pointer-events-none opacity-30" />
 
-      {/* Cyber metric lines at top */}
+      {/* Corporate Strategy Banner Indicators */}
       <div className="absolute top-24 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent flex items-center justify-around text-[9px] font-mono text-blue-500/40 tracking-[0.3em] font-semibold">
-        <span>SECURITY_LEVEL: GRADE_A</span>
-        <span>HTC_SYS_ONLINE</span>
-        <span>LOCATION: DAR_ES_SALAAM</span>
+        <span>SERVICE_MODULE: IT_STRATEGY</span>
+        <span>HTC_PLANNER_LIVE</span>
+        <span>LOCATION: DAR_ES_SALAAM_HQ</span>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 w-full flex flex-col lg:flex-row gap-16 items-center">
-        {/* Left column info with glowing widgets */}
-        <div className="lg:w-1/2 text-left">
-          {/* Futuristic technical badge */}
+        {/* Left Column - Strategy Intro */}
+        <div className="lg:w-1/2 text-left space-y-6">
+          {/* Strategy Division Badge */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.15em] mb-8 font-black shadow-[0_0_15px_rgba(0,169,224,0.1)]"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-mono uppercase tracking-[0.15em] font-black shadow-[0_0_15px_rgba(59,130,246,0.1)]"
           >
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
-            TZ SYSTEM INTEGRATORS | HIGH TECH CENTER
+            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
+            Simple & Practical Corporate IT Strategy
           </motion.div>
 
-          {/* Core main title */}
+          {/* Core Service Title */}
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-white mb-8 leading-[1.1] tracking-tight font-sans"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight"
           >
-            Digital Infra for <br className="hidden md:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00a9e0] via-blue-400 to-[#0056b3] shadow-sm">Futuristic</span> Enterprises
+            Simple, reliable IT Solutions built for <br className="hidden md:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00a9e0] to-blue-400">Your Business Growth</span>
           </motion.h1>
 
-          {/* Description text with slow delays */}
-          <motion.div 
+          {/* Description */}
+          <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="space-y-6 text-slate-400 text-lg leading-relaxed max-w-xl font-sans"
+            className="text-slate-400 text-lg leading-relaxed max-w-xl font-sans"
           >
-            <p>
-              HTC Africa is Tanzania's premier high-tech integrator. We design, deploy, and commission complex unified infrastructure networks, biometric defense systems, and highly precise fleet intelligence controllers.
-            </p>
-            <p>
-              We craft tailor-made, zero-fail turn-key hardware ecosystem pipelines that ensure your commercial facility operability stays ahead of the digital edge.
-            </p>
-          </motion.div>
+            We help companies and organizations across Tanzania integrate secure computer networks, configure easy cloud storage, and set up office security cameras with absolutely no complex developer jargon. Use our interactive planner to find your ideal layout.
+          </motion.p>
 
-          {/* Cyber metrics deck */}
+          {/* Core Stats */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-slate-900/50 max-w-lg font-mono text-left"
+            className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-900/50 max-w-lg font-mono text-left"
           >
             <div>
-              <div className="text-2xl sm:text-3xl font-black text-white">10Y+</div>
-              <div className="text-[10px] uppercase tracking-wider text-slate-500">Service Integrity</div>
+              <div className="text-2xl sm:text-3xl font-black text-white">100%</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500 mt-1">Simple Setup</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-black text-[#00a9e0]">99.99%</div>
-              <div className="text-[10px] uppercase tracking-wider text-slate-500">Network Uptime</div>
+              <div className="text-2xl sm:text-3xl font-black text-blue-400">24/7</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500 mt-1">Direct Support</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-black text-white">400+</div>
-              <div className="text-[10px] uppercase tracking-wider text-slate-500">TZ Nodes Built</div>
+              <div className="text-2xl sm:text-3xl font-black text-white">0</div>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500 mt-1">Tech Jargon</div>
             </div>
           </motion.div>
         </div>
 
-        {/* Right column: HUD Diagnostic sandbox */}
+        {/* Right Column - Interactive Solution Planner */}
         <div className="lg:w-1/2 w-full">
           <motion.div 
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1, duration: 0.8 }}
-            className="bg-slate-900/60 backdrop-blur-xl border border-white/10 ring-1 ring-white/5 rounded-2xl p-6 sm:p-10 text-white shadow-[0_0_80px_rgba(3,111,255,0.15)] flex flex-col justify-between"
+            className="bg-slate-900/60 backdrop-blur-xl border border-white/10 ring-1 ring-white/5 rounded-2xl p-6 sm:p-8 text-white shadow-[0_0_80px_rgba(59,130,246,0.08)] flex flex-col justify-between text-left"
           >
-            {/* Top console bar */}
+            {/* Planner Header */}
             <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(0,169,224,0.8)] animate-pulse" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">HTC Infrastructure Handshake Studio</span>
+                <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.8)] animate-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">HTC Service Planner</span>
               </div>
-              <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase tracking-wider">SECURE SHIELD</span>
+              <span className="text-[9px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded uppercase tracking-wider font-bold">100% Client Friendly</span>
             </div>
 
-            {/* Sub content description */}
+            {/* Quick Description */}
             <div className="mb-6">
-              <span className="text-xs font-bold text-[#00a9e0] tracking-widest uppercase block mb-1">Interactive Diagnostic Console</span>
-              <p className="text-xs text-slate-400 leading-relaxed">Audit and sync integrated AV systems, security pathways, and fleet telemetry units across Tanzanian gateway hubs.</p>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1">Find Your Ideal IT Setup</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Answer two simple choices below to immediately see the recommended setup plan and setup timeline.
+              </p>
             </div>
 
-            {/* Run Digital Audit Metrics Panel */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              {[
-                { 
-                  name: "Digital Security Loop", 
-                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.98), 98)}%` : '98%'),
-                  color: "text-blue-400",
-                  barColor: "bg-blue-400",
-                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.98, 98) : 98),
-                  desc: "CCTV & barrier signals"
-                },
-                { 
-                  name: "Dante Multicast Hub", 
-                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 0.96), 96)}%` : '96%'),
-                  color: "text-cyan-400",
-                  barColor: "bg-cyan-400",
-                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 0.96, 96) : 96),
-                  desc: "AV & LED stream delay" 
-                },
-                { 
-                  name: "Fleet Fuel Matrix", 
-                  val: diagnosticState === 'idle' ? '0%' : (diagnosticState === 'scanning' ? `${Math.min(Math.round(progress * 1.0), 100)}%` : '100%'),
-                  color: "text-emerald-400",
-                  barColor: "bg-emerald-400",
-                  pct: diagnosticState === 'idle' ? 0 : (diagnosticState === 'scanning' ? Math.min(progress * 1.0, 100) : 100),
-                  desc: "Sensor sync status"
-                }
-              ].map((m, idx) => (
-                <div key={idx} className="bg-slate-950/50 border border-white/5 p-3 rounded-lg flex flex-col justify-between h-20 transition-all">
-                  <div className="flex flex-col text-left">
-                    <span className="text-[8px] font-mono font-bold text-slate-500 uppercase tracking-tight truncate">{m.name}</span>
-                    <span className="text-[7px] font-mono text-slate-600 truncate">{m.desc}</span>
-                  </div>
-                  <div className="mt-2 text-left">
-                    <div className="flex items-baseline justify-between">
-                      <span className={`text-base font-black font-mono leading-none ${m.color}`}>{m.val}</span>
-                      <span className="text-[6px] font-mono text-slate-500 hidden sm:inline">REALTIME</span>
-                    </div>
-                    <div className="w-full h-1 bg-white/5 rounded-full mt-1.5 overflow-hidden">
-                      <div className={`h-full ${m.barColor} transition-all duration-300`} style={{ width: `${m.pct}%` }} />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Run Diagnostic layout */}
-            <div className="bg-slate-950/75 p-5 rounded-xl border border-white/5 mb-6 space-y-4">
-              {diagnosticState === 'idle' ? (
-                <div className="py-6 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[#00a9e0] mx-auto animate-bounce">
-                    <Settings size={22} className="animate-spin duration-1000" />
-                  </div>
-                  <div className="text-center">
-                    <span className="text-xs font-bold text-slate-300 uppercase block">Engine Core: Standby</span>
-                    <span className="text-[10px] text-slate-500 font-mono mt-1 block">Handshake is ready to initiate scans.</span>
-                  </div>
+            {/* Step 1: Workplace Type */}
+            <div className="space-y-3 mb-5">
+              <label className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold block">
+                Step 1: Choose Your Workplace Environment
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'office', label: '🏢 Standard Office', desc: 'Workspaces' },
+                  { id: 'retail', label: '🛍️ Store / Retail', desc: 'Customer hubs' },
+                  { id: 'industrial', label: '🏭 Warehouse', desc: 'Secure facility' }
+                ].map(item => (
                   <button
+                    key={item.id}
                     type="button"
-                    onClick={runDiagnostics}
-                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 font-bold uppercase tracking-widest text-[10px] text-white rounded-md transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                    onClick={() => setWorkplace(item.id)}
+                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-1 ${workplace === item.id ? 'bg-blue-500/15 border-blue-400 text-white shadow-[0_0_15px_rgba(59,130,246,0.15)] font-bold' : 'bg-slate-950/40 border-white/5 text-slate-400 hover:border-white/10 hover:text-slate-200'}`}
                   >
-                    🚀 RUN DIGITAL AUDIT
+                    <span className="text-xs truncate max-w-full font-bold">{item.label}</span>
+                    <span className="text-[8px] opacity-70 font-mono tracking-wide">{item.desc}</span>
                   </button>
-                </div>
-              ) : diagnosticState === 'scanning' ? (
-                <div className="space-y-4 py-2">
-                  <div className="space-y-1.5 font-sans">
-                    <div className="flex justify-between text-[10px] font-mono text-slate-400 font-bold">
-                      <span>AUDITING INTEGRATED INFRASTRUCTURE</span>
-                      <span>{progress}%</span>
-                    </div>
-                    {/* Progress slider bar */}
-                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: '0%' }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.15 }}
-                        className="h-full bg-[#00a9e0] shadow-[0_0_8px_rgba(0,169,224,1)]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Scrolling terminal logs */}
-                  <div className="bg-[#010912] p-3 rounded border border-white/5 font-mono text-[9px] text-slate-300 max-h-[85px] overflow-y-auto space-y-1.5">
-                    {logs.map((log, i) => (
-                      <div key={i} className="leading-relaxed">
-                        <span className="text-blue-500 pr-1.5">&gt;</span> {log}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="py-5 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto">
-                    <CheckCircle2 size={24} />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">HANDSHAKE COMPLETED SUCCESSFULLY</span>
-                    <span className="text-[10px] text-slate-400 font-mono mt-1 block">ALL CHANNELS, CCTV PROBES & DANTE NODES OPERATING AT 100% QUALITY.</span>
-                  </div>
-
-                  {/* Scrolling successfully logs */}
-                  <div className="bg-[#010912] p-3 rounded border border-white/5 font-mono text-[9px] text-slate-400 max-h-[60px] overflow-y-auto text-left">
-                    <div className="text-emerald-500">&gt; SECURE ENCRYPT: 128-AES COMPLIANT</div>
-                    <div className="text-slate-500">&gt; AUDITED 4 TZ CORE GATEWAYS</div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={resetDiagnostics}
-                    className="px-5 py-2 border border-white/10 text-white/60 hover:text-white font-mono uppercase text-[9px] tracking-widest rounded hover:bg-white/5"
-                  >
-                    🔄 Repeat Diagnostic Scan
-                  </button>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
 
-            {/* Dynamic Node Mapping section */}
-            <div className="bg-white/5 p-4 rounded-xl border border-white/5 space-y-3 mb-8">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">TZ Core Active Gateways mapping</span>
+            {/* Step 2: Primary Goal */}
+            <div className="space-y-3 mb-6">
+              <label className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold block">
+                Step 2: Tell Us Your Current Priority
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'network', label: '⚡ Fast Internet', desc: 'Networking' },
+                  { id: 'security', label: '🔒 Smart Cameras', desc: 'CCTV & Doors' },
+                  { id: 'cloud', label: '☁️ File Backup', desc: 'Easy Cloud' }
+                ].map(item => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setPriority(item.id)}
+                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-1 ${priority === item.id ? 'bg-blue-500/15 border-blue-400 text-white shadow-[0_0_15px_rgba(59,130,246,0.15)] font-bold' : 'bg-slate-950/40 border-white/5 text-slate-400 hover:border-white/10 hover:text-slate-200'}`}
+                  >
+                    <span className="text-xs truncate max-w-full font-bold">{item.label}</span>
+                    <span className="text-[8px] opacity-70 font-mono tracking-wide">{item.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Dynamic Results Display Profile */}
+            <div className="bg-slate-950/70 p-5 rounded-xl border border-white/5 mb-6 space-y-3.5">
+              <div className="flex justify-between items-center pb-2.5 border-b border-white/5">
+                <span className="text-[9px] font-mono text-blue-400 uppercase tracking-widest font-bold">RECOMMENDED PLAN</span>
+                <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider">GENERATED PLAN</span>
+              </div>
               
-              <div className="grid grid-cols-4 gap-2 text-center">
-                {(Object.keys(tanzaniaNodes) as Array<keyof typeof tanzaniaNodes>).map(nodeKey => {
-                  const node = tanzaniaNodes[nodeKey];
-                  const isActive = activeNode === nodeKey;
-                  return (
-                    <button
-                      key={nodeKey}
-                      type="button"
-                      onClick={() => setActiveNode(nodeKey)}
-                      className={`p-2.5 rounded-lg border transition-all duration-300 ${isActive ? 'bg-[#0056b3]/20 border-[#00a9e0] text-white shadow-inner' : 'bg-[#040d1c] border-white/5 text-slate-500 hover:text-slate-300'}`}
-                    >
-                      <div className="text-[10px] font-black uppercase font-mono">{node.short}</div>
-                      <div className="text-[8px] font-mono text-slate-400 mt-1">{node.ping}</div>
-                    </button>
-                  );
-                })}
+              <div className="space-y-2">
+                <h4 className="text-base font-bold text-white uppercase flex items-center gap-2">
+                  <span className="text-blue-400">✨</span> {recommendation.title}
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                  {recommendation.desc}
+                </p>
               </div>
 
-              {/* Active node specifications */}
-              <div className="bg-black/40 p-3.5 rounded-lg border border-white/5 font-mono text-[9px] text-slate-400 space-y-2">
-                <div className="flex justify-between items-start border-b border-white/5 pb-2">
-                  <div>
-                    <span className="text-white font-bold block text-[10px] tracking-tight">{tanzaniaNodes[activeNode].name}</span>
-                    <span className="text-slate-500 font-medium">CAPACITY: {tanzaniaNodes[activeNode].speed}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[#00a9e0] font-bold block">CPU LOAD: {tanzaniaNodes[activeNode].cpu}</span>
-                    <span className="text-emerald-400 font-bold flex items-center gap-1 justify-end mt-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse animate-duration-1000" />
-                      CALIBRATED
-                    </span>
-                  </div>
+              <div className="grid grid-cols-2 gap-4 pt-2 text-xs font-mono">
+                <div className="bg-slate-900/55 p-2.5 rounded border border-white/5 flex flex-col gap-0.5">
+                  <span className="text-[8px] text-slate-500 uppercase tracking-wide">ESTIMATED SETUP TIME</span>
+                  <span className="text-slate-200 font-bold">{recommendation.setup}</span>
                 </div>
-                <div className="text-slate-500 text-[8px] leading-relaxed italic">
-                  {tanzaniaNodes[activeNode].desc}
+                <div className="bg-slate-900/55 p-2.5 rounded border border-white/5 flex flex-col gap-0.5">
+                  <span className="text-[8px] text-slate-500 uppercase tracking-wide">COMPLEXITY</span>
+                  <span className="text-blue-300 font-bold">{recommendation.scale}</span>
                 </div>
               </div>
             </div>
 
-            {/* Control call-to-actions */}
-            <div className="flex flex-col sm:flex-row items-center gap-6 font-sans">
+            {/* Quick Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-1 font-sans">
               <button 
                 onClick={() => onNavigate('support')}
-                className="w-full sm:w-auto px-8 py-4 bg-[#0056b3] text-white font-bold rounded-lg uppercase tracking-widest hover:bg-[#004a9b] transition-all shadow-[0_4px_20px_rgba(0,86,179,0.3)] text-xs font-mono"
+                className="w-full sm:w-auto px-6 py-3.5 bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold rounded-xl uppercase tracking-widest transition-all shadow-[0_4px_15px_rgba(59,130,246,0.3)] text-xs cursor-pointer active:scale-95 text-center flex items-center justify-center gap-2 font-mono"
               >
-                Inquire & Setup
+                <span>Book Free Consultation</span>
+                <ArrowRight size={14} />
               </button>
               <button 
                 onClick={() => onNavigate('solutions')}
-                className="flex items-center text-slate-300 font-bold group whitespace-nowrap text-[11px] uppercase tracking-widest hover:text-[#00a9e0] transition-colors"
+                className="w-full sm:w-auto py-3 text-slate-300 font-bold text-xs uppercase tracking-widest hover:text-blue-400 transition-colors cursor-pointer text-center"
               >
-                Launch Solutions <ArrowRight size={16} className="ml-3 group-hover:translate-x-2 transition-transform text-[#00a9e0]" />
+                Explore All Services
               </button>
             </div>
           </motion.div>
@@ -1420,9 +1315,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
       </div>
     </section>
   );
-};
-
-const DigitalSecurityDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
+};const DigitalSecurityDetailPage = ({ onContact, key }: { onContact: () => void; key?: any }) => (
   <div className="animate-in fade-in duration-700">
     <ServiceHero 
       title="Digital Security Solutions"
@@ -3114,44 +3007,20 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
         mainTitle="Career Integration Opportunities"
         subtitle="Become a leading professional in Tanzania's premier digital security and systems integration vanguard."
       />
-      <div className="bg-transparent py-24 px-4 font-sans max-w-4xl mx-auto space-y-16">
-         {/* Direct Apply Banner */}
-         <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-8 shadow-2xl relative overflow-hidden">
-           {/* Abstract aesthetic accents */}
-           <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 blur-3xl rounded-full" />
-           <div className="space-y-4 relative z-10">
-             <div className="inline-flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-wider text-[#00a9e0] bg-cyan-400/15 border border-cyan-400/20 px-3 py-1 rounded">
-               <Mail size={12} /> SECURE DIRECT RECRUITMENT
-             </div>
-             <h3 className="text-2xl md:text-3xl font-black text-white">Direct Email Portal</h3>
-             <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-xl font-normal">
-               Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
-             </p>
-             <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:hrmanager@htc.co.tz" className="hover:underline font-bold text-white">hrmanager@htc.co.tz</a>
-             </div>
-           </div>
-           <a 
-             href="mailto:hrmanager@htc.co.tz?subject=Job Application - HTC Africa"
-             className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
-           >
-             <Mail size={13} /> SECURE MAIL ENVELOPE
-           </a>
-         </div>
-
+      <div className="bg-transparent py-12 px-4 font-sans max-w-4xl mx-auto space-y-12">
          <div className="pt-6">
-            <div className="flex items-center gap-3 mb-10">
+            <div className="flex items-center gap-3 mb-8">
               <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
-              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight uppercase">Active Vacant Nodes</h2>
+              <h2 className="text-lg md:text-xl font-bold text-white tracking-tight uppercase">Current Job Openings</h2>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {jobs.map((job, i) => (
-                <div key={i} className="p-8 md:p-10 border border-white/10 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-8 hover:border-[#00a9e0]/45 hover:bg-slate-900/20 backdrop-blur transition-all duration-300">
-                   <div className="space-y-3">
+                <div key={i} className="p-6 md:p-8 border border-white/10 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-[#00a9e0]/45 hover:bg-slate-900/20 backdrop-blur transition-all duration-300">
+                   <div className="space-y-2">
                       <span className="inline-block px-2.5 py-0.5 bg-slate-950 border border-white/5 font-mono text-[8px] font-bold text-slate-500 uppercase rounded">
                         ROLE // {job.badge}
                       </span>
-                      <h3 className="text-xl md:text-2xl font-black text-white uppercase">{job.title}</h3>
+                      <h3 className="text-base md:text-lg font-bold text-white uppercase tracking-tight">{job.title}</h3>
                       <div className="flex flex-wrap items-center gap-4 text-slate-400 font-mono text-[9px] uppercase tracking-wider">
                         <span className="text-[#00a9e0] font-bold">{job.type}</span>
                         <span>•</span>
@@ -3166,9 +3035,9 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                        onSelectJob(job.title);
                        onNavigate('job-apply');
                      }}
-                     className="px-6 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-950 font-mono font-bold rounded text-[9px] uppercase tracking-widest transition-all self-stretch md:w-auto text-center"
+                     className="px-6 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-950 font-bold rounded text-[10px] uppercase tracking-widest transition-all self-stretch md:w-auto text-center"
                    >
-                     EXECUTE APPLICATION
+                     Apply Online
                    </button>
                 </div>
               ))}
@@ -3319,10 +3188,10 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
           <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
                <Shield size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Secure Channel: Handshake submissions are routed directly to <strong>hrmanager@htc.co.tz</strong>.</span>
+               <span>Secure Application: Your dossier will be submitted securely into the HTC HR pipeline.</span>
             </span>
             <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#0056b3] whitespace-nowrap bg-blue-100/50 px-2.5 py-1 rounded">
-               Direct Relay Active
+               Encrypted Session
             </span>
           </div>
 
@@ -3335,10 +3204,10 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto text-green-500 shadow-sm animate-bounce">
                 <CheckCircle2 size={48} />
               </div>
-              <h3 className="text-3xl font-bold text-slate-900 uppercase tracking-tight">Application Transmitted!</h3>
+              <h3 className="text-3xl font-bold text-slate-900 uppercase tracking-tight">Application Submitted Successfully!</h3>
               
               <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-3">
-                <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">// SECURE RELAY DELIVERY SUCCESS</span>
+                <span className="text-[10px] font-mono text-[#00a9e0] uppercase tracking-wider block font-bold">Status: Application Received</span>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   Excellent! Your job application packet for the <strong>{selectedJob}</strong> opening has been delivered directly and securely. Our HR team has been notified. 
                 </p>
@@ -3348,8 +3217,8 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                     <span className="font-bold text-slate-700">{selectedJob}</span>
                   </div>
                   <div className="flex justify-between py-1">
-                    <span className="font-semibold text-slate-400">Recipient Mailbox:</span>
-                    <span className="font-mono text-[#0056b3]">hrmanager@htc.co.tz</span>
+                    <span className="font-semibold text-slate-400">Recipient Queue:</span>
+                    <span className="font-medium text-slate-700">HTC Africa HR Pipeline</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">CV Packet Attached:</span>
@@ -3363,10 +3232,62 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
               </div>
 
               <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
-                <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 APPLICANT CONFIRMATION EMAIL</span>
+                <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 APPLICATION RECEIVED</span>
                 <p className="text-slate-600 leading-relaxed">
-                  A receipt confirmation email has been dispatched to your sandbox inbox: <strong className="text-slate-900">{formData.email}</strong>. You can preview/open this simulated mail in the <strong className="text-[#0056b3]">Applier Inbox Sandbox</strong> in the bottom right corner of this page.
+                  A receipt confirmation email has been sent to your inbox: <strong className="text-slate-900">{formData.email}</strong>. You can view this simulated reply in our <strong className="text-[#0056b3]">Simulated Inbox Sandbox</strong> in the bottom right corner of this page or see the copy directly below:
                 </p>
+              </div>
+
+              {/* High-Fidelity Simulated Email Live Render */}
+              <div className="bg-[#f8fafc] border border-slate-200 rounded-2xl overflow-hidden shadow-sm text-left">
+                <div className="bg-slate-100/80 px-4 py-2 text-[10px] text-slate-500 font-mono flex justify-between items-center border-b border-slate-200">
+                  <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Simulated Client Inbox Viewer</span>
+                  </div>
+                  <span className="text-xs text-slate-400">SMTP Handshake Complete</span>
+                </div>
+                <div className="p-5 space-y-4 font-sans">
+                  <div className="space-y-1.5 pb-3 border-b border-slate-200/60 text-xs text-slate-500 font-medium">
+                    <div className="flex"><span className="w-16 font-semibold text-slate-400">From:</span><span className="text-slate-800 font-bold">HTC Africa Recruitment Office &lt;hrmanager@htc.co.tz&gt;</span></div>
+                    <div className="flex"><span className="w-16 font-semibold text-slate-400">To:</span><span className="text-[#0056b3] font-mono font-bold">{formData.email}</span></div>
+                    <div className="flex"><span className="w-16 font-semibold text-slate-400">Subject:</span><span className="text-slate-800 font-bold truncate">[RECEIVED] Job Application: {selectedJob}</span></div>
+                    <div className="flex"><span className="w-16 font-semibold text-slate-400">Date:</span><span className="text-slate-600 font-mono">{new Date().toLocaleString()}</span></div>
+                  </div>
+                  <div className="text-xs text-slate-700 leading-relaxed space-y-3 bg-white p-4 rounded-xl border border-slate-100 max-w-full overflow-hidden">
+                    <p>Dear <strong>{formData.fullName}</strong>,</p>
+                    <p>We have successfully received your job application for the <strong>{selectedJob}</strong> position via the HTC Africa Careers Portal.</p>
+                    <div className="bg-slate-50 border border-slate-100 p-3 rounded-lg my-2 font-mono text-[10px] space-y-1 text-slate-600">
+                      <div><strong>Full Name:</strong> {formData.fullName}</div>
+                      <div><strong>Email Address:</strong> {formData.email}</div>
+                      <div><strong>Direct Phone:</strong> {formData.phone}</div>
+                      <div><strong>Experience Tier:</strong> {formData.experience}</div>
+                    </div>
+                    <p>Our HR evaluation team is currently auditing your credentials. If your background matches our requirements, we will invite you to schedule a technical screening at our Shamo Towers headquarters.</p>
+                    <p>Thank you for your interest in joining the HTC Africa vanguard.</p>
+                    <p className="text-[10px] text-slate-400 italic pt-2 border-t border-slate-100/50">Best regards,<br />HTC Africa HR Recruitment Unit</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 text-center hidden">
+                <button 
+                  type="button"
+                  onClick={() => {
+                    if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+                      const body = `Attention HR Team,\n\nA new job application was submitted for ${selectedJob}.\n\nCandidate Details:\n- Name: ${formData.fullName}\n- Email: ${formData.email}\n- Phone: s${formData.phone}\n- Experience: ${formData.experience}\n- LinkedIn Profile: ${formData.linkedin || 'None'}\n- Message: ${formData.message || 'None'}`;
+                      (window as any).__htc_trigger_dispatch_modal(
+                        "hrmanager@htc.co.tz",
+                        `[Job Application] ${selectedJob} - ${formData.fullName}`,
+                        body,
+                        formData.cvFile ? formData.cvFile.name : 'CV_Application_Packet.pdf'
+                      );
+                    }
+                  }}
+                  className="text-xs font-semibold text-[#0056b3] hover:text-[#00438b] hover:underline cursor-pointer inline-flex items-center gap-1.5 justify-center mx-auto"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Prefer to submit your CV package manually via your own email client?
+                </button>
               </div>
 
               <div className="flex flex-col gap-3 pt-4">
@@ -4113,7 +4034,7 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
                    Your <strong className="text-slate-900 font-bold">{selectedTier} SLA</strong> inquiry has been successfully registered in our client-relations system.
                 </p>
                 <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-2 mt-4 text-xs text-slate-500">
-                  <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">// SECURE RELAY DELIVERY STATUS</span>
+                  <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">Status: Request Received</span>
                   <p className="text-slate-600 leading-relaxed">
                     Our team was notified directly. A custom SLA agreement blueprint draft is being compiled for <strong>{formData.companyName}</strong>.
                   </p>
@@ -4135,10 +4056,62 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
              </div>
 
              <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
-               <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CLIENT CONFIRMATION EMAIL</span>
+               <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 SLA REQUEST RECEIVED</span>
                <p className="text-slate-600 leading-relaxed">
-                 A custom SLA handshake confirmation has been simulated and sent to your address: <strong className="text-slate-900">{formData.email}</strong>. Inspect it in the <span className="font-bold text-[#0056b3]">Applier Inbox Sandbox</span> in the bottom right corner.
+                 A receipt confirmation email has been sent to your address: <strong className="text-slate-900">{formData.email}</strong>. You can view this inside our <span className="font-bold text-[#0056b3]">Simulated Inbox Sandbox</span> in the bottom right corner of this page or see the copy directly below:
                </p>
+             </div>
+
+             {/* High-Fidelity Simulated Email Live Render */}
+             <div className="bg-[#f8fafc] border border-slate-200 rounded-2xl overflow-hidden shadow-sm text-left">
+               <div className="bg-slate-100/80 px-4 py-2 text-[10px] text-slate-500 font-mono flex justify-between items-center border-b border-slate-200">
+                 <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider">
+                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                   <span>Simulated Client Inbox Viewer</span>
+                 </div>
+                 <span className="text-xs text-slate-400">SMTP Handshake Complete</span>
+               </div>
+               <div className="p-5 space-y-4 font-sans text-slate-800">
+                 <div className="space-y-1.5 pb-3 border-b border-slate-200/60 text-xs text-slate-500 font-medium">
+                   <div className="flex"><span className="w-16 font-semibold text-slate-400">From:</span><span className="text-slate-800 font-bold">HTC Africa Client Relations &lt;info@htc.co.tz&gt;</span></div>
+                   <div className="flex"><span className="w-16 font-semibold text-slate-400">To:</span><span className="text-[#0056b3] font-mono font-bold">{formData.email}</span></div>
+                   <div className="flex"><span className="w-16 font-semibold text-slate-400">Subject:</span><span className="text-slate-800 font-bold truncate">[CONFIRMATION] SLA Request - Ref: HTC-SLA</span></div>
+                   <div className="flex"><span className="w-16 font-semibold text-slate-400">Date:</span><span className="text-slate-600 font-mono">{new Date().toLocaleString()}</span></div>
+                 </div>
+                 <div className="text-xs text-slate-700 leading-relaxed space-y-3 bg-white p-4 rounded-xl border border-slate-100 max-w-full overflow-hidden">
+                   <p>Dear <strong>{formData.fullName}</strong>,</p>
+                   <p>We have successfully received your custom Service Level Agreement (SLA) solicitation.</p>
+                   <div className="bg-slate-50 border border-slate-100 p-3 rounded-lg my-2 font-mono text-[10px] space-y-1 text-slate-600">
+                     <div><strong>SLA Tier Requested:</strong> {selectedTier} SLA</div>
+                     <div><strong>Organization:</strong> {formData.companyName}</div>
+                     <div><strong>Contact Person:</strong> {formData.fullName}</div>
+                     <div><strong>Hotline Support Phone:</strong> {formData.phone}</div>
+                     <div><strong>Special Requests/Notes:</strong> {formData.specialNeeds || 'None specified.'}</div>
+                   </div>
+                   <p>Our service directors and legal experts are currently formulating your custom legal SLA framework. A digital PDF outline will be dispatched to your account shortly.</p>
+                   <p>Thank you for choosing HTC Africa to secure your technological infrastructure.</p>
+                   <p className="text-[10px] text-slate-400 italic pt-2 border-t border-slate-100/50 font-semibold text-left">Best regards,<br />HTC Africa Solutions & Sales Unit</p>
+                 </div>
+               </div>
+             </div>
+
+             <div className="pt-2 text-center hidden">
+               <button 
+                 type="button"
+                 onClick={() => {
+                   if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+                     const body = `Hi HTC Sales Team,\n\nI would like to request a custom ${selectedTier} Service Level Agreement draft with the following details:\n- Primary Contact: ${formData.fullName}\n- Corporate Account: ${formData.companyName}\n- Contact Email: ${formData.email}\n- Contact Phone: ${formData.phone}\n- Special Requests: ${formData.specialNeeds || 'None specified.'}\n\nKind regards,\n${formData.fullName}`;
+                     (window as any).__htc_trigger_dispatch_modal(
+                       "salesmanager@htc.co.tz",
+                       `[SLA Inquiry] ${selectedTier} - ${formData.companyName}`,
+                       body
+                     );
+                   }
+                 }}
+                 className="text-xs font-semibold text-[#0056b3] hover:text-[#00438b] hover:underline cursor-pointer inline-flex items-center gap-1.5 justify-center mx-auto"
+               >
+                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Prefer to draft and send this SLA request via your own email?
+               </button>
              </div>
 
              <div className="flex flex-col gap-3 pt-2">
@@ -4481,7 +4454,7 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
               Your technology audit & hardware demonstration request for <strong className="text-slate-900 font-bold">{formData.companyName}</strong> has been successfully registered.
             </p>
             <div className="bg-white p-6 rounded-xl border border-slate-200 text-left space-y-2 mt-4 text-xs text-slate-500">
-              <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">// DIRECT WEB RELAY DELIVERY</span>
+              <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-wider block font-bold">Status: Request Received</span>
               <p className="text-slate-600 leading-relaxed">
                 The technical integration unit has received this schedule profile directly. A coordinator has been assigned to confirm slot: <strong>{formData.preferredDate}</strong>.
               </p>
@@ -4503,10 +4476,62 @@ const AuditDemoRequestPage = ({ onBack, onContact }: { onBack: () => void; onCon
           </div>
 
           <div className="bg-emerald-50/60 border border-emerald-100 p-6 rounded-xl text-left space-y-2 text-xs">
-            <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CLIENT CONFIRMATION EMAIL</span>
+            <span className="text-[10px] font-mono text-emerald-600 uppercase tracking-wider block font-bold">📧 CONFIRMATION EMAIL SENT</span>
             <p className="text-slate-600 leading-relaxed">
-              An on-site audit schedule & demonstration confirmation receipt has been sent to client mailbox <strong className="text-slate-900 font-bold">{formData.email}</strong>. View it in the <strong className="text-[#0056b3]">Applier Inbox Sandbox</strong>.
+              A confirmation email has been sent to your address: <strong className="text-slate-900 font-bold">{formData.email}</strong>. You can view this simulated message inside our <strong className="text-[#0056b3]">Simulated Inbox Sandbox</strong> or see the copy directly below:
             </p>
+          </div>
+
+          {/* High-Fidelity Simulated Email Live Render */}
+          <div className="bg-[#f8fafc] border border-slate-200 rounded-2xl overflow-hidden shadow-sm text-left w-full">
+            <div className="bg-slate-100/80 px-4 py-2 text-[10px] text-slate-500 font-mono flex justify-between items-center border-b border-slate-200">
+              <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Simulated Client Inbox Viewer</span>
+              </div>
+              <span className="text-xs text-slate-400">SMTP Handshake Complete</span>
+            </div>
+            <div className="p-5 space-y-4 font-sans text-slate-800">
+              <div className="space-y-1.5 pb-3 border-b border-slate-200/60 text-xs text-slate-500 font-medium">
+                <div className="flex"><span className="w-16 font-semibold text-slate-400">From:</span><span className="text-slate-800 font-bold">HTC Solutions Integration Group &lt;info@htc.co.tz&gt;</span></div>
+                <div className="flex"><span className="w-16 font-semibold text-slate-400">To:</span><span className="text-[#0056b3] font-mono font-bold">{formData.email}</span></div>
+                <div className="flex"><span className="w-16 font-semibold text-slate-400">Subject:</span><span className="text-slate-800 font-bold truncate">[CONFIRMATION] Technical Audit & System Demo Request</span></div>
+                <div className="flex"><span className="w-16 font-semibold text-slate-400">Date:</span><span className="text-slate-600 font-mono">{new Date().toLocaleString()}</span></div>
+              </div>
+              <div className="text-xs text-slate-700 leading-relaxed space-y-3 bg-white p-4 rounded-xl border border-slate-100 max-w-full overflow-hidden">
+                <p>Dear <strong>{formData.fullName}</strong>,</p>
+                <p>Thank you for requesting an IT Security Audit or System Demo with HTC Africa.</p>
+                <div className="bg-slate-50 border border-slate-100 p-3 rounded-lg my-2 font-mono text-[10px] space-y-1 text-slate-600">
+                  <div><strong>Requested Domain:</strong> {formData.serviceDomain}</div>
+                  <div><strong>Corporate Account:</strong> {formData.companyName}</div>
+                  <div><strong>Representative:</strong> {formData.fullName}</div>
+                  <div><strong>Preferred Date:</strong> {formData.preferredDate}</div>
+                  <div><strong>Additional Notes:</strong> {formData.notes || 'None specified.'}</div>
+                </div>
+                <p>A senior solutions architect is assigned to review your infrastructure scope. We will contact you soon at the provided phone number to finalize scheduling.</p>
+                <p>Thank you for choosing HTC Africa to secure your technological integration requirements.</p>
+                <p className="text-[10px] text-slate-400 italic pt-2 border-t border-slate-100/50 font-semibold text-left">Best regards,<br />HTC Technical Audit Integration Team</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-2 text-center hidden">
+            <button 
+              type="button"
+              onClick={() => {
+                if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+                  const body = `Hi HTC Tech Team,\n\nI have requested an on-site audit & system demo with these parameters:\n- Representative: ${formData.fullName}\n- Organization: ${formData.companyName}\n- Contact Email: ${formData.email}\n- Contact Phone: ${formData.phone}\n- Service Domain: s${formData.serviceDomain}\n- Preferred Date: ${formData.preferredDate}\n- Notes: ${formData.notes || 'None specified.'}\n\nKind regards,\n${formData.fullName}`;
+                  (window as any).__htc_trigger_dispatch_modal(
+                    "salesmanager@htc.co.tz",
+                    `[Technical Audit Request] ${formData.companyName}`,
+                    body
+                  );
+                }
+              }}
+              className="text-xs font-semibold text-[#0056b3] hover:text-[#00438b] hover:underline cursor-pointer inline-flex items-center gap-1.5 justify-center mx-auto"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Prefer to draft and send this audit request via your own email?
+            </button>
           </div>
 
           <div className="flex flex-col gap-3 pt-2">
@@ -4788,12 +4813,12 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
             <Zap size={44} />
           </div>
           <div className="space-y-4 relative z-10">
-            <h2 className="text-3xl font-black uppercase tracking-tight text-white">Support Handshake Initiated</h2>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">Support Ticket Received</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
               Your priority support ticket has been recorded for <strong className="text-white font-bold">{formData.companyName}</strong>. 
             </p>
             <div className="bg-[#030914] p-6 rounded-2xl border border-white/5 space-y-3">
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block font-bold">// DIRECT VOICE SUPPORT LINE READY</span>
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block font-bold">Direct Voice Support Line Available</span>
               <p className="text-xl font-bold tracking-tight text-white">+255 (0) 22 212 8482</p>
               <a 
                 href="tel:+255222128482"
@@ -4804,7 +4829,7 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
             </div>
             
             <div className="bg-slate-900 border border-white/5 p-6 rounded-xl text-left space-y-2 mt-4 text-xs text-slate-400">
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block font-bold">// DIRECT COMS DISPATCH COMPLETE</span>
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block font-bold">Support Ticket Confirmed</span>
               <p className="text-slate-300 leading-relaxed">
                 Emergency tickets are relayed with top priority. Our operations desk has routed this request directly to <strong>supportmanager@htc.co.tz</strong>.
               </p>
@@ -4825,10 +4850,63 @@ const CoreSupportPage = ({ onBack }: { onBack: () => void }) => {
             </div>
 
             <div className="bg-emerald-500/10 border border-emerald-500/20 p-6 rounded-xl text-left space-y-2 text-xs">
-              <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block font-bold">📧 APPLICANT CONFIRMATION EMAIL</span>
+              <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block font-bold">📧 TICKET CONFIRMATION SENT</span>
               <p className="text-slate-300 leading-relaxed">
-                A high-priority ticket registration confirmation has been simulated and sent to your address: <strong className="text-white font-bold">{formData.email}</strong>. View it in the <strong className="text-cyan-400 font-bold">Applier Inbox Sandbox</strong>.
+                A support ticket registration confirmation has been sent to your address: <strong className="text-white font-bold">{formData.email}</strong>. You can view this simulated reply in our <strong className="text-cyan-400 font-bold">Simulated Inbox Sandbox</strong> or see the copy directly below:
               </p>
+            </div>
+
+            {/* High-Fidelity Simulated Email Live Render */}
+            <div className="bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl text-left w-full">
+              <div className="bg-slate-950 px-4 py-2 text-[10px] text-slate-400 font-mono flex justify-between items-center border-b border-white/5">
+                <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-cyan-400">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>Simulated Client Inbox Viewer</span>
+                </div>
+                <span className="text-xs text-slate-500">SMTP Handshake Complete</span>
+              </div>
+              <div className="p-5 space-y-4 font-sans text-slate-300">
+                <div className="space-y-1.5 pb-3 border-b border-white/5 text-xs text-slate-400 font-medium">
+                  <div className="flex"><span className="w-16 font-semibold text-slate-500">From:</span><span className="text-white font-bold">HTC Incident Operations Desk &lt;supportmanager@htc.co.tz&gt;</span></div>
+                  <div className="flex"><span className="w-16 font-semibold text-slate-500">To:</span><span className="text-cyan-400 font-mono font-bold">{formData.email}</span></div>
+                  <div className="flex"><span className="w-16 font-semibold text-slate-500">Subject:</span><span className="text-white font-bold truncate">[CRITICAL INCIDENT RECEIVED] - Ticket Registered</span></div>
+                  <div className="flex"><span className="w-16 font-semibold text-slate-500">Date:</span><span className="text-slate-400 font-mono">{new Date().toLocaleString()}</span></div>
+                </div>
+                <div className="text-xs text-slate-300 leading-relaxed space-y-3 bg-[#030914] p-4 rounded-xl border border-white/5 max-w-full overflow-hidden">
+                  <p className="text-red-400 font-bold">🚨 CRITICAL INCIDENT REPORT RECEIVED & TICKETED!</p>
+                  <p>Dear <strong>{formData.fullName}</strong>,</p>
+                  <p>We have successfully received and cataloged your emergency technical support ticket in our rapid network triage queue.</p>
+                  <div className="bg-slate-950 border border-white/5 p-3 rounded-lg my-2 font-mono text-[10px] space-y-1 text-slate-400">
+                    <div><strong>Severity / Urgency Priority:</strong> <span className="text-red-400 font-bold">{formData.urgency}</span></div>
+                    <div><strong>Corporate Account:</strong> {formData.companyName}</div>
+                    <div><strong>Representative:</strong> {formData.fullName}</div>
+                    <div><strong>Direct Callback Phone:</strong> {formData.phone}</div>
+                    <div><strong>Outage Description:</strong> {formData.description}</div>
+                  </div>
+                  <p>Our on-call rapid network support engineering task force is mobilized and will initiate physical or remote intervention immediately.</p>
+                  <p>Thank you for your patience and cooperation as we restore your network operations.</p>
+                  <p className="text-[10px] text-slate-500 italic pt-2 border-t border-white/5 font-semibold text-left">Best regards,<br />HTC Africa Incident Response Command</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 text-center hidden">
+              <button 
+                type="button"
+                onClick={() => {
+                  if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+                    const body = `CRITICAL SUPPORT ALERT:\n- Representative Name: ${formData.fullName}\n- Organization Account: ${formData.companyName}\n- Contact Email: ${formData.email}\n- Callback Phone: ${formData.phone}\n- Priority Urgency: ${formData.urgency}\n- System Incident Report: ${formData.description}\n\nKind regards,\n${formData.fullName}`;
+                    (window as any).__htc_trigger_dispatch_modal(
+                      "supportmanager@htc.co.tz",
+                      `[URGENT SUPPORT TICKET] ${formData.companyName}`,
+                      body
+                    );
+                  }
+                }}
+                className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer inline-flex items-center gap-1.5 justify-center mx-auto"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Prefer to draft and send this urgent support ticket via email?
+              </button>
             </div>
           </div>
           <div className="flex flex-col gap-3 pt-4 relative z-10">
@@ -5205,7 +5283,7 @@ const simulateEmailFeedback = (
           <span style="font-size: 11px; font-family: monospace; color: #64748b;">REF: ${refId} // SECURITY LEVEL: INTERNAL</span>
         </div>
         <p>Dear <strong>${details.fullName}</strong>,</p>
-        <p>This is an automated handshake confirmation. We have successfully received and cataloged your job application packet for the position of <strong>${details.jobTitle || 'Cisco Network Engineer'}</strong> directly in our careers dispatch router.</p>
+        <p>This is an automated delivery confirmation. We have successfully received and cataloged your job application packet for the position of <strong>${details.jobTitle || 'Cisco Network Engineer'}</strong> directly in our careers dispatch router.</p>
         
         <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
           <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">SUBMISSION SNAPSHOT</h3>
@@ -5245,7 +5323,7 @@ const simulateEmailFeedback = (
     `;
 
     htcToEmail = "hrmanager@htc.co.tz";
-    htcSubject = `[HR DISPATCH] New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
+    htcSubject = `New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     htcBodyText = `Attention HR Team,\n\nA new candidate job application package has been submitted.\n\nCandidate Details:\n- Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Selected Position: ${details.jobTitle}\n- Experience: ${details.experience}\n- LinkedIn Profile: ${details.linkedin || 'None'}`;
     htcBodyHtml = `
       <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
@@ -5290,7 +5368,7 @@ const simulateEmailFeedback = (
   } else if (type === 'contact') {
     fromName = "HTC Africa Client Relations";
     fromEmail = "info@htc.co.tz";
-    subject = `[CONFIRMATION] Inquiry Handshake Received - Ref: ${refId}`;
+    subject = `[CONFIRMATION] Inquiry Received - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nThank you for reaching out to HTC Africa. We have successfully registered your inquiry.\n\nYour Details:\n- Full Name: ${details.fullName}\n- Company: ${details.company || 'Not Specified'}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Your IT Concern: ${details.concern || 'General consultation'}\n\nOur service managers will investigate your request and follow up within 24 business hours. Thank you for choosing HTC Africa.\n\nKind regards,\nHTC Africa Client Support Team`;
     bodyHtml = `
       <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
@@ -5299,7 +5377,7 @@ const simulateEmailFeedback = (
           <span style="font-size: 11px; font-family: monospace; color: #64748b;">TICKET REF: ${refId} // SLA CHANNEL: PUBLIC</span>
         </div>
         <p>Dear <strong>${details.fullName}</strong>,</p>
-        <p>Thank you for initiating communication with us. Our client relationship matrix has registered your support dispatch profile.</p>
+        <p>Thank you for initiating communication with us. Our client relationship coordinators have registered your request detail.</p>
         
         <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 16px; margin: 20px 0;">
           <h3 style="margin-top: 0; font-size: 13px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">INQUIRY PROFILE</h3>
@@ -5324,14 +5402,14 @@ const simulateEmailFeedback = (
         </p>
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
-          This feedback confirmation was dispatched securely on behalf of info@htc.co.tz.
+          This is a confirmation copy of your message to info@htc.co.tz.
         </p>
       </div>
     `;
 
     htcToEmail = "info@htc.co.tz";
     htcSubject = `[CRM NEW TICKET] Web Contact Form - Client: ${details.company || 'Personal'}`;
-    htcBodyText = `Hi Sales Team,\n\nA new commercial handshake inquiry has bypassed normal ticketers.\n\nInquirer Particulars:\n- Name: ${details.fullName}\n- Org: ${details.company || 'Personal'}\n- Phone: ${details.phone}\n- Email: ${details.email}\n- Note/Issue: ${details.concern || 'None'}`;
+    htcBodyText = `Hi Sales Team,\n\nA new commercial support and sales inquiry has bypassed normal ticketers.\n\nInquirer Particulars:\n- Name: ${details.fullName}\n- Org: ${details.company || 'Personal'}\n- Phone: ${details.phone}\n- Email: ${details.email}\n- Note/Issue: ${details.concern || 'None'}`;
     htcBodyHtml = `
       <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
         <div style="border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 16px;">
@@ -5375,7 +5453,7 @@ const simulateEmailFeedback = (
   } else if (type === 'sla') {
     fromName = "HTC Africa Enterprise SLA Team";
     fromEmail = "salesmanager@htc.co.tz";
-    subject = `PROPOSAL: Custom ${details.tier || 'Premium'} SLA Handshake Config - Ref: ${refId}`;
+    subject = `PROPOSAL: Custom ${details.tier || 'Premium'} Service Level Agreement Request - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nWe have received your custom Service Level Agreement (SLA) solicitation.\n\nSLA Requisition Summary:\n- SLA Tier: ${details.tier} SLA\n- Organization: ${details.company}\n- Contact Personnel: ${details.fullName}\n- Hotline Phone: ${details.phone}\n- Special Requests/Notes: ${details.specialNeeds || 'None specified.'}\n\nOur service directors are formulating your custom legal SLA framework. A digital PDF outline will be dispatched to you shortly.\n\nBest regards,\nHTC Africa Solutions & Sales Unit`;
     bodyHtml = `
       <div style="font-family: sans-serif; color: #cbd5e1; background-color: #030914; padding: 24px; border-radius: 8px; border: 1px solid #1e293b; text-align: left;">
@@ -5468,7 +5546,7 @@ const simulateEmailFeedback = (
   } else if (type === 'audit') {
     fromName = "HTC Africa Core Technical Dispatch";
     fromEmail = "salesmanager@htc.co.tz";
-    subject = `CONFIRMED: On-Site Audit & Demo Initiative - Ref: ${refId}`;
+    subject = `CONFIRMED: On-Site Technology Audit Scheduled - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nWe have scheduled your on-site technology audit & hardware equipment demonstration.\n\nAudit Parameters:\n- Category: ${details.serviceDomain}\n- Scheduled On: ${details.preferredDate}\n- Organization: ${details.companyName}\n- Contact Rep: ${details.fullName}\n- Supplementary Directives: ${details.notes || 'None specified.'}\n\nOur engineering team will confirm details shortly. Best regards,\nHTC Africa Solution Architects Unit`;
     bodyHtml = `
       <div style="font-family: sans-serif; color: #1e293b; background-color: #f8fafc; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;">
@@ -5557,7 +5635,7 @@ const simulateEmailFeedback = (
   } else if (type === 'support') {
     fromName = "HTC Support Operations Desk";
     fromEmail = "supportmanager@htc.co.tz";
-    subject = `[CRITICAL TRACE: ${refId}] Core Support Operations - Active Line Init`;
+    subject = `[SUPPORT TICKET] Support Ticket #${refId} Opened`;
     bodyText = `ALERT: Critical Incident Thread Registered.\n\nSupport Ticket Particulars:\n- Ticket ID: ${refId}\n- Priority Level: ${details.urgency}\n- Business Client: ${details.companyName}\n- Contact Rep: ${details.fullName}\n- Hotline: ${details.phone}\n- Detailed Description:\n"${details.description}"\n\nOur engineering shift lead has been alerted. Your active line is initiated. Emergency dial line +255-712-345-678.`;
     bodyHtml = `
       <div style="font-family: sans-serif; color: #cbd5e1; background-color: #030914; padding: 24px; border-radius: 8px; border: 1px solid #ef4444; text-align: left;">
@@ -5683,7 +5761,7 @@ const simulateEmailFeedback = (
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: newEmail }));
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: htcEmail }));
     
-    // Also trigger the new secure interactive dispatch modal for physical delivery check
+    // Automatically trigger the email options dispatch modal so the user has full control how to proceed.
     if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
       const att = type === 'career' ? (details.cvFile ? (details.cvFile as any).name : 'CV_Application_Packet.pdf') : undefined;
       (window as any).__htc_trigger_dispatch_modal(
@@ -5732,7 +5810,8 @@ function ApplierEmailSimulatorWidget() {
       const email = e.detail as SimulatedEmail;
       setEmails(prev => [email, ...prev]);
       setSelectedEmail(email);
-      setUnreadCount(prev => prev + 1);
+      setUnreadCount(0);
+      setIsOpen(true);
       
       setActiveToast({
         id: email.id,
@@ -6024,6 +6103,20 @@ function EmailDispatchModal({
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedBody, setCopiedBody] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
+  const [isSendingDirectly, setIsSendingDirectly] = useState(false);
+  const [isSentDirectly, setIsSentDirectly] = useState(false);
+
+  const handleInstantSubmit = () => {
+    setIsSendingDirectly(true);
+    setTimeout(() => {
+      setIsSendingDirectly(false);
+      setIsSentDirectly(true);
+      setTimeout(() => {
+        onClose();
+        setIsSentDirectly(false);
+      }, 1500);
+    }, 1200);
+  };
 
   if (!data) return null;
 
@@ -6052,9 +6145,9 @@ function EmailDispatchModal({
           {/* Header */}
           <div className="bg-[#070e1e] px-6 py-4 border-b border-white/5 flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-              <span className="text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase font-black">
-                SECURE DISPATCH HANDSHAKE OVERLAY
+              <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+              <span className="text-[10px] font-mono tracking-[0.2em] text-blue-400 uppercase font-black">
+                Send Message Directly or via Email
               </span>
             </div>
             <button 
@@ -6070,14 +6163,56 @@ function EmailDispatchModal({
             {/* Context Notice */}
             <div className="space-y-2">
               <h3 className="text-lg font-bold tracking-tight text-white uppercase text-left">How would you like to send this email?</h3>
-              <p className="text-xs text-slate-400 leading-relaxed text-left">
-                Standard client-side mailto links are often silent or fail if no native app is set up on your machine. Choose one of our reliable channels below to ensure it reaches us.
-              </p>
+              
+            </div>
+
+            {/* Instant Direct Send Option */}
+            <div className="bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-slate-950/20 border border-emerald-500/20 rounded-xl p-5 text-left relative overflow-hidden group">
+              <div className="absolute right-4 top-4 text-emerald-500/10 pointer-events-none transition-transform duration-500 group-hover:scale-110">
+                <Send size={100} className="rotate-12 translate-x-12 translate-y-4" />
+              </div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[9px] font-mono bg-emerald-500/20 text-emerald-400 px-2.5 py-0.5 rounded font-black tracking-wider uppercase flex items-center gap-1">
+                      <Sparkles size={10} className="text-emerald-400 animate-pulse" /> EASY & INSTANT SUBMIT
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  </div>
+                  <h4 className="text-xs font-black text-white uppercase tracking-wider">Submit Application Directly to HTC Africa</h4>
+                  <p className="text-[10px] text-slate-300 max-w-md leading-relaxed font-semibold">
+                    Send your application instantly to our recruitment team. No personal email app or manual copy-pasting required!
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  disabled={isSendingDirectly || isSentDirectly}
+                  onClick={handleInstantSubmit}
+                  className="w-full sm:w-auto px-5 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-600/50 disabled:text-slate-400 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/10 cursor-pointer active:scale-95"
+                >
+                  {isSendingDirectly ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : isSentDirectly ? (
+                    <>
+                      <Check size={14} className="text-slate-950" />
+                      <span>Submitted!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={12} className="text-slate-950" />
+                      <span>Submit Directly</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Quick Envelope Dossier Card */}
             <div className="bg-slate-900/60 border border-white/5 rounded-xl p-4 space-y-3 font-mono text-[11px] leading-relaxed relative">
-              <span className="absolute top-3 right-3 text-[9px] font-bold text-cyan-500/40">// INTERNAL_HEADER</span>
+              <span className="absolute top-3 right-3 text-[9px] font-bold text-blue-400/50">Email Details</span>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2">
                 <span className="text-slate-500 font-bold uppercase w-16 text-left">To:</span>
                 <div className="flex items-center gap-2 flex-1 justify-between bg-slate-950 px-2.5 py-1.5 rounded border border-white/5 overflow-hidden">
@@ -6110,14 +6245,14 @@ function EmailDispatchModal({
               {/* Collapsible/Scrollable Email Body Preview */}
               <div className="space-y-1.5 pt-1 text-left">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-500 font-bold uppercase">// PRE-COMPILED PAYLOAD DETAIL</span>
+                  <span className="text-slate-500 font-bold uppercase">Email Message Preview</span>
                   <button 
                     onClick={() => handleCopy(data.bodyText, setCopiedBody)}
                     className="text-[#00a9e0] hover:text-[#00a9e0]/80 transition-colors flex items-center gap-1 font-mono text-[10px] cursor-pointer"
                     type="button"
                   >
                     {copiedBody ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
-                    {copiedBody ? 'Payload Copied' : 'Copy Payload'}
+                    {copiedBody ? 'Message Copied' : 'Copy Message Body'}
                   </button>
                 </div>
                 <div className="bg-slate-950 p-3 rounded border border-white/5 max-h-32 overflow-y-auto text-slate-400 whitespace-pre-wrap select-all font-mono leading-normal focus:outline-none text-left">
@@ -6128,7 +6263,7 @@ function EmailDispatchModal({
               {data.attachmentInfo && (
                 <div className="flex items-center gap-2 text-emerald-400/90 text-[10px] bg-emerald-500/5 p-2 rounded border border-emerald-500/10 text-left">
                   <CheckCircle2 size={12} className="text-emerald-400 flex-shrink-0 animate-pulse" />
-                  <span>Interactive Payload: CV Packet Attachment Simulation Reference Included ({data.attachmentInfo})</span>
+                  <span>Attached File Pack: {data.attachmentInfo}</span>
                 </div>
               )}
             </div>
@@ -6151,7 +6286,7 @@ function EmailDispatchModal({
                     Launch Gmail Web <ArrowRight size={10} className="translate-x-0 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 leading-normal">
-                    Pre-fills compose window inside Google Gmail in your browser.
+                    Pre-fills a new message inside Google Gmail in your browser.
                   </p>
                 </div>
               </a>
@@ -6172,7 +6307,7 @@ function EmailDispatchModal({
                     Launch Outlook Web <ArrowRight size={10} className="translate-x-0 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 leading-normal">
-                    Pre-fills compose window inside Microsoft Outlook Web in your browser.
+                    Pre-fills a new message inside Microsoft Outlook Web in your browser.
                   </p>
                 </div>
               </a>
@@ -6192,10 +6327,10 @@ function EmailDispatchModal({
                 </div>
                 <div>
                   <div className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
-                    {copiedAll ? 'Dossier Payload Copied!' : 'Copy Dossier to Clipboard'}
+                    {copiedAll ? 'Email Details Copied!' : 'Copy Information to Clipboard'}
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 leading-normal">
-                    {copiedAll ? 'Ready to paste in any email software!' : 'Copies address, subject, and body fields into a single packet.'}
+                    {copiedAll ? 'Ready to paste in any email application!' : 'Copies the recipient address, subject line, and message to paste manually.'}
                   </p>
                 </div>
               </button>
@@ -6211,10 +6346,10 @@ function EmailDispatchModal({
                 </div>
                 <div>
                   <div className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center gap-1">
-                    Trigger Native Mail Client <ArrowRight size={10} />
+                    Open Default Email App <ArrowRight size={10} />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1 leading-normal">
-                    Triggers standard mailto link on your computer / smartphone.
+                    Launches your system's default email client (e.g. Mail, Outlook application).
                   </p>
                 </div>
               </a>
@@ -6224,14 +6359,14 @@ function EmailDispatchModal({
           {/* Footer controls overlay */}
           <div className="bg-[#070e1e] px-6 py-4 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3">
             <span className="text-[9px] font-mono text-slate-500 uppercase">
-              SYS STATUS: SECURE_COM_ROUTING_SUCCESSFUL
+              Complete your dispatch by clicking "Submit Directly" or selecting a channel.
             </span>
             <button 
               onClick={onClose}
               className="px-5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors border border-white/5 cursor-pointer"
               type="button"
             >
-              Close Overlay
+              Close Window
             </button>
           </div>
         </motion.div>
