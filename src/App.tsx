@@ -42,7 +42,10 @@ import {
   Play,
   Server,
   Monitor,
-  Tv
+  Tv,
+  Copy,
+  Check,
+  ExternalLink
 } from 'lucide-react';
 
 // --- Components ---
@@ -79,7 +82,6 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
         { label: 'Our Process', view: 'process', desc: 'Assess, Design, Deploy and Manage' },
         { label: 'Our Core Values', view: 'core-values', desc: 'The REDMAT principles that guide us' },
         { label: 'Industries Served', view: 'industries', desc: 'Government, Education, Banks and more' },
-        { label: 'Our Partnerships', view: 'partnerships', desc: 'Strategic collaboration with tech leaders' },
         { label: 'Careers', view: 'careers', desc: 'Join the High Tech Center Africa family' }
       ]
     },
@@ -409,7 +411,7 @@ const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: 
             {title}
           </div>
        )}
-       <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+       <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight leading-tight">
          {mainTitle}
        </h2>
        <p className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed border-t border-white/5 pt-6 font-medium">
@@ -508,7 +510,7 @@ const SupportSection = ({ standalone = false, onSelectJob, onNavigate, key }: { 
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
             <span className="text-xs font-mono font-bold tracking-[0.2em] text-[#00a9e0] uppercase block mb-2">// SECURE INFORMATION PORTAL</span>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase">Inquiries & Applications Hub</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase">Inquiries & Applications Hub</h1>
           </div>
           <div className="flex gap-4 p-1.5 bg-slate-950 border border-white/10 rounded-xl">
             <button
@@ -727,7 +729,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       <div className={hideHeader ? "bg-white py-16 px-4" : "bg-white py-24 px-4 overflow-hidden"}>
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
           <div className="lg:w-[60%] flex flex-col">
-             <h2 className="text-4xl md:text-6xl font-bold text-[#0056b3] mb-8 tracking-tighter">Get In Touch!</h2>
+             <h2 className="text-3xl md:text-4xl font-bold text-[#0056b3] mb-6 tracking-tight">Get In Touch!</h2>
              <p className="text-slate-600 text-lg leading-relaxed mb-12 max-w-2xl">
                Please fill out the form below and one we will be in touch with you shortly. Please include your phone number in your message for a quicker response.
              </p>
@@ -889,7 +891,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
           <div className="lg:w-[40%] flex flex-col self-stretch">
              <div className="bg-[#0056b3] text-white p-12 md:p-16 rounded-xl flex-grow flex flex-col">
                 <span className="text-white uppercase tracking-[0.3em] font-bold text-[10px] mb-12 inline-block">Location</span>
-                <h3 className="text-5xl font-bold mb-12 leading-tight tracking-tighter">Our Location</h3>
+                <h3 className="text-2xl md:text-3xl font-extrabold mb-10 leading-tight tracking-tight">Our Location</h3>
                 <div className="flex flex-col gap-2 mb-16 opacity-90 text-2xl font-bold">
                    <div>1st Floor, Shamo Tower</div>
                    <div>Mbezi Beach, Dar es Salaam, Tanzania</div>
@@ -1002,43 +1004,35 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             </ul>
           </div>
           
-          {/* Emails & Addresses Column */}
+          {/* Emails Column */}
           <div className="lg:col-span-4 space-y-6">
             <div>
               <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Get Connected</h4>
               <div className="w-8 h-[2px] bg-[#00a9e0] mt-3 rounded" />
             </div>
             
-            <div className="space-y-4">
-              {/* Address Card */}
-              <div className="flex gap-3 p-3.5 bg-white/5 border border-white/10 rounded-2xl">
-                <MapPin size={18} className="text-[#00a9e0] mt-0.5 flex-shrink-0" /> 
-                <span className="text-slate-300 text-xs leading-relaxed font-semibold">
-                  1st Floor, Shamo Tower, Mbezi Beach, Dar es Salaam, Tanzania
-                </span>
-              </div>
-              
-              {/* Organized Contacts Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {[
-                  {
-                    label: "General Inquiry",
-                    email: "info@htc.co.tz"
-                  },
-                  {
-                    label: "Sales & SLA",
-                    email: "salesmanager@htc.co.tz"
-                  },
-                  {
-                    label: "Support Desk",
-                    email: "supportmanager@htc.co.tz"
-                  },
-                  {
-                    label: "Careers & HR",
-                    email: "hr@htc.co.tz"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="p-3 bg-white/[0.03] hover:bg-white/5 border border-white/5 hover:border-white/10 rounded-xl transition-all group">
+            <div className="space-y-3">
+              {/* Organized Contacts 4-Row Layout */}
+              {[
+                {
+                  label: "General Inquiry",
+                  email: "info@htc.co.tz"
+                },
+                {
+                  label: "Sales & SLA",
+                  email: "salesmanager@htc.co.tz"
+                },
+                {
+                  label: "Support Desk",
+                  email: "supportmanager@htc.co.tz"
+                },
+                {
+                  label: "Careers & HR",
+                  email: "hrmanager@htc.co.tz"
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="p-3 bg-white/[0.03] hover:bg-white/5 border border-white/5 hover:border-white/10 rounded-xl transition-all group flex items-center justify-between w-full">
+                  <div className="flex flex-col">
                     <span className="block text-[9px] uppercase tracking-wider text-slate-500 font-bold mb-1 group-hover:text-slate-400 transition-colors">
                       {item.label}
                     </span>
@@ -1047,11 +1041,11 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
                       className="text-xs text-slate-300 hover:text-[#00a9e0] font-mono break-all font-semibold transition-colors flex items-center gap-1.5"
                     >
                       <Mail size={12} className="text-[#00a9e0]/80 group-hover:text-[#00a9e0] flex-shrink-0 transition-colors" />
-                      <span className="truncate">{item.email}</span>
+                      <span>{item.email}</span>
                     </a>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1170,7 +1164,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.15em] mb-8 font-black shadow-[0_0_15px_rgba(0,169,224,0.1)]"
           >
             <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
-            ESTABLISHED 2013 | TZ ENTERPRISE
+            TZ SYSTEM INTEGRATORS | HIGH TECH CENTER
           </motion.div>
 
           {/* Core main title */}
@@ -1178,7 +1172,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold text-white mb-10 leading-[1.05] tracking-tight font-sans"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-white mb-8 leading-[1.1] tracking-tight font-sans"
           >
             Digital Infra for <br className="hidden md:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00a9e0] via-blue-400 to-[#0056b3] shadow-sm">Futuristic</span> Enterprises
@@ -1192,7 +1186,7 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
             className="space-y-6 text-slate-400 text-lg leading-relaxed max-w-xl font-sans"
           >
             <p>
-              HTC Africa is Tanzania's premier high-tech integrator. Since 2013, we design, deploy, and commission complex unified infrastructure networks, biometric defense systems, and highly precise fleet intelligence controllers.
+              HTC Africa is Tanzania's premier high-tech integrator. We design, deploy, and commission complex unified infrastructure networks, biometric defense systems, and highly precise fleet intelligence controllers.
             </p>
             <p>
               We craft tailor-made, zero-fail turn-key hardware ecosystem pipelines that ensure your commercial facility operability stays ahead of the digital edge.
@@ -1440,7 +1434,7 @@ const DigitalSecurityDetailPage = ({ onContact, key }: { onContact: () => void; 
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
           <div>
-            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Peace of Mind</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/40 tracking-tight mb-8">Peace of Mind</h2>
             <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
               <p>
                 Our video surveillance solutions improve overall safety, deter theft, and prevent fraud. We help protect against burglary and lower the risk of vandalism, providing business compliance and evidence for law enforcement.
@@ -1489,7 +1483,7 @@ const ICTDetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
           <div>
-            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Connected Future</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/40 tracking-tight mb-8">Connected Future</h2>
             <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
               <p>
                 HTC Africa provides a full range of ICT services including data & voice networking, VoIP, and structured cabling. We specialize in enterprise, small office, and residential Wi-Fi solutions.
@@ -2355,7 +2349,7 @@ const ManagedITDetailPage = ({ onContact, onNavigate }: { onContact: () => void;
           </div>
 
           <div className="bg-slate-50 p-12 md:p-16 rounded-2xl">
-             <h2 className="text-5xl font-black text-[#0056b3]/30 mb-12 tracking-tight">What Else Is Included?</h2>
+             <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/45 mb-8 tracking-tight">What Else Is Included?</h2>
              <div className="grid gap-10">
                 <IconBullet 
                   icon={<Network className="text-[#0056b3]" size={32} />} 
@@ -2392,7 +2386,7 @@ const CloudSolutionsDetailPage = ({ onContact, key }: { onContact: () => void; k
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24">
           <div className="space-y-10">
-            <h2 className="text-5xl font-bold text-[#0056b3] tracking-tighter">What We Offer</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3] tracking-tight mb-8">What We Offer</h2>
             <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
               <p>
                 Unified Communications as a Service (UCaaS) delivers communications and collaboration tools — think phone, voice mail, messaging, chat, video collaboration, contact centers, and more — across the Cloud.
@@ -2442,7 +2436,7 @@ const NetworkingDetailPage = ({ onContact, key }: { onContact: () => void; key?:
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
           <div>
-            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Workstations & Servers</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/40 tracking-tight mb-8">Workstations & Servers</h2>
             <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
               <p>
                 It's important to keep your desktops, workstations and servers properly maintained. From one user to hundreds, we can purchase, deploy, maintain and replace hardware for your organization — instead of having your do it yourself.
@@ -2540,7 +2534,7 @@ const FleetFuelDetailPage = ({ onContact, key }: { onContact: () => void; key?: 
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
           <div>
-            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">Efficiency in Motion</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/40 tracking-tight mb-8">Efficiency in Motion</h2>
             <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
               <p>
                 Our Fleet and Fuel Management solutions provide real-time location monitoring that saves time and money while increasing driver responsibility by monitoring speed, idling, and engine start/stop times.
@@ -2589,7 +2583,7 @@ const CablingDetailPage = ({ onContact, key }: { onContact: () => void; key?: an
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
           <div>
-            <h2 className="text-5xl font-bold text-[#0056b3]/30 tracking-tight lg:text-6xl mb-12">The Backbone of Your IT</h2>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#0056b3]/40 tracking-tight mb-8">The Backbone of Your IT</h2>
             <div className="space-y-8 text-slate-600 text-lg leading-relaxed">
               <p>
                 From simple cable runs to complex data center installations, HTC Africa has the expertise to design and implement a structured cabling solution that meets your needs today and scales for tomorrow.
@@ -2642,7 +2636,7 @@ const ServicesOverviewPage = ({ onNavigate }: { onNavigate: (v: View) => void, k
 const AboutUsDetailPage = () => {
   const [selectedMilestone, setSelectedMilestone] = useState(0);
   const milestones = [
-    { year: "2013", title: "Core Genesis", desc: "HTC Africa is incorporated in Dar es Salaam, pioneering structured enterprise networks & electronic physical defenses.", icon: <Zap size={18} />, loadPercentage: 100 },
+    { year: "Origin", title: "Core Genesis", desc: "HTC Africa is incorporated in Dar es Salaam, pioneering structured enterprise networks & electronic physical defenses.", icon: <Zap size={18} />, loadPercentage: 100 },
     { year: "2017", title: "Operational Scaling", desc: "Introduced smart telemetric GPS vehicle tracking & advanced fuel theft management suites for logistics agencies.", icon: <Globe size={18} />, loadPercentage: 100 },
     { year: "2021", title: "Enterprise Convergence", desc: "Forged elite tier certifications with Cisco, Sophos, Bosch and Dante multicast hardware manufacturers.", icon: <Settings size={18} />, loadPercentage: 100 },
     { year: "2026", title: "Next-Gen AI Systems", desc: "Expanding into intelligent, IP-based centralized facility control arrays across East Africa.", icon: <CheckCircle2 size={18} />, loadPercentage: 100 }
@@ -2653,7 +2647,7 @@ const AboutUsDetailPage = () => {
       <PageHeader 
         title="TZ DIGITAL STALWARTS"
         mainTitle="About Our Enterprise"
-        subtitle="One of East Africa's premier technology integrators. We design, deploy, and maintain robust infrastructure since 2013."
+        subtitle="One of East Africa's premier technology integrators. We design, deploy, and maintain robust infrastructure with absolute precision."
       />
 
       <div className="py-24 px-4 relative">
@@ -2662,12 +2656,12 @@ const AboutUsDetailPage = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-28">
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/25 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] rounded">
-                🚀 ESTABLISHED 2013
+                🚀 SYSTEM RESILIENCE
               </div>
-              <h3 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">Our Modern Cybernetic Story</h3>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">Our Modern Cybernetic Story</h3>
               <div className="space-y-6 text-slate-400 text-sm md:text-base leading-relaxed">
                 <p>
-                  Established in 2013, HTC Africa (High Tech Center) has built its legacy on unyielding service resilience. We serve as the primary integrator for corporations requesting secure, zero-fail data paths, reliable biometric barriers, and highly transparent fuel tracking systems.
+                  HTC Africa (High Tech Center) has built its legacy on unyielding service resilience. We serve as the primary integrator for corporations requesting secure, zero-fail data paths, reliable biometric barriers, and highly transparent fuel tracking systems.
                 </p>
                 <p>
                   We operate as architectural partner wizards, taking the complex networking, power, signal routing, and cabling constraints and transforming them into streamlined turn-key control terminals.
@@ -2684,8 +2678,8 @@ const AboutUsDetailPage = () => {
               </div>
               
               <div className="absolute -bottom-8 -left-8 bg-slate-900 border border-white/10 px-8 py-6 rounded-xl shadow-2xl hidden md:block">
-                 <div className="text-5xl font-black text-[#00a9e0]">13+</div>
-                 <div className="font-mono text-[9px] text-slate-500 uppercase tracking-widest mt-1">Years of Operational Integrity</div>
+                 <div className="text-3xl font-black text-[#00a9e0]">Active</div>
+                 <div className="font-mono text-[9px] text-slate-500 uppercase tracking-widest mt-1">Operational Integrity Delivery</div>
               </div>
             </div>
           </div>
@@ -2942,7 +2936,7 @@ const ProcessDetailPage = () => {
                 METHOD_PHASE // {stepsContent[activeStep].badge}
               </span>
               
-              <h3 className="text-3xl md:text-5xl font-black text-white leading-tight">
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
                 Phase {stepsContent[activeStep].step}: {stepsContent[activeStep].title}
               </h3>
               
@@ -3134,11 +3128,11 @@ const CareersDetailPage = ({ onNavigate, onSelectJob }: { onNavigate: (v: View) 
                Interested physical or system integrations specialists are invited to submit their Comprehensive PDF CV, application letter, and academic credentials directly to our HR department via secure mail communication.
              </p>
              <div className="text-xs font-mono text-[#00a9e0] pt-2">
-               GATEWAY MAIL: <a href="mailto:hr@htc.co.tz" className="hover:underline font-bold text-white">hr@htc.co.tz</a>
+               GATEWAY MAIL: <a href="mailto:hrmanager@htc.co.tz" className="hover:underline font-bold text-white">hrmanager@htc.co.tz</a>
              </div>
            </div>
            <a 
-             href="mailto:hr@htc.co.tz?subject=Job Application - HTC Africa"
+             href="mailto:hrmanager@htc.co.tz?subject=Job Application - HTC Africa"
              className="px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest text-[10px] font-mono transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-2 whitespace-nowrap self-stretch md:self-auto justify-center"
            >
              <Mail size={13} /> SECURE MAIL ENVELOPE
@@ -3325,7 +3319,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
           <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-xl mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm font-medium text-slate-700 shadow-sm">
             <span className="flex items-center gap-2 text-slate-700">
                <Shield size={16} className="text-[#0056b3] flex-shrink-0" />
-               <span>Secure Channel: Handshake submissions are routed directly to <strong>hr@htc.co.tz</strong>.</span>
+               <span>Secure Channel: Handshake submissions are routed directly to <strong>hrmanager@htc.co.tz</strong>.</span>
             </span>
             <span className="text-xs uppercase font-mono font-bold tracking-wider text-[#0056b3] whitespace-nowrap bg-blue-100/50 px-2.5 py-1 rounded">
                Direct Relay Active
@@ -3355,7 +3349,7 @@ const JobApplyPage = ({ selectedJob, onNavigate }: { selectedJob: string; onNavi
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">Recipient Mailbox:</span>
-                    <span className="font-mono text-[#0056b3]">hr@htc.co.tz</span>
+                    <span className="font-mono text-[#0056b3]">hrmanager@htc.co.tz</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold text-slate-400">CV Packet Attached:</span>
@@ -3529,9 +3523,6 @@ const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
-  const [formspreeInputId, setFormspreeInputId] = useState(() => {
-    return localStorage.getItem('htc_formspree_id') || (import.meta as any).env.VITE_FORMSPREE_FORM_ID || '';
-  });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -3699,49 +3690,6 @@ const AdminPortalPage = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               <div className="text-2xl font-bold text-slate-900">HTML5 Local</div>
               <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Data Provider</div>
             </div>
-          </div>
-        </div>
-
-        {/* Formspree Email Connection Dashboard Panel */}
-        <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 mb-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl text-left">
-            <div className="flex items-center gap-2">
-              <span className={`w-2.5 h-2.5 rounded-full ${formspreeInputId.trim() ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500 animate-pulse'}`} />
-              <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Formspree Live Email dispatcher</h2>
-            </div>
-            <p className="text-slate-500 text-xs leading-relaxed">
-              Ensure real-time email dispatch of resumes, tickets, and customer leads. If configured, form submissions are forwarded via POST to 
-              <span className="font-mono bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded text-[10px] ml-1">https://formspree.io/f/&#123;id&#125;</span>.
-              If empty, submissions route to the <strong className="text-slate-800">HTML5 Simulated Sandbox Inbox</strong> floating in the bottom-right of your screen.
-            </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-            <div className="relative min-w-[260px]">
-              <input 
-                type="text"
-                placeholder="Paste Formspree ID (e.g., mqakpoyq)"
-                value={formspreeInputId}
-                onChange={(e) => setFormspreeInputId(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:ring-2 focus:ring-[#0056b3] focus:border-transparent outline-none transition-all text-slate-900"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                const targetId = formspreeInputId.trim();
-                if (targetId) {
-                  localStorage.setItem('htc_formspree_id', targetId);
-                  alert(`Formspree Live Delivery Enabled!\nEndpoint ID "${targetId}" is now active. All future form submissions will route directly to your Formspree inbox.`);
-                } else {
-                  localStorage.removeItem('htc_formspree_id');
-                  alert(`Formspree integration cleared. Reverting to sandbox email simulation.`);
-                }
-              }}
-              className="px-5 py-2.5 bg-[#0056b3] hover:bg-[#00438b] text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 flex-shrink-0"
-            >
-              <CheckCircle2 size={13} /> Save Route
-            </button>
           </div>
         </div>
 
@@ -4000,7 +3948,7 @@ const ITStrategyDetailPage = ({ onContact, key }: { onContact: () => void; key?:
     />
     <div className="bg-white py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold text-slate-900 mb-16 tracking-tight text-center">Consulting Capabilities</h2>
+        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-12 tracking-tight text-center">Consulting Capabilities</h2>
         
         <div className="grid md:grid-cols-2 gap-12 mb-24">
            {[
@@ -4335,7 +4283,7 @@ const SLADetailPage = ({ onContact, key }: { onContact: () => void; key?: any })
       />
       <div className="bg-white py-24 px-4 font-sans">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-center text-slate-900 mb-6 tracking-tight">Our Support SLA Tiers</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-center text-slate-900 mb-6 tracking-tight">Our Support SLA Tiers</h2>
           <p className="text-slate-500 text-center max-w-2xl mx-auto text-lg mb-20">We deliver concrete commitments for response times, hardware support cycles, and remote/onsite engineering response.</p>
           
           <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
@@ -5155,7 +5103,7 @@ const OurServicesHeader = ({ onNavigate }: { onNavigate: (v: View) => void }) =>
                     <path d="M10 50 L90 50" strokeDasharray="4 2" />
                  </svg>
               </div>
-              <h3 className="text-4xl md:text-5xl font-black text-[#0056b3] mb-8 leading-tight tracking-tight">Managed IT Services</h3>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-[#0056b3] mb-8 leading-tight tracking-tight">Managed IT Services</h3>
               <p className="text-slate-600 text-lg leading-relaxed mb-10">
                 IT and Communications are important in any business. Let us take on the responsibility for maintaining your systems, freeing you up to focus on your business. You aren't "outsourcing" with us — you're tapping into a <span className="italic font-bold text-slate-900">powerful resource.</span>
               </p>
@@ -5247,7 +5195,7 @@ const simulateEmailFeedback = (
 
   if (type === 'career') {
     fromName = "HTC Africa Recruitment Office";
-    fromEmail = "hr@htc.co.tz";
+    fromEmail = "hrmanager@htc.co.tz";
     subject = `[RECEIVED] Job Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     bodyText = `Dear ${details.fullName},\n\nWe have successfully received your job application for the ${details.jobTitle} position via the HTC Africa Careers Portal.\n\nApplication Details:\n- Full Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Experience Tier: ${details.experience}\n- Reference ID: ${refId}\n\nOur HR evaluation team is currently auditing your credentials. Thank you for your interest in joining the HTC Africa family in Shamo Towers.\n\nBest regards,\nHTC Africa HR Recruitment`;
     bodyHtml = `
@@ -5291,12 +5239,12 @@ const simulateEmailFeedback = (
         </p>
 
         <p style="margin-top: 24px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #94a3b8; font-style: italic;">
-          This is an automated transmission confirming delivery directly to hr@htc.co.tz. Do not reply to this email thread.
+          This is an automated transmission confirming delivery directly to hrmanager@htc.co.tz. Do not reply to this email thread.
         </p>
       </div>
     `;
 
-    htcToEmail = "hr@htc.co.tz";
+    htcToEmail = "hrmanager@htc.co.tz";
     htcSubject = `[HR DISPATCH] New Candidate Application: ${details.jobTitle || 'Cisco Network Engineer'} - Ref: ${refId}`;
     htcBodyText = `Attention HR Team,\n\nA new candidate job application package has been submitted.\n\nCandidate Details:\n- Name: ${details.fullName}\n- Email: ${details.email}\n- Phone: ${details.phone}\n- Selected Position: ${details.jobTitle}\n- Experience: ${details.experience}\n- LinkedIn Profile: ${details.linkedin || 'None'}`;
     htcBodyHtml = `
@@ -5735,51 +5683,15 @@ const simulateEmailFeedback = (
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: newEmail }));
     window.dispatchEvent(new CustomEvent('htc_new_simulated_email_dispatched', { detail: htcEmail }));
     
-    // FORMSPREE LIVE FORWARDING
-    // Check local storage configuration first, fallback to env variable
-    const formspreeFormId = localStorage.getItem('htc_formspree_id') || (import.meta as any).env.VITE_FORMSPREE_FORM_ID;
-    if (formspreeFormId && formspreeFormId.trim().length > 0) {
-      const payload = {
-        _subject: htcSubject || `[${type.toUpperCase()}] New HTC Africa submission from ${details.fullName || details.firstName || 'User'}`,
-        _replyto: details.email || to,
-        referenceId: refId,
-        dateDispatched: dateStr,
-        channel: `Formspree Live Integration`,
-        formType: type,
-        recipient: to,
-        ...details
-      };
-
-      fetch(`https://formspree.io/f/${formspreeFormId.trim()}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(async (res) => {
-        if (res.ok) {
-          console.log(`[Formspree] Successfully sent email for reference ${refId}`);
-          window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
-            detail: { success: true, message: `Real-time form delivered live via Formspree!` }
-          }));
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          console.warn(`[Formspree Error] Failed forwarding status ${res.status}:`, errData);
-          window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
-            detail: { success: false, message: `Formspree transmission failed: ${errData.error || res.statusText || 'Endpoint Error'}` }
-          }));
-        }
-      })
-      .catch((err) => {
-        console.error("[Formspree Network Error]", err);
-        window.dispatchEvent(new CustomEvent('htc_formspree_notification', {
-          detail: { success: false, message: `Connection error dispatching to Formspree endpoint.` }
-        }));
-      });
-    } else {
-      console.log("[Formspree Simulation Notice] Real email delivery not active. Set VITE_FORMSPREE_FORM_ID in the Administrator Portal to receive live submissions.");
+    // Also trigger the new secure interactive dispatch modal for physical delivery check
+    if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+      const att = type === 'career' ? (details.cvFile ? (details.cvFile as any).name : 'CV_Application_Packet.pdf') : undefined;
+      (window as any).__htc_trigger_dispatch_modal(
+        htcEmail.to,
+        htcEmail.subject,
+        htcEmail.bodyText,
+        att
+      );
     }
   } catch (err) {
     console.error("Failed to persist simulated email confirmations", err);
@@ -5799,7 +5711,6 @@ function ApplierEmailSimulatorWidget() {
   const [selectedEmail, setSelectedEmail] = useState<SimulatedEmail | null>(null);
   const [search, setSearch] = useState('');
   const [activeToast, setActiveToast] = useState<{ id: string; email: string; subject: string } | null>(null);
-  const [formspreeToast, setFormspreeToast] = useState<{ success: boolean; message: string } | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -5830,19 +5741,10 @@ function ApplierEmailSimulatorWidget() {
       });
     };
 
-    const handleFormspreeNotification = (e: any) => {
-      setFormspreeToast({
-        success: e.detail.success,
-        message: e.detail.message
-      });
-    };
-
     window.addEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
-    window.addEventListener('htc_formspree_notification', handleFormspreeNotification);
 
     return () => {
       window.removeEventListener('htc_new_simulated_email_dispatched', handleNewEmail);
-      window.removeEventListener('htc_formspree_notification', handleFormspreeNotification);
     };
   }, []);
 
@@ -5854,15 +5756,6 @@ function ApplierEmailSimulatorWidget() {
       return () => clearTimeout(timer);
     }
   }, [activeToast]);
-
-  useEffect(() => {
-    if (formspreeToast) {
-      const timer = setTimeout(() => {
-        setFormspreeToast(null);
-      }, 7000);
-      return () => clearTimeout(timer);
-    }
-  }, [formspreeToast]);
 
   const handleClear = () => {
     localStorage.removeItem('htc_simulated_emails');
@@ -5921,28 +5814,6 @@ function ApplierEmailSimulatorWidget() {
             <div className="text-[10px] text-[#00a9e0] font-mono tracking-widest uppercase font-extrabold flex justify-end gap-1 items-center hover:underline">
               <span>View In Applier Sandbox</span> &rarr;
             </div>
-          </motion.div>
-        )}
-
-        {formspreeToast && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className={`fixed bottom-48 right-4 sm:right-8 z-[60] max-w-sm text-white rounded-xl shadow-2xl p-4 font-sans flex flex-col gap-2 ${formspreeToast.success ? 'bg-slate-900 border border-emerald-500' : 'bg-slate-900 border border-rose-500'}`}
-          >
-            <div className="flex justify-between items-center">
-              <span className={`text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 ${formspreeToast.success ? 'text-emerald-400' : 'text-rose-400'}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${formspreeToast.success ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
-                {formspreeToast.success ? 'Formspree Live Delivered' : 'Formspree Failsafe Alert'}
-              </span>
-              <button onClick={() => setFormspreeToast(null)} className="text-white/40 hover:text-white">
-                <X size={12} />
-              </button>
-            </div>
-            <p className="text-xs font-medium text-white/90">
-              {formspreeToast.message}
-            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -6142,10 +6013,290 @@ function ApplierEmailSimulatorWidget() {
   );
 }
 
+function EmailDispatchModal({ 
+  data, 
+  onClose 
+}: { 
+  data: { to: string; subject: string; bodyText: string; attachmentInfo?: string } | null; 
+  onClose: () => void 
+}) {
+  const [copiedSubject, setCopiedSubject] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedBody, setCopiedBody] = useState(false);
+  const [copiedAll, setCopiedAll] = useState(false);
+
+  if (!data) return null;
+
+  const handleCopy = (text: string, setCopied: (v: boolean) => void) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const mailtoHref = `mailto:${encodeURIComponent(data.to)}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.bodyText)}`;
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(data.to)}&su=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.bodyText)}`;
+  const outlookHref = `https://outlook.live.com/default.aspx?rru=compose&to=${encodeURIComponent(data.to)}&subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.bodyText)}`;
+
+  const fullPayloadString = `TO: ${data.to}\nSUBJECT: ${data.subject}\n\n${data.bodyText}`;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 overflow-y-auto">
+        <motion.div 
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="bg-[#0c1322] border border-blue-500/25 rounded-2xl w-full max-w-2xl text-white shadow-[0_0_80px_rgba(0,169,224,0.15)] overflow-hidden font-sans my-8"
+        >
+          {/* Header */}
+          <div className="bg-[#070e1e] px-6 py-4 border-b border-white/5 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+              <span className="text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase font-black">
+                SECURE DISPATCH HANDSHAKE OVERLAY
+              </span>
+            </div>
+            <button 
+              onClick={onClose} 
+              className="text-slate-400 hover:text-white transition-colors bg-white/5 p-1 rounded-lg hover:bg-white/10 cursor-pointer"
+              aria-label="Close"
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          <div className="p-6 space-y-6">
+            {/* Context Notice */}
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold tracking-tight text-white uppercase text-left">How would you like to send this email?</h3>
+              <p className="text-xs text-slate-400 leading-relaxed text-left">
+                Standard client-side mailto links are often silent or fail if no native app is set up on your machine. Choose one of our reliable channels below to ensure it reaches us.
+              </p>
+            </div>
+
+            {/* Quick Envelope Dossier Card */}
+            <div className="bg-slate-900/60 border border-white/5 rounded-xl p-4 space-y-3 font-mono text-[11px] leading-relaxed relative">
+              <span className="absolute top-3 right-3 text-[9px] font-bold text-cyan-500/40">// INTERNAL_HEADER</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2">
+                <span className="text-slate-500 font-bold uppercase w-16 text-left">To:</span>
+                <div className="flex items-center gap-2 flex-1 justify-between bg-slate-950 px-2.5 py-1.5 rounded border border-white/5 overflow-hidden">
+                  <span className="text-blue-300 truncate font-semibold">{data.to}</span>
+                  <button 
+                    onClick={() => handleCopy(data.to, setCopiedEmail)}
+                    className="text-[#00a9e0] hover:text-[#00a9e0]/80 transition-colors flex items-center gap-1 flex-shrink-0 cursor-pointer"
+                    type="button"
+                  >
+                    {copiedEmail ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                    {copiedEmail ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2">
+                <span className="text-slate-500 font-bold uppercase w-16 text-left">Subject:</span>
+                <div className="flex items-center gap-2 flex-1 justify-between bg-slate-950 px-2.5 py-1.5 rounded border border-white/5 overflow-hidden">
+                  <span className="text-slate-300 truncate text-left">{data.subject}</span>
+                  <button 
+                    onClick={() => handleCopy(data.subject, setCopiedSubject)}
+                    className="text-[#00a9e0] hover:text-[#00a9e0]/80 transition-colors flex items-center gap-1 flex-shrink-0 cursor-pointer"
+                    type="button"
+                  >
+                    {copiedSubject ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                    {copiedSubject ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Collapsible/Scrollable Email Body Preview */}
+              <div className="space-y-1.5 pt-1 text-left">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500 font-bold uppercase">// PRE-COMPILED PAYLOAD DETAIL</span>
+                  <button 
+                    onClick={() => handleCopy(data.bodyText, setCopiedBody)}
+                    className="text-[#00a9e0] hover:text-[#00a9e0]/80 transition-colors flex items-center gap-1 font-mono text-[10px] cursor-pointer"
+                    type="button"
+                  >
+                    {copiedBody ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                    {copiedBody ? 'Payload Copied' : 'Copy Payload'}
+                  </button>
+                </div>
+                <div className="bg-slate-950 p-3 rounded border border-white/5 max-h-32 overflow-y-auto text-slate-400 whitespace-pre-wrap select-all font-mono leading-normal focus:outline-none text-left">
+                  {data.bodyText}
+                </div>
+              </div>
+
+              {data.attachmentInfo && (
+                <div className="flex items-center gap-2 text-emerald-400/90 text-[10px] bg-emerald-500/5 p-2 rounded border border-emerald-500/10 text-left">
+                  <CheckCircle2 size={12} className="text-emerald-400 flex-shrink-0 animate-pulse" />
+                  <span>Interactive Payload: CV Packet Attachment Simulation Reference Included ({data.attachmentInfo})</span>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Dispatch Handshake Channels Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-left">
+              {/* Channel A: Gmail Web Client */}
+              <a 
+                href={gmailHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className="p-3.5 bg-[#070e1e] hover:bg-slate-900 border border-white/5 hover:border-red-500/20 rounded-xl transition-all group text-left flex items-start gap-3.5 cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <Mail size={16} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white group-hover:text-red-300 transition-colors flex items-center gap-1.5">
+                    Launch Gmail Web <ArrowRight size={10} className="translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-normal">
+                    Pre-fills compose window inside Google Gmail in your browser.
+                  </p>
+                </div>
+              </a>
+
+              {/* Channel B: Outlook Web Client */}
+              <a 
+                href={outlookHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className="p-3.5 bg-[#070e1e] hover:bg-slate-900 border border-white/5 hover:border-sky-500/20 rounded-xl transition-all group text-left flex items-start gap-3.5 cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center text-sky-400 flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <Mail size={16} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                    Launch Outlook Web <ArrowRight size={10} className="translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-normal">
+                    Pre-fills compose window inside Microsoft Outlook Web in your browser.
+                  </p>
+                </div>
+              </a>
+
+              {/* Channel C: Copy All & Prepare */}
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(fullPayloadString);
+                  setCopiedAll(true);
+                  setTimeout(() => setCopiedAll(false), 2500);
+                }}
+                className="p-3.5 bg-[#070e1e] hover:bg-slate-900 border border-white/5 hover:border-emerald-500/20 rounded-xl transition-all group text-left flex items-start gap-3.5 cursor-pointer"
+                type="button"
+              >
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 flex-shrink-0 group-hover:scale-105 transition-transform">
+                  {copiedAll ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                    {copiedAll ? 'Dossier Payload Copied!' : 'Copy Dossier to Clipboard'}
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-normal">
+                    {copiedAll ? 'Ready to paste in any email software!' : 'Copies address, subject, and body fields into a single packet.'}
+                  </p>
+                </div>
+              </button>
+
+              {/* Channel D: Native Mailto LinkFallback */}
+              <a 
+                href={mailtoHref}
+                onClick={onClose}
+                className="p-3.5 bg-[#070e1e] hover:bg-slate-900 border border-white/5 hover:border-cyan-500/20 rounded-xl transition-all group text-left flex items-start gap-3.5 cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-lg bg-cyan-400/10 flex items-center justify-center text-cyan-400 flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <ExternalLink size={16} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center gap-1">
+                    Trigger Native Mail Client <ArrowRight size={10} />
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-normal">
+                    Triggers standard mailto link on your computer / smartphone.
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Footer controls overlay */}
+          <div className="bg-[#070e1e] px-6 py-4 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <span className="text-[9px] font-mono text-slate-500 uppercase">
+              SYS STATUS: SECURE_COM_ROUTING_SUCCESSFUL
+            </span>
+            <button 
+              onClick={onClose}
+              className="px-5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors border border-white/5 cursor-pointer"
+              type="button"
+            >
+              Close Overlay
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [previousView, setPreviousView] = useState<View>('home');
   const [selectedJob, setSelectedJob] = useState('Cisco Network Engineer');
+  const [dispatchModalData, setDispatchModalData] = useState<{
+    to: string;
+    subject: string;
+    bodyText: string;
+    attachmentInfo?: string;
+  } | null>(null);
+
+  // Binding trigger on mount
+  useEffect(() => {
+    (window as any).__htc_trigger_dispatch_modal = (to: string, subject: string, bodyText: string, attachmentInfo?: string) => {
+      setDispatchModalData({
+        to,
+        subject,
+        bodyText,
+        attachmentInfo
+      });
+    };
+    return () => {
+      delete (window as any).__htc_trigger_dispatch_modal;
+    };
+  }, []);
+
+  // Event handler to capture all mailto link clicks globally
+  useEffect(() => {
+    const handleGlobalMailtoClick = (e: MouseEvent) => {
+      let target = e.target as HTMLElement | null;
+      while (target && target !== document.body) {
+        if (target.tagName === 'A' && (target as HTMLAnchorElement).href?.startsWith('mailto:')) {
+          e.preventDefault();
+          const href = (target as HTMLAnchorElement).href;
+          const mailtoString = href.substring(7); // remove "mailto:"
+          const parts = mailtoString.split('?');
+          const email = decodeURIComponent(parts[0]);
+          let subject = 'Inquiry to High Tech Center';
+          let body = 'Hello HTC Team,\n\n';
+          if (parts[1]) {
+            const queryParams = new URLSearchParams(parts[1]);
+            subject = queryParams.get('subject') || subject;
+            body = queryParams.get('body') || body;
+          }
+          
+          if (typeof (window as any).__htc_trigger_dispatch_modal === 'function') {
+            (window as any).__htc_trigger_dispatch_modal(email, subject, body);
+          }
+          break;
+        }
+        target = target.parentElement;
+      }
+    };
+
+    window.addEventListener('click', handleGlobalMailtoClick);
+    return () => window.removeEventListener('click', handleGlobalMailtoClick);
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -6228,6 +6379,7 @@ export default function App() {
 
       <Footer onNavigate={setCurrentView} />
       <ApplierEmailSimulatorWidget />
+      <EmailDispatchModal data={dispatchModalData} onClose={() => setDispatchModalData(null)} />
     </div>
   );
 }
