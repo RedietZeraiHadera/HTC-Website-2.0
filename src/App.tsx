@@ -80,40 +80,46 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
       label: 'ABOUT US', 
       view: 'about-us',
       submenu: [
-        { label: 'About Us Overview', view: 'about-us', desc: 'Who we are and our 13+ years story' },
-        { label: 'Our Process', view: 'process', desc: 'Assess, Design, Deploy and Manage' },
-        { label: 'Our Core Values', view: 'core-values', desc: 'The REDMAT principles that guide us' },
-        { label: 'Industries Served', view: 'industries', desc: 'Government, Education, Banks and more' },
-        { label: 'Careers', view: 'careers', desc: 'Join the High Tech Center Africa family' }
+        { label: 'About Us Overview', view: 'about-us', desc: 'Our heritage & 13+ years story' },
+        { label: 'Our Process', view: 'process', desc: 'Assess, Design, Deploy & Manage' },
+        { label: 'Our Core Values', view: 'core-values', desc: 'REDMAT operational principles' },
+        { label: 'Industries Served', view: 'industries', desc: 'Sectors we support & empower' },
+        { label: 'Our Partnerships', view: 'partnerships', desc: 'Collaborations with tech leaders' },
+        { label: 'Careers', view: 'careers', desc: 'Join our stellar high-tech team' }
       ]
     },
     { 
       label: 'PRODUCTS', 
       view: 'products',
       submenu: [
-        { label: 'IT Products & Hardware', view: 'products', desc: 'Desktops, laptops, Cisco networking and storage' }
+        { label: 'IT Products & Hardware', view: 'products', desc: 'Sourcing enterprise-grade devices' }
       ]
     },
     { 
       label: 'SOLUTIONS', 
       view: 'solutions',
       submenu: [
-        { label: 'Solutions Overview', view: 'solutions', desc: 'Tailor-made integration solutions' },
-        { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'LED video walls, digital signage, and specialized integration' },
-        { label: 'Digital Security', view: 'digital-security', desc: 'CCTV, Gate Barriers and Access Control' },
-        { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'Real-time monitoring and analytics' },
-        { label: 'Conference Systems', view: 'conference-systems', desc: 'Digital, wireless, and paperless meeting systems' },
-        { label: 'Public Address', view: 'public-address', desc: 'IP-based PA and Intercom systems for facilities' },
-        { label: 'Multimedia Control', view: 'multimedia-control', desc: 'Centralized control for education and venues' }
+        { label: 'Solutions Overview', view: 'solutions', desc: 'Tailored integration solutions' },
+        { label: 'ICT & Integrated Systems', view: 'ict-services', desc: 'LED video walls & integrations' },
+        { label: 'Digital Security', view: 'digital-security', desc: 'CCTV & gate access systems' },
+        { label: 'Fleet & Fuel Management', view: 'fleet-fuel', desc: 'GPS tracking & fuel telemetry' },
+        { label: 'Conference Systems', view: 'conference-systems', desc: 'Wireless and paperless meetings' },
+        { label: 'Public Address', view: 'public-address', desc: 'IP-based facility notification grids' },
+        { label: 'Multimedia Control', view: 'multimedia-control', desc: 'Venues & classroom control' }
       ]
     },
     { 
       label: 'SERVICES', 
       view: 'services',
       submenu: [
-        { label: 'Services Overview', view: 'services-overview', desc: 'Overview of our professional technology consulting' },
-        { label: 'IT Strategy Consultation', view: 'it-strategy', desc: 'Digital transformation, risk, compliance & business continuity' },
-        { label: 'Service Level Agreement', view: 'sla', desc: 'Standard SLA and Premium SLA commitments' }
+        { label: 'Services Overview', view: 'services-overview', desc: 'Core support capabilities' },
+        { label: 'Managed IT Services', view: 'managed-it', desc: 'Server maintenance & helpdesk' },
+        { label: 'Cloud Solutions', view: 'cloud-solutions', desc: 'Secure backups & speed clouds' },
+        { label: 'Corporate Networking', view: 'networking', desc: 'Fast firewalls & branch Wi-Fi' },
+        { label: 'Corporate Voice Systems', view: 'voice-solutions', desc: 'Unified IP telephone & VoIP' },
+        { label: 'Cabling & Infrastructure', view: 'cabling', desc: 'Copper CAT6 & fiber paths' },
+        { label: 'IT Strategy Consultation', view: 'it-strategy', desc: 'Transformation & compliance' },
+        { label: 'Service Level Agreement', view: 'sla', desc: 'Tailored 24/7/365 support tiers' }
       ]
     },
   ];
@@ -156,7 +162,7 @@ const Navbar = ({ onNavigate, currentView }: { onNavigate: (v: View) => void, cu
             <a 
               href="#support"
               onClick={(e) => handleLinkClick(e, 'support')}
-              className={`px-6 py-3 rounded-md font-bold transition-all text-sm uppercase tracking-wider ${currentView === 'support' ? 'bg-[#00438b] text-white' : 'bg-[#0056b3] text-white hover:bg-[#00438b]'}`}
+              className={`px-6 py-3 rounded-md font-extrabold transition-all text-xs uppercase tracking-widest ${currentView === 'support' ? 'bg-[#00438b] text-white shadow-md' : 'bg-[#0056b3] text-white hover:bg-[#00438b]'}`}
             >
               Request & Apply
             </a>
@@ -232,24 +238,24 @@ const NavItem = ({
     <a 
       href={href}
       onClick={onClick}
-      className={`font-bold text-sm tracking-tight text-nowrap transition-colors flex items-center gap-1 ${isActive ? 'text-[#0056b3]' : 'text-slate-800 hover:text-[#0056b3]'}`}
+      className={`font-extrabold text-[11px] tracking-widest text-nowrap uppercase transition-colors flex items-center gap-1 ${isActive ? 'text-[#0056b3]' : 'text-slate-800 hover:text-[#0056b3]'}`}
     >
       {label}
-      {submenu && <ChevronDown size={14} className="opacity-60 group-hover:rotate-180 transition-transform duration-300" />}
+      {submenu && <ChevronDown size={12} className="opacity-60 group-hover:rotate-180 transition-transform duration-300" />}
       {isActive && <motion.div layoutId="navline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#0056b3]" />}
     </a>
 
     {submenu && (
-      <div className="absolute top-[100%] left-1/2 -translate-x-1/2 pt-4 w-80 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
-        <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-6 grid gap-4">
+      <div className={`absolute top-[100%] left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 ${submenu.length > 4 ? 'w-[560px]' : 'w-80'}`}>
+        <div className={`bg-white rounded-xl shadow-2xl border border-slate-100 p-4 max-h-[85vh] overflow-y-auto ${submenu.length > 4 ? 'grid grid-cols-2 gap-x-4 gap-y-1.5' : 'grid gap-2'}`}>
           {submenu.map((sub, index) => (
             <div 
               key={index}
               onClick={() => onSubmenuClick?.(sub.view)}
-              className="group/item cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors"
+              className="group/item cursor-pointer p-2 rounded-lg hover:bg-[#0056b3]/5 transition-colors"
             >
-              <div className="font-bold text-slate-900 group-hover/item:text-[#0056b3] transition-colors text-sm mb-0.5">{sub.label}</div>
-              <div className="text-slate-400 text-xs leading-relaxed group-hover/item:text-slate-600 transition-colors font-medium">{sub.desc}</div>
+              <div className="font-bold text-slate-900 group-hover/item:text-[#0056b3] transition-colors text-[10px] uppercase tracking-[0.05em] mb-0.5">{sub.label}</div>
+              <div className="text-slate-500 text-[9px] leading-relaxed group-hover/item:text-slate-600 transition-colors font-medium">{sub.desc}</div>
             </div>
           ))}
         </div>
@@ -263,8 +269,8 @@ const AboutMenuItem = ({ title, desc, onClick }: { title: string; desc: string; 
     onClick={onClick}
     className="group cursor-pointer"
   >
-     <h4 className="font-bold text-slate-900 group-hover:text-[#0056b3] transition-colors text-sm mb-1">{title}</h4>
-     <p className="text-slate-400 text-xs leading-relaxed group-hover:text-slate-600 transition-colors">{desc}</p>
+     <h4 className="font-bold text-slate-900 group-hover:text-[#0056b3] transition-colors text-[11px] uppercase tracking-wide mb-1">{title}</h4>
+     <p className="text-slate-500 text-[10px] leading-relaxed group-hover:text-slate-600 transition-colors">{desc}</p>
   </div>
 );
 
@@ -284,24 +290,26 @@ const MobileNavItem = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
 
+  const handleHeaderClick = (e: React.MouseEvent) => {
+    if (submenu) {
+      e.preventDefault();
+      setExpanded(!expanded);
+    } else {
+      onClick?.(e as any);
+    }
+  };
+
   return (
     <div className="border-b border-slate-100/60 py-1">
-      <div className="flex justify-between items-center rounded-xl hover:bg-slate-50/80 px-3 py-2.5 transition-all duration-200 group">
-        <a 
-          href={href}
-          onClick={onClick}
-          className="text-slate-800 group-hover:text-[#0056b3] font-bold text-sm block transition-colors flex-grow py-1"
-        >
+      <div 
+        onClick={handleHeaderClick}
+        className="flex justify-between items-center rounded-xl hover:bg-slate-50/80 px-3 py-2.5 transition-all duration-200 group cursor-pointer"
+      >
+        <span className="text-slate-800 group-hover:text-[#0056b3] font-extrabold text-[11px] tracking-widest uppercase block transition-colors select-none py-1">
           {label}
-        </a>
+        </span>
         {submenu && (
-          <button 
-            type="button"
-            onClick={() => setExpanded(!expanded)}
-            className="text-slate-400 group-hover:text-[#0056b3] hover:bg-slate-200/40 transition-colors p-2 rounded-lg"
-          >
-            <ChevronDown size={14} className={`transform transition-transform duration-300 ${expanded ? 'rotate-180 text-[#0056b3]' : ''}`} />
-          </button>
+          <ChevronDown size={14} className={`text-slate-400 group-hover:text-[#0056b3] transform transition-transform duration-300 ${expanded ? 'rotate-180 text-[#0056b3]' : ''}`} />
         )}
       </div>
       {submenu && expanded && (
@@ -311,7 +319,7 @@ const MobileNavItem = ({
               key={idx}
               type="button"
               onClick={() => onSubClick?.(sub.view)}
-              className="w-full text-left text-xs text-slate-500 hover:text-[#0056b3] hover:bg-slate-50 py-2.5 px-3 rounded-lg font-semibold transition-all block"
+              className="w-full text-left text-[11px] uppercase tracking-[0.05em] text-slate-500 hover:text-[#0056b3] hover:bg-slate-50 py-2.5 px-3 rounded-lg font-bold transition-all block"
             >
               {sub.label}
             </button>
@@ -329,42 +337,77 @@ const ServiceCard = ({ icon, title, description, delay, onClick }: any) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="p-10 bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col items-start h-full"
+      className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-xl transition-all flex flex-col items-start h-full cursor-pointer group"
+      onClick={onClick}
     >
-      <div className="mb-8 text-[#0056b3]">
+      <div className="mb-4 text-[#0056b3] opacity-60 group-hover:opacity-100 transition-opacity">
          {icon}
       </div>
-      <h3 className="text-2xl font-bold text-[#0056b3] mb-6 leading-tight">{title}</h3>
-      <p className="text-slate-600 mb-10 leading-relaxed text-[15px]">
+      <h3 className="text-xs font-extrabold text-[#0056b3] tracking-widest uppercase mb-2 leading-tight">{title}</h3>
+      <p className="text-slate-500 mb-4 leading-relaxed text-[11px] font-semibold">
         {description}
       </p>
       <div 
-        onClick={onClick}
-        className="mt-auto flex items-center font-bold text-xs uppercase tracking-widest text-slate-900 group cursor-pointer"
+        className="mt-auto flex items-center font-bold text-[10px] uppercase tracking-widest text-[#0056b3] group-hover:text-slate-900 transition-colors"
       >
-        Learn More <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform text-[#0056b3]" />
+        Learn More <ArrowRight size={12} className="ml-2 group-hover:translate-x-1 transition-transform text-[#0056b3]" />
       </div>
     </motion.div>
   );
 };
 
 const ServicesSection = ({ onNavigate }: { onNavigate: (v: View) => void }) => (
-  <section className="py-24 px-4 bg-white">
+  <section className="py-16 px-4 bg-white">
     <div className="max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         <ServiceCard 
-          icon={<Settings size={56} strokeWidth={1} />}
+          icon={<Settings size={32} />}
           title="IT Strategy Consultation"
-          description="Align technology with your target business achievements. Includes Digital Transformation, comprehensive Risk Assessment, rigorous Compliance Audit, and strategic Business Continuity plans."
+          description="Digital transformation, compliance audits & risk assessments"
           delay={0.1}
           onClick={() => onNavigate('it-strategy')}
         />
         <ServiceCard 
-          icon={<CheckCircle2 size={56} strokeWidth={1} />}
+          icon={<CheckCircle2 size={32} />}
           title="Service Level Agreement"
-          description="High-availability professional support configurations tailored for your specific system requirements. Choose between our robust Standard SLA and Premium 24/7/365 support tiers."
-          delay={0.2}
+          description="Tailored uptime commitments with 24/7/365 support response"
+          delay={0.15}
           onClick={() => onNavigate('sla')}
+        />
+        <ServiceCard 
+          icon={<CheckCircle2 size={32} />}
+          title="Managed IT Services"
+          description="Secure server maintenance & proactively managed helpdesk"
+          delay={0.2}
+          onClick={() => onNavigate('managed-it')}
+        />
+        <ServiceCard 
+          icon={<Globe size={32} />}
+          title="Cloud Solutions"
+          description="Local high-performance clouds & secure off-site backups"
+          delay={0.25}
+          onClick={() => onNavigate('cloud-solutions')}
+        />
+        <ServiceCard 
+          icon={<Settings size={32} />}
+          title="Corporate Networking"
+          description="Enterprise routing, switching, firewalls & fast Wi-Fi"
+          delay={0.3}
+          onClick={() => onNavigate('networking')}
+        />
+        <ServiceCard 
+          icon={<Globe size={32} />}
+          title="Corporate Voice Systems"
+          description="Unified communications & high-clarity IP telephone systems"
+          delay={0.35}
+          onClick={() => onNavigate('voice-solutions')}
+        />
+        <ServiceCard 
+          icon={<Settings size={32} />}
+          title="Cabling & Infrastructure"
+          description="Structured copper CAT6 and fiber-optic physical layers"
+          delay={0.4}
+          onClick={() => onNavigate('cabling')}
         />
       </div>
     </div>
@@ -394,7 +437,7 @@ const FormInput = ({ label, required = false, type = "text", placeholder = "", n
 );
 
 const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: string; mainTitle: string }) => (
-  <div className="bg-[#030914] pt-32 pb-20 px-4 relative overflow-hidden border-b border-blue-500/10 font-sans">
+  <div className="bg-[#030914] pt-24 pb-14 px-4 relative overflow-hidden border-b border-blue-500/10 font-sans">
     {/* Tech grid mask */}
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-80" />
     
@@ -408,15 +451,15 @@ const PageHeader = ({ title, subtitle, mainTitle }: { title?: string; subtitle: 
     
     <div className="max-w-7xl mx-auto relative z-10 text-center">
        {title && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-blue-500/5 border border-blue-500/20 text-[#00a9e0] text-[10px] font-mono uppercase tracking-[0.25em] mb-6 font-extrabold shadow-[0_0_15px_rgba(0,169,224,0.05)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-blue-500/5 border border-blue-500/20 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.25em] mb-4 font-extrabold shadow-[0_0_15px_rgba(0,169,224,0.05)]">
             <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
             {title}
           </div>
        )}
-       <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+       <h2 className="text-lg md:text-xl lg:text-2xl font-extrabold text-white mb-3 tracking-tight leading-tight">
          {mainTitle}
        </h2>
-       <p className="text-slate-400 text-xs md:text-sm max-w-xl mx-auto leading-relaxed border-t border-white/5 pt-4 font-normal">
+       <p className="text-slate-400 text-xs md:text-sm max-w-xl mx-auto leading-relaxed border-t border-white/5 pt-3 font-normal">
          {subtitle}
        </p>
     </div>
@@ -2147,30 +2190,33 @@ const SolutionsDetailPage = ({ onNavigate }: { onNavigate: (v: View) => void, ke
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="INTEGRATED SOLUTIONS"
-      mainTitle="Tailor-Made Technology"
-      subtitle="Designing and delivering full turn-key solutions for the most complex digital projects across Africa."
+      mainTitle="Solutions Overview"
+      subtitle="Tailor-made integration solutions"
     />
-    <div className="bg-white py-24 px-4 overflow-hidden">
+    <div className="bg-white py-16 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
            {[
-             { title: "ICT & Integrated Systems", icon: <Globe size={40} />, desc: "LED video walls, digital signage, and customized technical integrations.", view: 'ict-services' },
-             { title: "Digital Security", desc: "Advanced video surveillance, access control, and gate barriers.", icon: <Shield size={40} />, view: 'digital-security' },
-             { title: "Fleet & Fuel Management", icon: <Zap size={40} />, desc: "Real-time location and fuel monitoring solutions.", view: 'fleet-fuel' },
-             { title: "Conference Systems", icon: <Mic2 size={40} />, desc: "Digital, wireless, and paperless meeting systems.", view: 'ict-services' },
-             { title: "Public Address", icon: <Globe size={40} />, desc: "IP-based PA and Intercom systems for facilities.", view: 'ict-services' },
-             { title: "Multimedia Control", icon: <Settings size={40} />, desc: "Centralized control for education and venues.", view: 'ict-services' }
+             { title: "ICT & Integrated Systems", icon: <Globe size={32} />, desc: "LED video walls, digital signage, and specialized integration", view: 'ict-services' },
+             { title: "Digital Security", desc: "CCTV, Gate Barriers and Access Control", icon: <Shield size={32} />, view: 'digital-security' },
+             { title: "Fleet & Fuel Management", icon: <Zap size={32} />, desc: "Real-time monitoring and analytics", view: 'fleet-fuel' },
+             { title: "Conference Systems", icon: <Mic2 size={32} />, desc: "Digital, wireless, and paperless meeting systems", view: 'conference-systems' },
+             { title: "Public Address", icon: <Globe size={32} />, desc: "IP-based PA and Intercom systems for facilities", view: 'public-address' },
+             { title: "Multimedia Control", icon: <Settings size={32} />, desc: "Centralized control for education and venues", view: 'multimedia-control' }
            ].map((sol, i) => (
              <div 
                key={i} 
                onClick={() => onNavigate(sol.view as View)}
-               className="p-12 border border-slate-100 rounded-xl hover:shadow-2xl transition-all group cursor-pointer"
+               className="p-6 border border-slate-100 rounded-xl hover:shadow-xl transition-all group cursor-pointer bg-white flex flex-col h-full"
              >
-                <div className="text-[#0056b3] mb-8 opacity-40 group-hover:opacity-100 transition-opacity">
+                <div className="text-[#0056b3] mb-4 opacity-60 group-hover:opacity-100 transition-opacity">
                   {sol.icon}
                 </div>
-                <h4 className="text-2xl font-bold text-slate-900 mb-4">{sol.title}</h4>
-                <p className="text-slate-500 leading-relaxed group-hover:text-slate-900 transition-colors">{sol.desc}</p>
+                <h4 className="text-xs font-extrabold text-[#0056b3] tracking-widest uppercase mb-2 leading-tight">{sol.title}</h4>
+                <p className="text-slate-500 text-[11px] font-semibold leading-relaxed group-hover:text-slate-800 transition-colors mb-4">{sol.desc}</p>
+                <div className="mt-auto flex items-center font-bold text-[10px] uppercase tracking-widest text-slate-900">
+                  Explore Solution <ArrowRight size={12} className="ml-2 group-hover:translate-x-1 transition-transform text-[#0056b3]" />
+                </div>
              </div>
            ))}
         </div>
@@ -2488,8 +2534,8 @@ const ServicesOverviewPage = ({ onNavigate }: { onNavigate: (v: View) => void, k
   <div className="animate-in fade-in duration-700">
     <PageHeader 
       title="WHAT WE DO"
-      mainTitle="Our Services"
-      subtitle="Complete technology solutions designed to support, secure and optimize your business environment."
+      mainTitle="Services Overview"
+      subtitle="Overview of our professional technology solutions"
     />
     <div className="py-24">
        <ServicesSection onNavigate={onNavigate} />
@@ -5044,7 +5090,7 @@ const ServiceHero = ({ title, description, image, onContact }: any) => {
   };
 
   return (
-    <div className="relative min-h-[500px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
+    <div className="relative min-h-[380px] flex items-center bg-[#030914] overflow-hidden border-b border-blue-500/10 font-sans">
       {/* Tech grid mask */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0c1322_1px,transparent_1px),linear-gradient(to_bottom,#0c1322_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_100%,transparent_100%)] opacity-70 z-0" />
       
@@ -5056,42 +5102,42 @@ const ServiceHero = ({ title, description, image, onContact }: any) => {
       {/* Ambient glowing fields */}
       <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-blue-500/10 blur-[90px] rounded-full pointer-events-none z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-16 py-28 items-center">
+      <div className="max-w-7xl mx-auto px-4 relative z-10 w-full flex flex-col lg:flex-row gap-10 py-16 items-center">
         <div className="lg:w-1/2 text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[#00a9e0] text-[9px] font-mono uppercase tracking-[0.2em] mb-6 font-bold shadow-[0_0_15px_rgba(37,99,235,0.1)]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[#00a9e0] text-[8px] font-mono uppercase tracking-[0.2em] mb-4 font-bold shadow-[0_0_15px_rgba(37,99,235,0.1)]">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping" />
             HTC CORE SOLUTION PIPELINE
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 tracking-tight leading-tight">
             {title}
           </h1>
-          <p className="text-slate-400 text-base md:text-lg leading-relaxed font-normal max-w-xl">
+          <p className="text-slate-400 text-[13px] leading-relaxed font-normal max-w-xl">
             {description}
           </p>
         </div>
         <div className="lg:w-1/2 w-full">
-          <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,169,224,0.1)] relative">
-             <div className="absolute top-8 right-8 text-[#0056b3]/15">
-                <Zap size={100} />
+          <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-[0_0_50px_rgba(0,169,224,0.1)] relative">
+             <div className="absolute top-6 right-6 text-[#0056b3]/15">
+                <Zap size={64} />
              </div>
-             <span className="text-[#00a9e0] font-bold uppercase tracking-[0.25em] text-[9px] font-mono mb-6 inline-block">SYSTEM HANDSHAKE HANDOVER</span>
-             <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 tracking-tight">Enterprise Standard</h2>
-             <p className="text-slate-400 mb-8 text-xs md:text-sm leading-relaxed">
+             <span className="text-[#00a9e0] font-bold uppercase tracking-[0.25em] text-[8px] font-mono mb-3 inline-block">SYSTEM HANDSHAKE HANDOVER</span>
+             <h2 className="text-xl md:text-2xl font-extrabold text-white mb-3 tracking-tight">Enterprise Standard</h2>
+             <p className="text-slate-400 mb-5 text-[11px] leading-relaxed">
                When you collaborate with HTC Africa, you aren't outsourcing your infrastructure issues — you're integrating an <span className="text-white font-bold">unstoppable digital matrix</span>.
              </p>
-             <div className="flex flex-col sm:flex-row items-center gap-6 font-mono text-[10px]">
+             <div className="flex flex-col sm:flex-row items-center gap-4 font-mono text-[9px]">
                 <button 
                   onClick={handleRequestAudit}
-                  className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-105 duration-300"
+                  className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-102 duration-300"
                 >
                   📥 REQUEST AUDIT & DEMO
                 </button>
                 <button 
                   type="button"
                   onClick={handleDialSupport}
-                  className="flex items-center gap-3 bg-transparent border-none text-slate-400 hover:text-white transition-colors cursor-pointer group uppercase text-[10px] font-mono font-bold"
+                  className="flex items-center gap-2 bg-transparent border-none text-slate-400 hover:text-white transition-colors cursor-pointer group uppercase text-[9px] font-mono font-bold"
                 >
-                  DIAL CORE SUPPORT <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform text-[#00a9e0]" />
+                  DIAL CORE SUPPORT <ArrowRight size={12} className="group-hover:translate-x-1.5 transition-transform text-[#00a9e0]" />
                 </button>
              </div>
           </div>
