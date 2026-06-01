@@ -951,7 +951,7 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   };
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#031424] to-[#01080e] text-slate-300 pt-24 pb-12 px-6 md:px-12 border-t border-white/5 overflow-hidden">
+    <footer className="relative bg-gradient-to-b from-[#031424] to-[#01080e] text-slate-300 pt-12 pb-6 px-6 md:px-12 border-t border-white/5 overflow-hidden">
       {/* Top subtle highlight line */}
       <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#00a9e0]/20 to-transparent" />
       
@@ -960,9 +960,9 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
       <div className="absolute bottom-0 right-10 w-[300px] h-[300px] bg-[#0056b3]/10 rounded-full filter blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 mb-20 animate-fade-in">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-8 animate-fade-in">
           {/* Logo Column */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-8 space-y-4">
             <div className="flex items-center gap-3.5 cursor-pointer group" onClick={() => onNavigate('home')}>
               <div className="bg-white/5 p-2 rounded-xl backdrop-blur-md border border-white/10 group-hover:border-[#00a9e0]/40 group-hover:bg-white/10 transition-all">
                 <img 
@@ -982,28 +982,18 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               </div>
             </div>
             
-            <p className="text-slate-400 font-medium text-sm leading-relaxed max-w-md">
+            <p className="text-slate-400 font-medium text-xs leading-relaxed max-w-xl">
               A pioneering force in premium digital transformation, empowering high-demand enterprises and ambitious regional businesses across Africa with robust, carrier-grade IT, security, and fuel logistics management.
             </p>
-
-            <div className="pt-4 flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/15 rounded-full text-[10px] font-bold tracking-wider uppercase text-[#00a9e0]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                HQ Dar Es Salaam
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/15 rounded-full text-[10px] font-bold tracking-wider uppercase text-slate-400">
-                Est. 2008
-              </span>
-            </div>
           </div>
           
           {/* Quick Links Column */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-4 space-y-4">
             <div>
               <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Navigation</h4>
-              <div className="w-8 h-[2px] bg-[#00a9e0] mt-3 rounded" />
+              <div className="w-8 h-[2px] bg-[#00a9e0] mt-2 rounded" />
             </div>
-            <ul className="space-y-3.5 text-slate-400 text-sm font-semibold">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-slate-400 text-xs font-semibold">
               {[
                 { name: 'Home/Overview', target: 'home' },
                 { name: 'About High Tech Center', target: 'about-us' },
@@ -1013,7 +1003,7 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
                 { name: 'Customer Portal & Help Desk', target: 'support' },
               ].map((link, idx) => (
                 <li key={idx} className="group flex items-center gap-1">
-                  <span className="text-[#00a9e0] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all font-mono text-xs">→</span>
+                  <span className="text-[#00a9e0] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all font-mono text-[10px]">→</span>
                   <span 
                     className="hover:text-white transition-colors cursor-pointer select-none group-hover:translate-x-0.5 transform duration-150" 
                     onClick={() => onNavigate(link.target as any)}
@@ -1024,56 +1014,37 @@ const Footer = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               ))}
             </ul>
           </div>
-          
-          {/* Emails Column */}
-          <div className="lg:col-span-4 space-y-6">
-            <div>
-              <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Get Connected</h4>
-              <div className="w-8 h-[2px] bg-[#00a9e0] mt-3 rounded" />
-            </div>
-            
-            <div className="space-y-3">
-              {/* Organized Contacts 4-Row Layout */}
-              {[
-                {
-                  label: "General Inquiry",
-                  email: "info@htc.co.tz"
-                },
-                {
-                  label: "Sales & SLA",
-                  email: "salesmanager@htc.co.tz"
-                },
-                {
-                  label: "Support Desk",
-                  email: "supportmanager@htc.co.tz"
-                },
-                {
-                  label: "Careers & HR",
-                  email: "hrmanager@htc.co.tz"
-                }
-              ].map((item, idx) => (
-                <div key={idx} className="p-3 bg-white/[0.03] hover:bg-white/5 border border-white/5 hover:border-white/10 rounded-xl transition-all group flex items-center justify-between w-full">
-                  <div className="flex flex-col">
-                    <span className="block text-[9px] uppercase tracking-wider text-slate-500 font-bold mb-1 group-hover:text-slate-400 transition-colors">
-                      {item.label}
-                    </span>
-                    <a 
-                      href={`mailto:${item.email}`} 
-                      className="text-xs text-slate-300 hover:text-[#00a9e0] font-mono break-all font-semibold transition-colors flex items-center gap-1.5"
-                    >
-                      <Mail size={12} className="text-[#00a9e0]/80 group-hover:text-[#00a9e0] flex-shrink-0 transition-colors" />
-                      <span>{item.email}</span>
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
 
+        {/* 4 Emails Columns Section */}
+        <div className="pt-8 pb-4 border-t border-white/10 animate-fade-in">
+          <div className="mb-4">
+            <h4 className="font-bold text-xs uppercase tracking-[0.15em] text-slate-400">Get Connected</h4>
+            <div className="w-8 h-[2px] bg-[#00a9e0] mt-2 rounded" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { label: "General Inquiry", email: "info@htc.co.tz" },
+              { label: "Sales & SLA", email: "salesmanager@htc.co.tz" },
+              { label: "Support Desk", email: "supportmanager@htc.co.tz" },
+              { label: "Careers & HR", email: "hrmanager@htc.co.tz" }
+            ].map((item, idx) => (
+              <div key={idx} className="flex flex-col gap-1 text-left bg-white/[0.02] border border-white/5 hover:border-[#00a9e0]/20 hover:bg-white/[0.04] p-3.5 rounded-xl transition-all font-mono">
+                <span className="text-[10px] uppercase text-slate-500 font-bold tracking-wider">{item.label}</span>
+                <a 
+                  href={`mailto:${item.email}`} 
+                  className="text-xs text-slate-300 hover:text-[#00a9e0] transition-colors flex items-center gap-1.5 break-all font-semibold"
+                >
+                  <Mail size={12} className="text-[#00a9e0]/70 flex-shrink-0" />
+                  <span>{item.email}</span>
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Divider & Copyright */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 gap-4">
+        <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 gap-4">
           <p>© 2026 HTC Africa High Tech Center. All Rights Reserved.</p>
           <p className="md:mt-0 text-[#00a9e0]/80">Designed for Productivity & Enterprise Precision</p>
         </div>
@@ -6105,17 +6076,40 @@ function EmailDispatchModal({
   const [copiedAll, setCopiedAll] = useState(false);
   const [isSendingDirectly, setIsSendingDirectly] = useState(false);
   const [isSentDirectly, setIsSentDirectly] = useState(false);
+  const [directError, setDirectError] = useState<string | null>(null);
 
-  const handleInstantSubmit = () => {
+  const handleInstantSubmit = async () => {
     setIsSendingDirectly(true);
-    setTimeout(() => {
+    setDirectError(null);
+    try {
+      const response = await fetch('/api/apply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: data?.to,
+          subject: data?.subject,
+          bodyText: data?.bodyText,
+          attachmentInfo: data?.attachmentInfo
+        }),
+      });
+      const resData = await response.json();
+      if (resData.success) {
+        setIsSentDirectly(true);
+        setTimeout(() => {
+          onClose();
+          setIsSentDirectly(false);
+        }, 1800);
+      } else {
+        setDirectError(resData.error || 'Failed to dispatch email directly.');
+      }
+    } catch (err: any) {
+      console.error(err);
+      setDirectError('HTC Server Connection Error: ' + (err.message || 'Make sure the development server is running.'));
+    } finally {
       setIsSendingDirectly(false);
-      setIsSentDirectly(true);
-      setTimeout(() => {
-        onClose();
-        setIsSentDirectly(false);
-      }, 1500);
-    }, 1200);
+    }
   };
 
   if (!data) return null;
@@ -6208,6 +6202,12 @@ function EmailDispatchModal({
                   )}
                 </button>
               </div>
+              {directError && (
+                <div className="mt-3 text-[10px] font-mono text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  <span>{directError}</span>
+                </div>
+              )}
             </div>
 
             {/* Quick Envelope Dossier Card */}
