@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from 'motion/react';
 // @ts-ignore
 import htcLogo from './assets/images/htcl.png';
 // @ts-ignore
-import ciscoLogo from './assets/images/cisco.svg';
+import ciscoLogo from './assets/images/cisco.png';
 // @ts-ignore
-import huaweiLogo from './assets/images/huawei.svg';
+import huaweiLogo from './assets/images/huwawei.jpeg';
 // @ts-ignore
-import itcLogo from './assets/images/itc.svg';
+import itcLogo from './assets/images/itc.png';
 // @ts-ignore
-import concoxLogo from './assets/images/concox.svg';
+import concoxLogo from './assets/images/concox.png';
+
 import { 
   ChevronDown, 
   Menu, 
@@ -2979,51 +2980,43 @@ const PartnershipsDetailPage = ({ key }: { key?: any }) => {
       <div className="bg-transparent py-16 px-4 font-sans max-w-6xl mx-auto">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
            {/* Card 1: Cisco Systems */}
-           <div className="p-10 bg-slate-900/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center min-h-[180px] hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(3,110,229,0.1)] transition-all group">
-              <div className="flex flex-col items-center justify-center w-full max-w-[150px]">
+           <div className="bg-white border border-slate-200/20 rounded-none aspect-[16/10] w-full flex items-center justify-center hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(0,86,179,0.25)] transition-all group overflow-hidden">
                 <img 
                   src={ciscoLogo} 
                   alt="Cisco Systems" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-auto object-contain max-h-[70px] filter brightness-100 group-hover:scale-105 transition-transform duration-300 select-none" 
+                  className="max-w-[45%] max-h-[45%] object-contain group-hover:scale-105 transition-transform duration-300 select-none bg-white" 
                 />
-              </div>
            </div>
 
            {/* Card 2: Huawei */}
-           <div className="p-10 bg-slate-900/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center min-h-[180px] hover:border-red-500/30 hover:shadow-[0_0_30px_rgba(237,28,36,0.1)] transition-all group">
-              <div className="flex flex-col items-center justify-center w-full max-w-[130px]">
+           <div className="bg-white border border-slate-200/20 rounded-none aspect-[16/10] w-full flex items-center justify-center hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(237,28,36,0.25)] transition-all group overflow-hidden">
                 <img 
                   src={huaweiLogo} 
                   alt="Huawei" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-auto object-contain max-h-[75px] filter brightness-100 group-hover:scale-105 transition-transform duration-300 select-none" 
+                  className="max-w-[45%] max-h-[45%] object-contain group-hover:scale-105 transition-transform duration-300 select-none bg-white" 
                 />
-              </div>
            </div>
 
            {/* Card 3: ITC */}
-           <div className="p-10 bg-slate-900/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center min-h-[180px] hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(229,0,18,0.1)] transition-all group">
-              <div className="flex flex-col items-center justify-center w-full max-w-[120px]">
+           <div className="bg-white border border-slate-200/20 rounded-none aspect-[16/10] w-full flex items-center justify-center hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(0,169,224,0.25)] transition-all group overflow-hidden">
                 <img 
                   src={itcLogo} 
                   alt="itC" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-auto object-contain max-h-[70px] filter brightness-100 group-hover:scale-105 transition-transform duration-300 select-none" 
+                  className="max-w-[45%] max-h-[45%] object-contain group-hover:scale-105 transition-transform duration-300 select-none bg-white" 
                 />
-              </div>
            </div>
 
            {/* Card 4: Concox */}
-           <div className="p-10 bg-slate-900/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center min-h-[180px] hover:border-amber-500/30 hover:shadow-[0_0_30px_rgba(242,188,24,0.1)] transition-all group">
-              <div className="flex flex-col items-center justify-center w-full max-w-[150px]">
+           <div className="bg-white border border-slate-200/20 rounded-none aspect-[16/10] w-full flex items-center justify-center hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(242,188,24,0.25)] transition-all group overflow-hidden">
                 <img 
                   src={concoxLogo} 
                   alt="Concox" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-auto object-contain max-h-[60px] filter brightness-100 group-hover:scale-105 transition-transform duration-300 select-none" 
+                  className="max-w-[45%] max-h-[45%] object-contain group-hover:scale-105 transition-transform duration-300 select-none bg-white" 
                 />
-              </div>
            </div>
         </div>
       </div>
