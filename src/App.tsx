@@ -10,6 +10,7 @@ import huaweiLogo from './assets/images/huwawei.jpeg';
 import itcLogo from './assets/images/itc.png';
 // @ts-ignore
 import concoxLogo from './assets/images/concox.png';
+import { Resend } from "resend";
 
 import { 
   ChevronDown, 
