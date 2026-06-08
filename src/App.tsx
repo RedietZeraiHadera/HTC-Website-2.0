@@ -1114,11 +1114,11 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
   const getSLAString = (wp: string, pr: string) => {
     switch (wp) {
       case 'retail':
-        return pr === 'security' ? 'Retail Safe-Guard Suite' : pr === 'cloud' ? 'Store Cloud Sync & Backup' : 'Instant Store POS Connect';
+        return pr === 'security' ? 'SME Fleet & Fuel Intelligence' : pr === 'cloud' ? 'SME IT Strategic Consultancy' : 'SME Infrastructure Solution';
       case 'industrial':
-        return pr === 'security' ? 'Warehouse Perimeter Watch' : pr === 'cloud' ? 'ICS Cloud Integration' : 'Industrial Fiber Backbone';
+        return pr === 'security' ? 'NGO Fleet & Fuel Management' : pr === 'cloud' ? 'NGO Advisory & IT Consulting' : 'NGO Network Infrastructure Solution';
       default:
-        return pr === 'security' ? 'Smart Office CCTV & Shield' : pr === 'cloud' ? 'Managed Cloud & Active Directory' : 'Corporate Fiber & Wi-Fi LAN';
+        return pr === 'security' ? 'Corporate Fleet & Fuel Telemetry' : pr === 'cloud' ? 'Corporate IT Consultancy & Advisory' : 'Corporate Infrastructure Solution';
     }
   };
 
@@ -1128,15 +1128,15 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
     let setup = "3-4 days";
     let scale = "Simple implementation";
     if (priority === 'security') {
-      desc = "Includes 24/7 high-definition smart security cameras, biometric workplace keycards, and a local visual recording backup.";
+      desc = "Comprehensive fleet logistics tracking, real-time fuel siphoning protection, smart telemetry sensors, and automated reports.";
       setup = "2-3 days";
       scale = "Pre-configured & secure";
     } else if (priority === 'cloud') {
-      desc = "Standardization of corporate cloud profiles, automated files backups on Microsoft 365 or AWS, and smart user permissions.";
+      desc = "Expert consultancy including digital transformation roadmaps, security compliance auditing, and custom IT infrastructure planning.";
       setup = "3-5 days";
       scale = "Fully managed by HTC";
     } else {
-      desc = "High-speed unified networking using optical fiber terminals, premium Wi-Fi routers, and physical server rack integration.";
+      desc = "Professional fiber-optic connectivity, high-speed routing nodes, structural cabling, and advanced security firewalls.";
       setup = "4-6 days";
       scale = "Full enterprise routing";
     }
@@ -1250,9 +1250,9 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'office', label: '🏢 Standard Office', desc: 'Workspaces' },
-                  { id: 'retail', label: '🛍️ Store / Retail', desc: 'Customer hubs' },
-                  { id: 'industrial', label: '🏭 Warehouse', desc: 'Secure facility' }
+                  { id: 'office', label: '🏢 Corporate Office', desc: 'Workspaces' },
+                  { id: 'retail', label: '🛍️ SME', desc: 'Customer hubs' },
+                  { id: 'industrial', label: '🏭 NGO', desc: 'Secure facility' }
                 ].map(item => (
                   <button
                     key={item.id}
@@ -1274,9 +1274,9 @@ const Hero = ({ onNavigate }: { onNavigate: (v: View) => void }) => {
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'network', label: '⚡ Fast Internet', desc: 'Networking' },
-                  { id: 'security', label: '🔒 Smart Cameras', desc: 'CCTV & Doors' },
-                  { id: 'cloud', label: '☁️ File Backup', desc: 'Easy Cloud' }
+                  { id: 'network', label: '⚡ Infrastructure Solution', desc: 'Networking' },
+                  { id: 'security', label: '🔒 Flight & Fuel Mananagment', desc: 'Telemetry & GPS' },
+                  { id: 'cloud', label: '☁️ IT consultancy', desc: 'Strategy' }
                 ].map(item => (
                   <button
                     key={item.id}
@@ -5075,6 +5075,86 @@ export default function App() {
   useEffect(() => {
     (window as any).__htc_navigate = (v: View) => {
       setCurrentView(v);
+    };
+    (window as any).__htc_simulate_email = (email: string, type: string, payload: any) => {
+      console.log("Triggered dynamic mail system delivery for type:", type, payload);
+      let subject = `[${type.toUpperCase()}] Submission from htc.co.tz`;
+      let bodyText = `New submission on htc.co.tz\nType: ${type}\n\n`;
+      
+      const name = payload.fullName || payload.firstName || 'N/A';
+      
+      if (type === 'career') {
+        subject = `Job Application: ${payload.jobTitle || 'Engineer'} - ${name}`;
+        bodyText += `Candidate Name: ${name}\n`;
+        bodyText += `Email address: ${payload.email}\n`;
+        bodyText += `Contact phone: ${payload.phone}\n`;
+        bodyText += `Work experience: ${payload.experience || 'N/A'}\n`;
+        bodyText += `LinkedIn: ${payload.linkedin || 'None provided'}\n`;
+      } else if (type === 'contact') {
+        subject = `Contact/Inquiry from ${name}`;
+        bodyText += `Name: ${name}\n`;
+        bodyText += `Company: ${payload.company || 'Not Specified'}\n`;
+        bodyText += `Email address: ${payload.email}\n`;
+        bodyText += `Contact phone: ${payload.phone}\n`;
+        bodyText += `Message/Concern: ${payload.concern || 'General inquiry'}\n`;
+      } else if (type === 'sla') {
+        subject = `SLA Support Tier Sign-up: ${name}`;
+        bodyText += `Client Name: ${name}\n`;
+        bodyText += `Company: ${payload.company || 'Not Specified'}\n`;
+        bodyText += `Email: ${payload.email}\n`;
+        bodyText += `Phone: ${payload.phone}\n`;
+        bodyText += `Selected SLA Tier: ${payload.tier || 'Premium'}\n`;
+        bodyText += `Special Instructions or Needs: ${payload.specialNeeds || 'None specified'}\n`;
+      } else if (type === 'audit') {
+        subject = `IT Strategy Audit/Demo Request: ${name}`;
+        bodyText += `Name: ${name}\n`;
+        bodyText += `Company: ${payload.companyName || 'Not Specified'}\n`;
+        bodyText += `Email: ${payload.email}\n`;
+        bodyText += `Phone: ${payload.phone}\n`;
+        bodyText += `Service Domain: ${payload.serviceDomain || 'None'}\n`;
+        bodyText += `Preferred Consult Date: ${payload.preferredDate || 'Not specified'}\n`;
+        bodyText += `Notes: ${payload.notes || 'None'}\n`;
+      } else if (type === 'support') {
+        subject = `Incident support ticket: ${name}`;
+        bodyText += `Submitter Name: ${name}\n`;
+        bodyText += `Company: ${payload.companyName || 'Not Specified'}\n`;
+        bodyText += `Email: ${payload.email}\n`;
+        bodyText += `Phone: ${payload.phone}\n`;
+        bodyText += `Severity: ${payload.urgency || 'Medium'}\n`;
+        bodyText += `Issue Description: ${payload.description || 'None'}\n`;
+      }
+      
+      let mailTarget = 'info@htc.co.tz';
+      if (type === 'career') {
+        mailTarget = 'hrmanager@htc.co.tz';
+      } else if (type === 'sla') {
+        mailTarget = 'salesmanager@htc.co.tz';
+      } else if (type === 'support') {
+        mailTarget = 'supportmanager@htc.co.tz';
+      }
+      
+      fetch('/api/apply', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          to: mailTarget,
+          subject,
+          bodyText,
+          fullName: name,
+          email: payload.email || 'N/A',
+          phone: payload.phone || 'N/A',
+          position: payload.jobTitle || 'N/A'
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Email dispatch service response:", data);
+      })
+      .catch(err => {
+        console.error("Failed to dispatch email:", err);
+      });
     };
   }, []);
 
